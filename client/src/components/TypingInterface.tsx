@@ -81,7 +81,8 @@ export default function TypingInterface({
       volume,
       topRowPitch,
       middleRowPitch,
-      bottomRowPitch
+      bottomRowPitch,
+      extremePanning
     });
   };
 
