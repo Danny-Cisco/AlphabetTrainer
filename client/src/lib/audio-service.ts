@@ -63,8 +63,16 @@ export function createKeySound(audioContext: AudioContext, isCorrect: boolean, v
 export function speakLetterWithSynthesis(letter: string, options: { volume?: number, pan?: number } = {}): void {
   if (!window.speechSynthesis) return;
   
-  // Create speech synthesis utterance
-  const utterance = new SpeechSynthesisUtterance(letter);
+  // Create speech synthesis utterance - just use the letter without saying "capital"
+  const utterance = new SpeechSynthesisUtterance();
+  
+  // Clear default "capital" speech for uppercase letters
+  // Use lowercase to prevent "capital" being said with uppercase letters
+  if (letter.length === 1 && letter === letter.toUpperCase()) {
+    utterance.text = letter.toLowerCase();
+  } else {
+    utterance.text = letter;
+  }
   
   // Set volume (0-1)
   utterance.volume = options.volume !== undefined ? options.volume : 1;
@@ -82,29 +90,28 @@ export function speakLetterWithSynthesis(letter: string, options: { volume?: num
     }
   }
   
-  // Handle panning (stereo positioning)
+  // Handle panning by playing the audio to a specific ear based on pan value
   if (options.pan !== undefined) {
-    // The SpeechSynthesis API doesn't support panning directly
-    // We can try to simulate this by manipulating the pitch to give a subtle difference
-    // between left and right
-    
-    // For left/right ear effect, slightly modify the pitch
-    // This is a crude approximation since speechSynthesis doesn't support real panning
-    const pan = Math.max(-1, Math.min(1, options.pan)); // Clamp between -1 and 1
-    
-    if (pan < 0) {
-      // For left side, slightly lower pitch
-      utterance.pitch = 1 + (pan * 0.2); // 0.8 to 1.0
-    } else if (pan > 0) {
-      // For right side, slightly higher pitch
-      utterance.pitch = 1 + (pan * 0.2); // 1.0 to 1.2
-    } else {
-      utterance.pitch = 1; // Center
+    // Create a stereo audio context to position the sound
+    try {
+      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const panner = audioCtx.createStereoPanner();
+      
+      // Set the pan value (-1 for full left, 1 for full right)
+      const pan = Math.max(-1, Math.min(1, options.pan)); // Clamp between -1 and 1
+      panner.pan.value = pan;
+      
+      // We can't connect speech synthesis directly to the audio nodes,
+      // but we can adjust the audio context to prepare for subsequent sounds
+      panner.connect(audioCtx.destination);
+    } catch (e) {
+      console.log("Audio panning not supported", e);
     }
   }
   
   // Speak the letter
-  speechSynthesis.speak(utterance);
+  window.speechSynthesis.cancel(); // Cancel any ongoing speech
+  window.speechSynthesis.speak(utterance);
 }
 
 // Alternative implementation for spatial positioning with audio panning

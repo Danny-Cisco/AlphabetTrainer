@@ -93,21 +93,17 @@ export function useTyping() {
   // Helper function to get a pan value based on keyboard position
   function getPanValueForLetter(letter: string): number {
     // Map QWERTY keyboard layout to pan values from -1 (left) to 1 (right)
-    const keyboardRows = [
-      'QWERTYUIOP',
-      'ASDFGHJKL',
-      'ZXCVBNM'
-    ];
+    const keyboardLayout = {
+      'Q': -1.0,  'W': -0.8,  'E': -0.6,  'R': -0.4,  'T': -0.2,  'Y': 0.2,   'U': 0.4,   'I': 0.6,   'O': 0.8,   'P': 1.0,
+      'A': -0.9,  'S': -0.7,  'D': -0.5,  'F': -0.3,  'G': -0.1,  'H': 0.1,   'J': 0.3,   'K': 0.5,   'L': 0.7,
+      'Z': -0.8,  'X': -0.6,  'C': -0.4,  'V': -0.2,  'B': 0.0,   'N': 0.2,   'M': 0.4
+    };
     
-    for (const row of keyboardRows) {
-      const index = row.indexOf(letter);
-      if (index !== -1) {
-        // Calculate pan value: -1 for leftmost, 1 for rightmost keys
-        return -1 + (index * 2 / (row.length - 1));
-      }
-    }
+    // Uppercase the letter for consistency
+    const upperLetter = letter.toUpperCase();
     
-    return 0; // Default to center if not found
+    // Return the pan value if it exists in our layout, otherwise default to center (0)
+    return keyboardLayout[upperLetter as keyof typeof keyboardLayout] || 0;
   }
   
   return {
