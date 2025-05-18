@@ -5,7 +5,8 @@ export function useTyping(sequenceType = 'alphabet') {
   // Different sequences to practice with
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const REVERSE_ALPHABET = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
-  const QUICK_BROWN_FOX = 'THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG';
+  // For the pangram, we'll use unique letters only (without spaces) to avoid duplicates
+  const QUICK_BROWN_FOX = 'THEQUICKBROWNFXJMPSVAZYDG';
   
   // Get the active sequence based on selection
   const getActiveSequence = () => {

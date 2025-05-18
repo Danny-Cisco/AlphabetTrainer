@@ -86,7 +86,7 @@ export default function TypingInterface({
   const getSequenceLength = () => {
     switch(sequenceType) {
       case 'reverse': return 26; // Z-A has 26 letters
-      case 'fox': return 35; // "The quick brown fox..." has 35 characters
+      case 'fox': return 23; // Unique letters in the pangram
       default: return 26; // A-Z has 26 letters
     }
   };
@@ -137,13 +137,13 @@ export default function TypingInterface({
             )}
             {sequenceType === 'fox' && (
               <>
-                <span>THE</span>
-                <span>QUICK</span>
-                <span>BROWN</span>
-                <span>FOX</span>
-                <span>JUMPS</span>
-                <span>OVER</span>
-                <span>DOG</span>
+                <span>TH</span>
+                <span>EQUIC</span>
+                <span>KBROWN</span>
+                <span>F</span>
+                <span>XJMPS</span>
+                <span>VAZ</span>
+                <span>YDG</span>
               </>
             )}
           </div>
@@ -152,7 +152,7 @@ export default function TypingInterface({
           <p className="text-gray-600 mb-6">
             {sequenceType === 'alphabet' && "Type the letter shown above. Progress through A-Z."}
             {sequenceType === 'reverse' && "Type the letter shown above. Progress through Z-A."}
-            {sequenceType === 'fox' && "Type the letter shown above. Progress through \"The quick brown fox...\""}
+            {sequenceType === 'fox' && "Type the letter shown above. Progress through unique letters from \"The quick brown fox...\""}
           </p>
           
           {/* Stats */}
