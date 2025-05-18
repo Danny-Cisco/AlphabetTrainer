@@ -9,6 +9,9 @@ interface TypingInterfaceProps {
   keySoundsActive: boolean;
   bpm: number;
   volume: number;
+  topRowPitch?: number;
+  middleRowPitch?: number;
+  bottomRowPitch?: number;
 }
 
 export default function TypingInterface({

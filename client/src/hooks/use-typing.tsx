@@ -44,17 +44,23 @@ export function useTyping() {
         letterDisplayRef.current.classList.remove('text-blue-500', 'text-red-500');
       }
       
-      // Play the appropriate sounds
+      // Play the voice if speech is active
       if (options.speechActive) {
         speakLetter(currentLetter, {
-          pan: options.panningActive ? getPanValueForLetter(currentLetter) : 0,
-          volume: options.volume / 100,
-          panningActive: options.panningActive
+          volume: options.volume / 100
         });
       }
       
+      // Play the spatial tones if key sounds are active
       if (options.keySoundsActive) {
-        playKeySound(true, { volume: options.volume / 100 });
+        playToneForLetter(currentLetter, {
+          pan: options.panningActive ? getPanValueForLetter(currentLetter) : 0,
+          volume: options.volume / 100,
+          panningActive: options.panningActive,
+          topRowPitch: options.topRowPitch || 587.33,
+          middleRowPitch: options.middleRowPitch || 440,
+          bottomRowPitch: options.bottomRowPitch || 329.63
+        });
       }
       
       // Advance to next letter after a brief delay

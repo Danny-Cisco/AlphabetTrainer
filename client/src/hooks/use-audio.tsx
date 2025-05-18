@@ -3,7 +3,8 @@ import {
   setupAudioContext, 
   createMetronomeSound,
   createKeySound,
-  speakLetterWithSynthesis
+  speakLetterWithSynthesis,
+  playPannedToneForLetter
 } from '@/lib/audio-service';
 
 interface UseAudioOptions {
@@ -83,13 +84,34 @@ export function useAudio(options: UseAudioOptions = {}) {
     createKeySound(audioContextRef.current, isCorrect, volume);
   }, []);
   
-  // Speak a letter using speech synthesis
-  const speakLetter = useCallback((letter: string, speakOptions: { pan?: number, volume?: number, panningActive?: boolean } = {}) => {
+  // Speak a letter using speech synthesis (voice only)
+  const speakLetter = useCallback((letter: string, speakOptions: { volume?: number } = {}) => {
     const volume = speakOptions.volume || 0.8;
-    const pan = speakOptions.pan || 0;
-    const panningActive = speakOptions.panningActive || false;
+    speakLetterWithSynthesis(letter, { volume });
+  }, []);
+  
+  // Play a tone for a letter with spatial positioning
+  const playToneForLetter = useCallback((letter: string, toneOptions: {
+    pan?: number, 
+    volume?: number, 
+    panningActive?: boolean,
+    topRowPitch?: number,
+    middleRowPitch?: number,
+    bottomRowPitch?: number
+  } = {}) => {
+    const volume = toneOptions.volume || 0.8;
+    const pan = toneOptions.pan || 0;
+    const panningActive = toneOptions.panningActive || false;
     
-    speakLetterWithSynthesis(letter, { volume, pan, panningActive });
+    if (panningActive) {
+      playPannedToneForLetter(letter, {
+        pan,
+        volume,
+        topRowPitch: toneOptions.topRowPitch,
+        middleRowPitch: toneOptions.middleRowPitch,
+        bottomRowPitch: toneOptions.bottomRowPitch
+      });
+    }
   }, []);
   
   useEffect(() => {
@@ -104,6 +126,7 @@ export function useAudio(options: UseAudioOptions = {}) {
     startMetronome,
     stopMetronome,
     playKeySound,
-    speakLetter
+    speakLetter,
+    playToneForLetter
   };
 }

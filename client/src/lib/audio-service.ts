@@ -59,8 +59,8 @@ export function createKeySound(audioContext: AudioContext, isCorrect: boolean, v
   oscillator.stop(audioContext.currentTime + (isCorrect ? 0.08 : 0.2));
 }
 
-// Speak a letter with spatial positioning
-export function speakLetterWithSynthesis(letter: string, options: { volume?: number, pan?: number, panningActive?: boolean } = {}): void {
+// Speak a letter with speech synthesis (voice only)
+export function speakLetterWithSynthesis(letter: string, options: { volume?: number } = {}): void {
   if (!window.speechSynthesis) return;
   
   // Create speech synthesis utterance - just use the letter without saying "capital"
@@ -93,19 +93,18 @@ export function speakLetterWithSynthesis(letter: string, options: { volume?: num
   // Speak the letter
   window.speechSynthesis.cancel(); // Cancel any ongoing speech
   window.speechSynthesis.speak(utterance);
-  
-  // For spatial audio, create a panned sound effect
-  if (options.panningActive && options.pan !== undefined) {
-    // Small delay to let speech start first
-    setTimeout(() => {
-      playPannedSound(options.pan || 0, options.volume || 0.8, letter);
-    }, 50);
-  }
 }
 
-// Create and play a panned sound to indicate spatial position and keyboard row
-function playPannedSound(pan: number, volume: number, letter?: string): void {
-  // Use an audio element with two different audio channels
+// Play a panned tone for each letter based on keyboard position and row
+export function playPannedToneForLetter(letter: string, options: { 
+  pan?: number, 
+  volume?: number,
+  topRowPitch?: number,
+  middleRowPitch?: number,
+  bottomRowPitch?: number
+} = {}): void {
+  if (!letter) return;
+  
   try {
     // Create an audio context for stereo panning
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -114,24 +113,26 @@ function playPannedSound(pan: number, volume: number, letter?: string): void {
     const oscillator = audioCtx.createOscillator();
     oscillator.type = 'sine';
     
-    // Determine which keyboard row the letter belongs to and set the base frequency
-    // Top row: higher pitch, middle row: medium pitch, bottom row: lower pitch
-    let baseFreq = 440; // Default to middle row (A4 note)
+    // Get volume and pan values
+    const volume = options.volume !== undefined ? options.volume : 0.8;
+    const pan = options.pan !== undefined ? Math.max(-1, Math.min(1, options.pan)) : 0;
     
-    if (letter) {
-      const upperLetter = letter.toUpperCase();
-      // Top row (QWERTYUIOP) - higher pitch
-      if ('QWERTYUIOP'.includes(upperLetter)) {
-        baseFreq = 587.33; // D5 note - higher pitch
-      } 
-      // Middle row (ASDFGHJKL) - medium pitch
-      else if ('ASDFGHJKL'.includes(upperLetter)) {
-        baseFreq = 440; // A4 note - medium pitch
-      } 
-      // Bottom row (ZXCVBNM) - lower pitch
-      else if ('ZXCVBNM'.includes(upperLetter)) {
-        baseFreq = 329.63; // E4 note - lower pitch
-      }
+    // Determine which keyboard row the letter belongs to and set the base frequency
+    // using the customizable pitch values for each row
+    const upperLetter = letter.toUpperCase();
+    let baseFreq = options.middleRowPitch || 440; // Default to middle row
+    
+    // Top row (QWERTYUIOP) - higher pitch
+    if ('QWERTYUIOP'.includes(upperLetter)) {
+      baseFreq = options.topRowPitch || 587.33; // D5 note - higher pitch
+    } 
+    // Middle row (ASDFGHJKL) - medium pitch
+    else if ('ASDFGHJKL'.includes(upperLetter)) {
+      baseFreq = options.middleRowPitch || 440; // A4 note - medium pitch
+    } 
+    // Bottom row (ZXCVBNM) - lower pitch
+    else if ('ZXCVBNM'.includes(upperLetter)) {
+      baseFreq = options.bottomRowPitch || 329.63; // E4 note - lower pitch
     }
     
     // Set different frequencies based on pan position for a subtle stereo effect
@@ -147,9 +148,7 @@ function playPannedSound(pan: number, volume: number, letter?: string): void {
     
     // Create a stereo panner node
     const pannerNode = audioCtx.createStereoPanner();
-    
-    // Set the pan value (-1 for full left, 1 for full right)
-    pannerNode.pan.value = Math.max(-1, Math.min(1, pan));
+    pannerNode.pan.value = pan;
     
     // Create a second oscillator for stereo effect
     const oscillator2 = audioCtx.createOscillator();

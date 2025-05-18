@@ -10,6 +10,11 @@ export default function Home() {
   const [keySoundsActive, setKeySoundsActive] = useState(false);
   const [bpm, setBpm] = useState(60);
   const [volume, setVolume] = useState(80);
+  
+  // Pitch values for each keyboard row
+  const [topRowPitch, setTopRowPitch] = useState(587.33); // D5 note
+  const [middleRowPitch, setMiddleRowPitch] = useState(440); // A4 note
+  const [bottomRowPitch, setBottomRowPitch] = useState(329.63); // E4 note
 
   return (
     <>
@@ -33,6 +38,9 @@ export default function Home() {
               keySoundsActive={keySoundsActive}
               bpm={bpm}
               volume={volume}
+              topRowPitch={topRowPitch}
+              middleRowPitch={middleRowPitch}
+              bottomRowPitch={bottomRowPitch}
             />
             
             <ControlPanel 
@@ -48,6 +56,12 @@ export default function Home() {
               setBpm={setBpm}
               volume={volume}
               setVolume={setVolume}
+              topRowPitch={topRowPitch}
+              setTopRowPitch={setTopRowPitch}
+              middleRowPitch={middleRowPitch}
+              setMiddleRowPitch={setMiddleRowPitch}
+              bottomRowPitch={bottomRowPitch}
+              setBottomRowPitch={setBottomRowPitch}
             />
           </main>
           
