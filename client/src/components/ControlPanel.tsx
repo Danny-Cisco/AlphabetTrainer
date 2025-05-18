@@ -142,12 +142,12 @@ export default function ControlPanel({
                   type="radio" 
                   name="sequenceType" 
                   className="mr-3" 
-                  checked={sequenceType === 'fox'}
-                  onChange={() => handleSequenceChange('fox')}
+                  checked={sequenceType === 'random'}
+                  onChange={() => handleSequenceChange('random')}
                 />
                 <div>
-                  <div className="font-medium">Quick Brown Fox</div>
-                  <div className="text-sm text-gray-500">Practice with a pangram</div>
+                  <div className="font-medium">Random Letters</div>
+                  <div className="text-sm text-gray-500">Random order of A-Z</div>
                 </div>
               </label>
             </div>

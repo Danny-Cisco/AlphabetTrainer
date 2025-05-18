@@ -5,16 +5,36 @@ export function useTyping(sequenceType = 'alphabet') {
   // Different sequences to practice with
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const REVERSE_ALPHABET = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
-  // Pangram with all 26 letters of the alphabet
-  const QUICK_BROWN_FOX = 'THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG';
+  
+  // Generate a random sequence of 26 letters (A-Z shuffled)
+  const generateRandomSequence = () => {
+    const letters = ALPHABET.split('');
+    // Fisher-Yates shuffle algorithm
+    for (let i = letters.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [letters[i], letters[j]] = [letters[j], letters[i]];
+    }
+    return letters.join('');
+  };
+  
+  // Initial random sequence
+  const [randomSequence, setRandomSequence] = useState(generateRandomSequence());
   
   // Get the active sequence based on selection
   const getActiveSequence = () => {
     switch(sequenceType) {
       case 'reverse': return REVERSE_ALPHABET;
-      case 'fox': return QUICK_BROWN_FOX;
+      case 'random': return randomSequence;
       default: return ALPHABET;
     }
+  };
+  
+  // Function to generate a new random sequence
+  const regenerateRandomSequence = () => {
+    setCurrentLetterIndex(0);
+    setCorrectCount(0);
+    setErrorCount(0);
+    setRandomSequence(generateRandomSequence());
   };
   
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -86,7 +106,7 @@ export function useTyping(sequenceType = 'alphabet') {
       
       // Advance to next letter after a brief delay
       setTimeout(() => {
-        setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % ALPHABET.length);
+        setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % getActiveSequence().length);
         
         // Reset the letter color
         if (letterDisplayRef.current) {
@@ -141,6 +161,7 @@ export function useTyping(sequenceType = 'alphabet') {
     errorCount,
     accuracy,
     handleKeyPress,
-    letterDisplayRef
+    letterDisplayRef,
+    regenerateRandomSequence
   };
 }
