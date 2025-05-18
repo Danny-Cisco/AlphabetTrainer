@@ -13,6 +13,12 @@ interface ControlPanelProps {
   setBpm: (bpm: number) => void;
   volume: number;
   setVolume: (volume: number) => void;
+  topRowPitch: number;
+  setTopRowPitch: (pitch: number) => void;
+  middleRowPitch: number;
+  setMiddleRowPitch: (pitch: number) => void;
+  bottomRowPitch: number;
+  setBottomRowPitch: (pitch: number) => void;
 }
 
 export default function ControlPanel({
@@ -27,7 +33,13 @@ export default function ControlPanel({
   bpm,
   setBpm,
   volume,
-  setVolume
+  setVolume,
+  topRowPitch,
+  setTopRowPitch,
+  middleRowPitch,
+  setMiddleRowPitch,
+  bottomRowPitch,
+  setBottomRowPitch
 }: ControlPanelProps) {
   const handleBpmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBpm(parseInt(e.target.value, 10));
@@ -35,6 +47,19 @@ export default function ControlPanel({
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVolume(parseInt(e.target.value, 10));
+  };
+  
+  // Handlers for pitch sliders
+  const handleTopRowPitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTopRowPitch(parseFloat(e.target.value));
+  };
+  
+  const handleMiddleRowPitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMiddleRowPitch(parseFloat(e.target.value));
+  };
+  
+  const handleBottomRowPitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBottomRowPitch(parseFloat(e.target.value));
   };
 
   const decreaseBpm = () => {
@@ -264,6 +289,73 @@ export default function ControlPanel({
                 </svg>
               </div>
             </div>
+            
+            {/* Show pitch sliders when tone generator is active */}
+            {keySoundsActive && (
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <h3 className="text-sm font-medium text-gray-700 mb-3">Keyboard Row Pitch Settings</h3>
+                
+                {/* Top row pitch slider */}
+                <div className="mb-4">
+                  <div className="flex justify-between items-center mb-1">
+                    <label htmlFor="top-row-pitch" className="text-xs text-gray-600">
+                      Top Row (QWERTYUIOP)
+                    </label>
+                    <span className="text-xs font-mono">{Math.round(topRowPitch)} Hz</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="400" 
+                    max="800" 
+                    step="1"
+                    value={topRowPitch} 
+                    onChange={handleTopRowPitchChange}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
+                    id="top-row-pitch"
+                  />
+                </div>
+                
+                {/* Middle row pitch slider */}
+                <div className="mb-4">
+                  <div className="flex justify-between items-center mb-1">
+                    <label htmlFor="middle-row-pitch" className="text-xs text-gray-600">
+                      Middle Row (ASDFGHJKL)
+                    </label>
+                    <span className="text-xs font-mono">{Math.round(middleRowPitch)} Hz</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="300" 
+                    max="600" 
+                    step="1"
+                    value={middleRowPitch} 
+                    onChange={handleMiddleRowPitchChange}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
+                    id="middle-row-pitch"
+                  />
+                </div>
+                
+                {/* Bottom row pitch slider */}
+                <div className="mb-2">
+                  <div className="flex justify-between items-center mb-1">
+                    <label htmlFor="bottom-row-pitch" className="text-xs text-gray-600">
+                      Bottom Row (ZXCVBNM)
+                    </label>
+                    <span className="text-xs font-mono">{Math.round(bottomRowPitch)} Hz</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="200" 
+                    max="400" 
+                    step="1"
+                    value={bottomRowPitch} 
+                    onChange={handleBottomRowPitchChange}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
+                    id="bottom-row-pitch"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

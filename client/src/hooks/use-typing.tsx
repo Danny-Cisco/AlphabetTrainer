@@ -10,7 +10,7 @@ export function useTyping() {
   const currentLetter = ALPHABET[currentLetterIndex];
   const letterDisplayRef = useRef<HTMLDivElement>(null);
   
-  const { speakLetter, playKeySound } = useAudio({});
+  const { speakLetter, playKeySound, playToneForLetter } = useAudio({});
   
   // Calculate accuracy whenever correct or error counts change
   useEffect(() => {
@@ -28,6 +28,9 @@ export function useTyping() {
     panningActive: boolean;
     keySoundsActive: boolean;
     volume: number;
+    topRowPitch?: number;
+    middleRowPitch?: number;
+    bottomRowPitch?: number;
   }) => {
     // Only process alphabetical keys
     if (!/^[a-zA-Z]$/.test(key)) return;
@@ -95,7 +98,7 @@ export function useTyping() {
         }
       }, 200);
     }
-  }, [currentLetter, speakLetter, playKeySound]);
+  }, [currentLetter, speakLetter, playKeySound, playToneForLetter]);
 
   // Helper function to get a pan value based on keyboard position
   function getPanValueForLetter(letter: string): number {

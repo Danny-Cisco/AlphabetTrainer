@@ -20,7 +20,10 @@ export default function TypingInterface({
   panningActive,
   keySoundsActive,
   bpm,
-  volume
+  volume,
+  topRowPitch,
+  middleRowPitch,
+  bottomRowPitch
 }: TypingInterfaceProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -70,7 +73,10 @@ export default function TypingInterface({
       speechActive,
       panningActive,
       keySoundsActive,
-      volume
+      volume,
+      topRowPitch,
+      middleRowPitch,
+      bottomRowPitch
     });
   };
 
