@@ -38,7 +38,7 @@ export default function TypingInterface({
     errorCount,
     accuracy,
     handleKeyPress
-  } = useTyping();
+  } = useTyping(sequenceType);
 
   // Set up audio features
   const { startMetronome, stopMetronome } = useAudio({
@@ -82,8 +82,17 @@ export default function TypingInterface({
     });
   };
 
+  // Get sequence length based on sequence type
+  const getSequenceLength = () => {
+    switch(sequenceType) {
+      case 'reverse': return 26; // Z-A has 26 letters
+      case 'fox': return 35; // "The quick brown fox..." has 35 characters
+      default: return 26; // A-Z has 26 letters
+    }
+  };
+  
   // Calculate progress percentage
-  const progressPercentage = ((currentLetterIndex) / 25) * 100;
+  const progressPercentage = ((currentLetterIndex) / (getSequenceLength() - 1)) * 100;
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
@@ -102,19 +111,49 @@ export default function TypingInterface({
             ></div>
           </div>
           
-          {/* Letter progress */}
+          {/* Letter progress - different for each sequence type */}
           <div className="flex justify-between font-mono text-xs text-gray-500 mb-8">
-            <span>A</span>
-            <span>D</span>
-            <span>H</span>
-            <span>L</span>
-            <span>P</span>
-            <span>T</span>
-            <span>Z</span>
+            {sequenceType === 'alphabet' && (
+              <>
+                <span>A</span>
+                <span>D</span>
+                <span>H</span>
+                <span>L</span>
+                <span>P</span>
+                <span>T</span>
+                <span>Z</span>
+              </>
+            )}
+            {sequenceType === 'reverse' && (
+              <>
+                <span>Z</span>
+                <span>T</span>
+                <span>P</span>
+                <span>L</span>
+                <span>H</span>
+                <span>D</span>
+                <span>A</span>
+              </>
+            )}
+            {sequenceType === 'fox' && (
+              <>
+                <span>THE</span>
+                <span>QUICK</span>
+                <span>BROWN</span>
+                <span>FOX</span>
+                <span>JUMPS</span>
+                <span>OVER</span>
+                <span>DOG</span>
+              </>
+            )}
           </div>
           
-          {/* Instructions */}
-          <p className="text-gray-600 mb-6">Type the letter shown above. Progress through A-Z.</p>
+          {/* Instructions - dynamic based on sequence type */}
+          <p className="text-gray-600 mb-6">
+            {sequenceType === 'alphabet' && "Type the letter shown above. Progress through A-Z."}
+            {sequenceType === 'reverse' && "Type the letter shown above. Progress through Z-A."}
+            {sequenceType === 'fox' && "Type the letter shown above. Progress through \"The quick brown fox...\""}
+          </p>
           
           {/* Stats */}
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 mb-2">
