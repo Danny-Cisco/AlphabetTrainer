@@ -16,8 +16,11 @@ export default function Home() {
   const [middleRowPitch, setMiddleRowPitch] = useState(500); // Medium pitch for middle row
   const [bottomRowPitch, setBottomRowPitch] = useState(250); // Lower pitch for bottom row
   
+  // Audio panning options
+  const [extremePanning, setExtremePanning] = useState(true); // Use extreme (100% L/R) panning by default
+  
   // Sequence options
-  const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet', 'reverse', or 'fox'
+  const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet', 'reverse', or 'random'
 
   return (
     <>
@@ -45,6 +48,7 @@ export default function Home() {
               middleRowPitch={middleRowPitch}
               bottomRowPitch={bottomRowPitch}
               sequenceType={sequenceType}
+              extremePanning={extremePanning}
             />
             
             <ControlPanel 
@@ -68,6 +72,8 @@ export default function Home() {
               setBottomRowPitch={setBottomRowPitch}
               sequenceType={sequenceType}
               setSequenceType={setSequenceType}
+              extremePanning={extremePanning}
+              setExtremePanning={setExtremePanning}
             />
           </main>
           

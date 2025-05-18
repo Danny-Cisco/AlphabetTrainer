@@ -21,6 +21,8 @@ interface ControlPanelProps {
   setBottomRowPitch: (pitch: number) => void;
   sequenceType: string;
   setSequenceType: (type: string) => void;
+  extremePanning: boolean;
+  setExtremePanning: (extreme: boolean) => void;
 }
 
 export default function ControlPanel({
@@ -43,7 +45,9 @@ export default function ControlPanel({
   bottomRowPitch,
   setBottomRowPitch,
   sequenceType,
-  setSequenceType
+  setSequenceType,
+  extremePanning,
+  setExtremePanning
 }: ControlPanelProps) {
   const handleBpmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBpm(parseInt(e.target.value, 10));
@@ -309,6 +313,22 @@ export default function ControlPanel({
               </div>
               <div className="text-xs text-gray-500">Position sound left/right</div>
             </div>
+            
+            {/* Extreme panning toggle - only show when spatial audio is active */}
+            {panningActive && (
+              <div className="flex items-center justify-between pl-8 mt-2">
+                <div className="flex items-center">
+                  <Toggle
+                    pressed={extremePanning}
+                    onPressedChange={setExtremePanning}
+                    aria-label="Toggle extreme panning"
+                    className="mr-3 data-[state=on]:bg-purple-500"
+                  />
+                  <label className="text-sm font-medium text-gray-700">Extreme Panning</label>
+                </div>
+                <div className="text-xs text-gray-500">100% left/right separation</div>
+              </div>
+            )}
             
             {/* Key sounds toggle */}
             <div className="flex items-center justify-between">
