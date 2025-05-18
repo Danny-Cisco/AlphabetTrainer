@@ -98,15 +98,14 @@ export function speakLetterWithSynthesis(letter: string, options: { volume?: num
   if (options.panningActive && options.pan !== undefined) {
     // Small delay to let speech start first
     setTimeout(() => {
-      playPannedSound(options.pan || 0, options.volume || 0.8);
+      playPannedSound(options.pan || 0, options.volume || 0.8, letter);
     }, 50);
   }
 }
 
-// Create and play a panned sound to indicate spatial position
-function playPannedSound(pan: number, volume: number): void {
+// Create and play a panned sound to indicate spatial position and keyboard row
+function playPannedSound(pan: number, volume: number, letter?: string): void {
   // Use an audio element with two different audio channels
-  // This is a more reliable approach than the Web Audio API for some browsers
   try {
     // Create an audio context for stereo panning
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -115,10 +114,29 @@ function playPannedSound(pan: number, volume: number): void {
     const oscillator = audioCtx.createOscillator();
     oscillator.type = 'sine';
     
+    // Determine which keyboard row the letter belongs to and set the base frequency
+    // Top row: higher pitch, middle row: medium pitch, bottom row: lower pitch
+    let baseFreq = 440; // Default to middle row (A4 note)
+    
+    if (letter) {
+      const upperLetter = letter.toUpperCase();
+      // Top row (QWERTYUIOP) - higher pitch
+      if ('QWERTYUIOP'.includes(upperLetter)) {
+        baseFreq = 587.33; // D5 note - higher pitch
+      } 
+      // Middle row (ASDFGHJKL) - medium pitch
+      else if ('ASDFGHJKL'.includes(upperLetter)) {
+        baseFreq = 440; // A4 note - medium pitch
+      } 
+      // Bottom row (ZXCVBNM) - lower pitch
+      else if ('ZXCVBNM'.includes(upperLetter)) {
+        baseFreq = 329.63; // E4 note - lower pitch
+      }
+    }
+    
     // Set different frequencies based on pan position for a subtle stereo effect
-    // Higher pitch for right side, lower for left
-    const baseFreq = 440; // A4 note
-    const freqOffset = pan * 50; // Adjust by up to +/- 50Hz based on pan
+    // Higher pitch for right side, lower for left within each base frequency
+    const freqOffset = pan * 20; // Adjust by up to +/- 20Hz based on pan
     oscillator.frequency.setValueAtTime(baseFreq + freqOffset, audioCtx.currentTime);
     
     // Create a gain node for volume control
