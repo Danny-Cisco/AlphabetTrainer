@@ -84,11 +84,12 @@ export function useAudio(options: UseAudioOptions = {}) {
   }, []);
   
   // Speak a letter using speech synthesis
-  const speakLetter = useCallback((letter: string, speakOptions: { pan?: number, volume?: number } = {}) => {
+  const speakLetter = useCallback((letter: string, speakOptions: { pan?: number, volume?: number, panningActive?: boolean } = {}) => {
     const volume = speakOptions.volume || 0.8;
     const pan = speakOptions.pan || 0;
+    const panningActive = speakOptions.panningActive || false;
     
-    speakLetterWithSynthesis(letter, { volume, pan });
+    speakLetterWithSynthesis(letter, { volume, pan, panningActive });
   }, []);
   
   useEffect(() => {

@@ -48,7 +48,8 @@ export function useTyping() {
       if (options.speechActive) {
         speakLetter(currentLetter, {
           pan: options.panningActive ? getPanValueForLetter(currentLetter) : 0,
-          volume: options.volume / 100
+          volume: options.volume / 100,
+          panningActive: options.panningActive
         });
       }
       

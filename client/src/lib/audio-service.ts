@@ -60,7 +60,7 @@ export function createKeySound(audioContext: AudioContext, isCorrect: boolean, v
 }
 
 // Speak a letter with spatial positioning
-export function speakLetterWithSynthesis(letter: string, options: { volume?: number, pan?: number } = {}): void {
+export function speakLetterWithSynthesis(letter: string, options: { volume?: number, pan?: number, panningActive?: boolean } = {}): void {
   if (!window.speechSynthesis) return;
   
   // Create speech synthesis utterance - just use the letter without saying "capital"
@@ -90,28 +90,73 @@ export function speakLetterWithSynthesis(letter: string, options: { volume?: num
     }
   }
   
-  // Handle panning by playing the audio to a specific ear based on pan value
-  if (options.pan !== undefined) {
-    // Create a stereo audio context to position the sound
-    try {
-      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const panner = audioCtx.createStereoPanner();
-      
-      // Set the pan value (-1 for full left, 1 for full right)
-      const pan = Math.max(-1, Math.min(1, options.pan)); // Clamp between -1 and 1
-      panner.pan.value = pan;
-      
-      // We can't connect speech synthesis directly to the audio nodes,
-      // but we can adjust the audio context to prepare for subsequent sounds
-      panner.connect(audioCtx.destination);
-    } catch (e) {
-      console.log("Audio panning not supported", e);
-    }
-  }
-  
   // Speak the letter
   window.speechSynthesis.cancel(); // Cancel any ongoing speech
   window.speechSynthesis.speak(utterance);
+  
+  // For spatial audio, create a panned sound effect
+  if (options.panningActive && options.pan !== undefined) {
+    // Small delay to let speech start first
+    setTimeout(() => {
+      playPannedSound(options.pan || 0, options.volume || 0.8);
+    }, 50);
+  }
+}
+
+// Create and play a panned sound to indicate spatial position
+function playPannedSound(pan: number, volume: number): void {
+  // Use an audio element with two different audio channels
+  // This is a more reliable approach than the Web Audio API for some browsers
+  try {
+    // Create an audio context for stereo panning
+    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    
+    // Create an oscillator for the tone
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'sine';
+    
+    // Set different frequencies based on pan position for a subtle stereo effect
+    // Higher pitch for right side, lower for left
+    const baseFreq = 440; // A4 note
+    const freqOffset = pan * 50; // Adjust by up to +/- 50Hz based on pan
+    oscillator.frequency.setValueAtTime(baseFreq + freqOffset, audioCtx.currentTime);
+    
+    // Create a gain node for volume control
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(volume * 0.15, audioCtx.currentTime + 0.02);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+    
+    // Create a stereo panner node
+    const pannerNode = audioCtx.createStereoPanner();
+    
+    // Set the pan value (-1 for full left, 1 for full right)
+    pannerNode.pan.value = Math.max(-1, Math.min(1, pan));
+    
+    // Create a second oscillator for stereo effect
+    const oscillator2 = audioCtx.createOscillator();
+    oscillator2.type = 'sine';
+    oscillator2.frequency.setValueAtTime(baseFreq - freqOffset, audioCtx.currentTime);
+    
+    // Connect the nodes
+    oscillator.connect(gainNode);
+    oscillator2.connect(gainNode);
+    gainNode.connect(pannerNode);
+    pannerNode.connect(audioCtx.destination);
+    
+    // Start and stop the oscillators
+    oscillator.start(audioCtx.currentTime);
+    oscillator2.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.2);
+    oscillator2.stop(audioCtx.currentTime + 0.2);
+    
+    // Clean up
+    setTimeout(() => {
+      audioCtx.close().catch(e => console.error("Error closing audio context:", e));
+    }, 300);
+  } catch (e) {
+    console.error("Error playing panned sound:", e);
+  }
 }
 
 // Alternative implementation for spatial positioning with audio panning
