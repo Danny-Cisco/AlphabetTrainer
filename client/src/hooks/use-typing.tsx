@@ -1,13 +1,30 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useAudio } from './use-audio';
 
-export function useTyping() {
+export function useTyping(sequenceType = 'alphabet') {
+  // Different sequences to practice with
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const REVERSE_ALPHABET = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
+  const QUICK_BROWN_FOX = 'THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG';
+  
+  // Get the active sequence based on selection
+  const getActiveSequence = () => {
+    switch(sequenceType) {
+      case 'reverse': return REVERSE_ALPHABET;
+      case 'fox': return QUICK_BROWN_FOX;
+      default: return ALPHABET;
+    }
+  };
+  
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
-  const currentLetter = ALPHABET[currentLetterIndex];
+  
+  // Get the current sequence and letter
+  const activeSequence = getActiveSequence();
+  const currentLetter = activeSequence[currentLetterIndex];
+  
   const letterDisplayRef = useRef<HTMLDivElement>(null);
   
   const { speakLetter, playKeySound, playToneForLetter } = useAudio({});

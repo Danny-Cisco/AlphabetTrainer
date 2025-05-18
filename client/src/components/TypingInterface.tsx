@@ -12,6 +12,7 @@ interface TypingInterfaceProps {
   topRowPitch?: number;
   middleRowPitch?: number;
   bottomRowPitch?: number;
+  sequenceType: string;
 }
 
 export default function TypingInterface({
@@ -23,7 +24,8 @@ export default function TypingInterface({
   volume,
   topRowPitch,
   middleRowPitch,
-  bottomRowPitch
+  bottomRowPitch,
+  sequenceType
 }: TypingInterfaceProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);

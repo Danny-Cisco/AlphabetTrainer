@@ -19,6 +19,8 @@ interface ControlPanelProps {
   setMiddleRowPitch: (pitch: number) => void;
   bottomRowPitch: number;
   setBottomRowPitch: (pitch: number) => void;
+  sequenceType: string;
+  setSequenceType: (type: string) => void;
 }
 
 export default function ControlPanel({
@@ -39,7 +41,9 @@ export default function ControlPanel({
   middleRowPitch,
   setMiddleRowPitch,
   bottomRowPitch,
-  setBottomRowPitch
+  setBottomRowPitch,
+  sequenceType,
+  setSequenceType
 }: ControlPanelProps) {
   const handleBpmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBpm(parseInt(e.target.value, 10));
@@ -61,6 +65,11 @@ export default function ControlPanel({
   const handleBottomRowPitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBottomRowPitch(parseFloat(e.target.value));
   };
+  
+  // Handle sequence type selection
+  const handleSequenceChange = (type: string) => {
+    setSequenceType(type);
+  };
 
   const decreaseBpm = () => {
     if (bpm > 30) {
@@ -76,6 +85,76 @@ export default function ControlPanel({
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
+      {/* Sequence Selection */}
+      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-green-500 px-6 py-3">
+          <h2 className="text-white font-semibold flex items-center">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="mr-2 h-5 w-5" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3Z" />
+            </svg>
+            Type Sequence
+          </h2>
+        </div>
+        <div className="p-6">
+          <div className="space-y-3">
+            <div className="font-medium text-sm mb-2 text-gray-600">Choose what to type:</div>
+            
+            <div className="flex flex-col space-y-2">
+              <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
+                <input 
+                  type="radio" 
+                  name="sequenceType" 
+                  className="mr-3" 
+                  checked={sequenceType === 'alphabet'}
+                  onChange={() => handleSequenceChange('alphabet')}
+                />
+                <div>
+                  <div className="font-medium">A to Z</div>
+                  <div className="text-sm text-gray-500">Standard alphabet order</div>
+                </div>
+              </label>
+              
+              <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
+                <input 
+                  type="radio" 
+                  name="sequenceType" 
+                  className="mr-3" 
+                  checked={sequenceType === 'reverse'}
+                  onChange={() => handleSequenceChange('reverse')}
+                />
+                <div>
+                  <div className="font-medium">Z to A</div>
+                  <div className="text-sm text-gray-500">Reverse alphabet order</div>
+                </div>
+              </label>
+              
+              <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
+                <input 
+                  type="radio" 
+                  name="sequenceType" 
+                  className="mr-3" 
+                  checked={sequenceType === 'fox'}
+                  onChange={() => handleSequenceChange('fox')}
+                />
+                <div>
+                  <div className="font-medium">Quick Brown Fox</div>
+                  <div className="text-sm text-gray-500">Practice with a pangram</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Metronome Controls */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
         <div className="bg-blue-500 px-6 py-3">

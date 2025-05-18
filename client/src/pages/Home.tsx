@@ -6,15 +6,18 @@ import { Helmet } from "react-helmet";
 export default function Home() {
   const [metronomeActive, setMetronomeActive] = useState(false);
   const [speechActive, setSpeechActive] = useState(false);
-  const [panningActive, setPanningActive] = useState(false);
-  const [keySoundsActive, setKeySoundsActive] = useState(false);
+  const [panningActive, setPanningActive] = useState(true);
+  const [keySoundsActive, setKeySoundsActive] = useState(true);
   const [bpm, setBpm] = useState(60);
   const [volume, setVolume] = useState(80);
   
   // Pitch values for each keyboard row
-  const [topRowPitch, setTopRowPitch] = useState(587.33); // D5 note
-  const [middleRowPitch, setMiddleRowPitch] = useState(440); // A4 note
-  const [bottomRowPitch, setBottomRowPitch] = useState(329.63); // E4 note
+  const [topRowPitch, setTopRowPitch] = useState(750); // Higher pitch for top row
+  const [middleRowPitch, setMiddleRowPitch] = useState(500); // Medium pitch for middle row
+  const [bottomRowPitch, setBottomRowPitch] = useState(250); // Lower pitch for bottom row
+  
+  // Sequence options
+  const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet', 'reverse', or 'fox'
 
   return (
     <>
@@ -41,6 +44,7 @@ export default function Home() {
               topRowPitch={topRowPitch}
               middleRowPitch={middleRowPitch}
               bottomRowPitch={bottomRowPitch}
+              sequenceType={sequenceType}
             />
             
             <ControlPanel 
@@ -62,6 +66,8 @@ export default function Home() {
               setMiddleRowPitch={setMiddleRowPitch}
               bottomRowPitch={bottomRowPitch}
               setBottomRowPitch={setBottomRowPitch}
+              sequenceType={sequenceType}
+              setSequenceType={setSequenceType}
             />
           </main>
           
