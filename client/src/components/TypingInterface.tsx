@@ -37,7 +37,8 @@ export default function TypingInterface({
     correctCount,
     errorCount,
     accuracy,
-    handleKeyPress
+    handleKeyPress,
+    regenerateRandomSequence
   } = useTyping(sequenceType);
 
   // Set up audio features
@@ -86,7 +87,7 @@ export default function TypingInterface({
   const getSequenceLength = () => {
     switch(sequenceType) {
       case 'reverse': return 26; // Z-A has 26 letters
-      case 'fox': return 35; // "The quick brown fox..." has 35 characters
+      case 'random': return 26; // Random sequence has 26 letters
       default: return 26; // A-Z has 26 letters
     }
   };
@@ -135,17 +136,12 @@ export default function TypingInterface({
                 <span>A</span>
               </>
             )}
-            {sequenceType === 'fox' && (
+            {sequenceType === 'random' && (
               <>
-                <span>THE</span>
-                <span>QUICK</span>
-                <span>BROWN</span>
-                <span>FOX</span>
-                <span>JUMPS</span>
-                <span>OVER</span>
-                <span>THE</span>
-                <span>LAZY</span>
-                <span>DOG</span>
+                <span>A-Z</span>
+                <span>in</span>
+                <span>random</span>
+                <span>order</span>
               </>
             )}
           </div>
@@ -154,7 +150,7 @@ export default function TypingInterface({
           <p className="text-gray-600 mb-6">
             {sequenceType === 'alphabet' && "Type the letter shown above. Progress through A-Z."}
             {sequenceType === 'reverse' && "Type the letter shown above. Progress through Z-A."}
-            {sequenceType === 'fox' && "Type the letter shown above. Progress through \"The quick brown fox jumps over the lazy dog\""}
+            {sequenceType === 'random' && "Type the letter shown above. Progress through a random sequence of A-Z."}
           </p>
           
           {/* Stats */}
@@ -196,32 +192,62 @@ export default function TypingInterface({
               onKeyDown={handleKeyDown}
               autoComplete="off"
             />
-            <button 
-              onClick={focusKeyboard}
-              className="bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors"
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="inline-block mr-1 h-5 w-5" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
+            <div className="flex flex-wrap justify-center gap-3">
+              <button 
+                onClick={focusKeyboard}
+                className="bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors"
               >
-                <rect x="2" y="6" width="20" height="12" rx="2" />
-                <line x1="6" y1="10" x2="6" y2="10" />
-                <line x1="10" y1="10" x2="10" y2="10" />
-                <line x1="14" y1="10" x2="14" y2="10" />
-                <line x1="18" y1="10" x2="18" y2="10" />
-                <line x1="6" y1="14" x2="6" y2="14" />
-                <line x1="10" y1="14" x2="10" y2="14" />
-                <line x1="14" y1="14" x2="14" y2="14" />
-                <line x1="18" y1="14" x2="18" y2="14" />
-              </svg>
-              Focus Keyboard
-            </button>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="inline-block mr-1 h-5 w-5" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="6" width="20" height="12" rx="2" />
+                  <line x1="6" y1="10" x2="6" y2="10" />
+                  <line x1="10" y1="10" x2="10" y2="10" />
+                  <line x1="14" y1="10" x2="14" y2="10" />
+                  <line x1="18" y1="10" x2="18" y2="10" />
+                  <line x1="6" y1="14" x2="6" y2="14" />
+                  <line x1="10" y1="14" x2="10" y2="14" />
+                  <line x1="14" y1="14" x2="14" y2="14" />
+                  <line x1="18" y1="14" x2="18" y2="14" />
+                </svg>
+                Focus Keyboard
+              </button>
+              
+              {/* New Random Sequence Button - Only show for random sequence type */}
+              {sequenceType === 'random' && (
+                <button 
+                  onClick={() => {
+                    regenerateRandomSequence();
+                    focusKeyboard();
+                  }}
+                  className="bg-green-100 text-green-700 font-medium py-2 px-4 rounded-lg hover:bg-green-200 transition-colors"
+                >
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="inline-block mr-1 h-5 w-5" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  >
+                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                    <path d="M21 3v5h-5" />
+                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                    <path d="M3 21v-5h5" />
+                  </svg>
+                  New Random Sequence
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
