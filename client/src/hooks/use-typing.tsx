@@ -60,8 +60,13 @@ export function useTyping(sequenceType = 'alphabet') {
     }
   }, [correctCount, errorCount]);
 
-  // Handle key press with audio feedback options
-  const handleKeyPress = useCallback((key: string, options: {
+  // Flag to track if we're currently processing a key
+  const [isProcessingKey, setIsProcessingKey] = useState(false);
+  // Queue for storing pending keystrokes
+  const keyQueueRef = useRef<string[]>([]);
+  
+  // Process the next key in the queue
+  const processNextKey = useCallback((options: {
     speechActive: boolean;
     panningActive: boolean;
     keySoundsActive: boolean;
@@ -70,10 +75,13 @@ export function useTyping(sequenceType = 'alphabet') {
     middleRowPitch?: number;
     bottomRowPitch?: number;
   }) => {
-    // Only process alphabetical keys
-    if (!/^[a-zA-Z]$/.test(key)) return;
+    if (keyQueueRef.current.length === 0) {
+      setIsProcessingKey(false);
+      return;
+    }
     
-    const keyPressed = key.toUpperCase();
+    // Get the next key from the queue
+    const keyPressed = keyQueueRef.current.shift()!.toUpperCase();
     
     if (keyPressed === currentLetter) {
       // Correct key press
@@ -104,16 +112,19 @@ export function useTyping(sequenceType = 'alphabet') {
         });
       }
       
-      // Advance to next letter after a brief delay
+      // Advance to next letter immediately
+      setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % getActiveSequence().length);
+      
+      // Reset the letter color after a short delay for visual feedback
       setTimeout(() => {
-        setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % getActiveSequence().length);
-        
-        // Reset the letter color
         if (letterDisplayRef.current) {
           letterDisplayRef.current.classList.remove('text-green-500');
           letterDisplayRef.current.classList.add('text-blue-500');
         }
-      }, 200);
+        
+        // Process the next key in the queue if it exists
+        processNextKey(options);
+      }, 100); // Reduced delay for faster typing response
     } else {
       // Incorrect key press
       setErrorCount(prev => prev + 1);
@@ -134,9 +145,35 @@ export function useTyping(sequenceType = 'alphabet') {
           letterDisplayRef.current.classList.remove('text-red-500');
           letterDisplayRef.current.classList.add('text-blue-500');
         }
-      }, 200);
+        
+        // Process the next key in the queue if it exists
+        processNextKey(options);
+      }, 100); // Reduced delay for faster typing response
     }
   }, [currentLetter, speakLetter, playKeySound, playToneForLetter]);
+  
+  // Handle key press with audio feedback options
+  const handleKeyPress = useCallback((key: string, options: {
+    speechActive: boolean;
+    panningActive: boolean;
+    keySoundsActive: boolean;
+    volume: number;
+    topRowPitch?: number;
+    middleRowPitch?: number;
+    bottomRowPitch?: number;
+  }) => {
+    // Only process alphabetical keys
+    if (!/^[a-zA-Z]$/.test(key)) return;
+    
+    // Add key to the queue
+    keyQueueRef.current.push(key);
+    
+    // If we're not currently processing a key, start processing
+    if (!isProcessingKey) {
+      setIsProcessingKey(true);
+      processNextKey(options);
+    }
+  }, [isProcessingKey, processNextKey]);
 
   // Helper function to get a pan value based on keyboard position
   function getPanValueForLetter(letter: string): number {
