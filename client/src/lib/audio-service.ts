@@ -59,21 +59,10 @@ export function createKeySound(audioContext: AudioContext, isCorrect: boolean, v
   oscillator.stop(audioContext.currentTime + (isCorrect ? 0.08 : 0.2));
 }
 
-// Speak a letter with speech synthesis (with optional panning)
-export function speakLetterWithSynthesis(letter: string, options: { 
-  volume?: number,
-  pan?: number,
-  extremePanning?: boolean
-} = {}): void {
+// Speak a letter with speech synthesis (voice only)
+export function speakLetterWithSynthesis(letter: string, options: { volume?: number } = {}): void {
   if (!window.speechSynthesis) return;
   
-  // Special case for panned speech - use our audio worklet approach if pan is specified
-  if (options.pan !== undefined && options.pan !== 0) {
-    speakLetterWithPanning(letter, options.pan, options.volume || 1, options.extremePanning);
-    return;
-  }
-  
-  // Standard speech synthesis for non-panned speech
   // Create speech synthesis utterance - just use the letter without saying "capital"
   const utterance = new SpeechSynthesisUtterance();
   
@@ -187,176 +176,16 @@ export function playPannedToneForLetter(letter: string, options: {
   }
 }
 
-// Advanced implementation for speech with stereo panning
-// This creates a powerful dual-channel audio experience using two different audio sources
-export function speakLetterWithPanning(letter: string, pan = 0, volume = 0.8, extremePanning = false): void {
-  if (!window.speechSynthesis) return;
-
-  try {
-    // Create audio context
-    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    
-    // Calculate panning - either extreme (full L/R) or gradual
-    let panValue = pan;
-    if (extremePanning) {
-      // Use binary panning for extreme mode
-      panValue = pan < 0 ? -1.0 : 1.0;
-    }
-
-    // Create master gain node for overall volume
-    const masterGain = audioCtx.createGain();
-    masterGain.gain.value = volume;
-    masterGain.connect(audioCtx.destination);
-    
-    // Create two separate speech utterances - one per channel
-    // This is our key innovation - we'll create two separate voices and
-    // manipulate their volume to create the stereo panning effect
-    
-    // Calculate volume distribution between left and right channels
-    // When panValue is -1, leftVol = 1, rightVol = 0
-    // When panValue is 0, leftVol = 0.5, rightVol = 0.5
-    // When panValue is 1, leftVol = 0, rightVol = 1
-    const leftVol = Math.max(0, 0.5 - (panValue * 0.5));
-    const rightVol = Math.max(0, 0.5 + (panValue * 0.5));
-    
-    // If we have full left panning, only use left utterance
-    if (leftVol > 0) {
-      const leftUtterance = new SpeechSynthesisUtterance();
-      if (letter.length === 1 && letter === letter.toUpperCase()) {
-        leftUtterance.text = letter.toLowerCase();
-      } else {
-        leftUtterance.text = letter;
-      }
-      
-      // Enhance "leftness" by setting properties of the left utterance
-      // We set volume & pitch slightly different for each channel to enhance the effect
-      leftUtterance.volume = leftVol * volume;
-      leftUtterance.rate = 1.0;
-      
-      // Try to get a clear voice for the left channel
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        // Find a suitable voice
-        const preferredVoice = voices.find(voice => 
-          voice.lang.startsWith('en') && (voice.name.includes('Google') || voice.name.includes('Natural'))
-        );
-        
-        if (preferredVoice) {
-          leftUtterance.voice = preferredVoice;
-        }
-      }
-      
-      // Queue the left utterance
-      window.speechSynthesis.speak(leftUtterance);
-    }
-
-    // If we have full right panning, only use right utterance
-    if (rightVol > 0) {
-      // Create slight delay for right channel to enhance stereo effect
-      setTimeout(() => {
-        const rightUtterance = new SpeechSynthesisUtterance();
-        if (letter.length === 1 && letter === letter.toUpperCase()) {
-          rightUtterance.text = letter.toLowerCase();
-        } else {
-          rightUtterance.text = letter;
-        }
-        
-        // Enhance "rightness" with slightly different properties
-        rightUtterance.volume = rightVol * volume;
-        rightUtterance.rate = 1.0;
-        
-        // Optionally use a different voice for right channel to enhance separation
-        const voices = window.speechSynthesis.getVoices();
-        if (voices.length > 1) {
-          // Try to find a different but still clear voice for right channel
-          const preferredVoice = voices.find(voice => 
-            voice.lang.startsWith('en') && (voice.name.includes('Google') || voice.name.includes('Natural'))
-          );
-          
-          if (preferredVoice) {
-            rightUtterance.voice = preferredVoice;
-          }
-        }
-        
-        // Queue the right utterance
-        window.speechSynthesis.speak(rightUtterance);
-      }, extremePanning ? 0 : 10); // No delay in extreme mode for cleaner separation
-    }
-    
-    // Additionally create stereo panned tones to reinforce the spatial effect
-    const oscillatorLeft = audioCtx.createOscillator();
-    const oscillatorRight = audioCtx.createOscillator();
-    
-    // Use different waveforms for better stereo impression
-    oscillatorLeft.type = 'sine';
-    oscillatorRight.type = 'sine';
-    
-    // Determine base frequency by keyboard row
-    const upperLetter = letter.toUpperCase();
-    let baseFreq = 440; // Default
-    
-    // Set different frequencies for different rows
-    if ('QWERTYUIOP'.includes(upperLetter)) {
-      baseFreq = 650; // Higher for top row
-    } else if ('ASDFGHJKL'.includes(upperLetter)) {
-      baseFreq = 440; // Middle for home row
-    } else if ('ZXCVBNM'.includes(upperLetter)) {
-      baseFreq = 300; // Lower for bottom row
-    }
-    
-    // Add letter-specific pitch variation
-    const letterIndex = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(upperLetter);
-    if (letterIndex >= 0) {
-      baseFreq += letterIndex * 3; // Subtle difference per letter
-    }
-    
-    // Set slightly different frequencies for left and right to create spaciousness
-    oscillatorLeft.frequency.setValueAtTime(baseFreq - 3, audioCtx.currentTime);
-    oscillatorRight.frequency.setValueAtTime(baseFreq + 3, audioCtx.currentTime);
-    
-    // Create gain nodes for left and right oscillators
-    const gainLeft = audioCtx.createGain();
-    const gainRight = audioCtx.createGain();
-    
-    // Connect oscillators to their respective gain nodes
-    oscillatorLeft.connect(gainLeft);
-    oscillatorRight.connect(gainRight);
-    
-    // Connect gain nodes to master gain
-    gainLeft.connect(masterGain);
-    gainRight.connect(masterGain);
-    
-    // Set volume envelope that starts soft, peaks quickly and fades
-    gainLeft.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainLeft.gain.linearRampToValueAtTime(leftVol * 0.15, audioCtx.currentTime + 0.02);
-    gainLeft.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-    
-    gainRight.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainRight.gain.linearRampToValueAtTime(rightVol * 0.15, audioCtx.currentTime + 0.02);
-    gainRight.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-    
-    // Start and stop oscillators
-    oscillatorLeft.start(audioCtx.currentTime);
-    oscillatorRight.start(audioCtx.currentTime);
-    oscillatorLeft.stop(audioCtx.currentTime + 0.3);
-    oscillatorRight.stop(audioCtx.currentTime + 0.3);
-    
-    // Clean up
-    setTimeout(() => {
-      audioCtx.close().catch(e => console.error("Error closing audio context:", e));
-    }, 500);
-  } catch (e) {
-    console.error("Error with panned speech:", e);
-    
-    // Fallback to standard speech if the advanced method fails
-    const utterance = new SpeechSynthesisUtterance();
-    if (letter.length === 1 && letter === letter.toUpperCase()) {
-      utterance.text = letter.toLowerCase();
-    } else {
-      utterance.text = letter;
-    }
-    utterance.volume = volume;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  }
+// Alternative implementation for spatial positioning with audio panning
+// This creates a more accurate spatial effect but requires a separate audio file/context
+export function speakLetterWithPanning(audioContext: AudioContext, letter: string, pan = 0, volume = 0.8): void {
+  // This would normally play an audio file for the letter with a panner node
+  // However, since we don't have audio files for each letter, this is just a placeholder
+  
+  // In a real implementation, you would:
+  // 1. Load or generate audio files for each letter
+  // 2. Create a panner node and set its position
+  // 3. Connect the audio source to the panner and play it
+  
+  console.log(`Speaking letter ${letter} with pan value ${pan} and volume ${volume}`);
 }

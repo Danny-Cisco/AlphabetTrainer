@@ -84,17 +84,10 @@ export function useAudio(options: UseAudioOptions = {}) {
     createKeySound(audioContextRef.current, isCorrect, volume);
   }, []);
   
-  // Speak a letter using speech synthesis (with optional panning)
-  const speakLetter = useCallback((letter: string, speakOptions: { 
-    volume?: number,
-    pan?: number,
-    extremePanning?: boolean
-  } = {}) => {
+  // Speak a letter using speech synthesis (voice only)
+  const speakLetter = useCallback((letter: string, speakOptions: { volume?: number } = {}) => {
     const volume = speakOptions.volume || 0.8;
-    const pan = speakOptions.pan || 0;
-    const extremePanning = speakOptions.extremePanning || false;
-    
-    speakLetterWithSynthesis(letter, { volume, pan, extremePanning });
+    speakLetterWithSynthesis(letter, { volume });
   }, []);
   
   // Play a tone for a letter with spatial positioning
