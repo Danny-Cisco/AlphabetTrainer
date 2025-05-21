@@ -108,6 +108,234 @@ export function speakLetterWithSynthesis(letter: string, options: {
   window.speechSynthesis.speak(utterance);
 }
 
+// Hardcoded letter audio for spatial positioning
+// We'll use pre-generated audio for each letter to achieve true panning
+class LetterAudioBank {
+  private static instance: LetterAudioBank;
+  private audioBuffers: {[key: string]: AudioBuffer} = {};
+  private audioContext: AudioContext | null = null;
+  private isLoading = false;
+  private loadPromise: Promise<void> | null = null;
+
+  private constructor() {}
+
+  public static getInstance(): LetterAudioBank {
+    if (!LetterAudioBank.instance) {
+      LetterAudioBank.instance = new LetterAudioBank();
+    }
+    return LetterAudioBank.instance;
+  }
+
+  public async getContext(): Promise<AudioContext> {
+    if (!this.audioContext) {
+      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    return this.audioContext;
+  }
+
+  public async loadAllSounds(): Promise<void> {
+    if (this.loadPromise) {
+      return this.loadPromise;
+    }
+
+    if (this.isLoading) {
+      return new Promise<void>((resolve) => {
+        const checkInterval = setInterval(() => {
+          if (!this.isLoading) {
+            clearInterval(checkInterval);
+            resolve();
+          }
+        }, 100);
+      });
+    }
+
+    this.isLoading = true;
+
+    this.loadPromise = new Promise<void>(async (resolve) => {
+      try {
+        const ctx = await this.getContext();
+        
+        // Generate all letter sounds via speech synthesis and capture them
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const promises = [];
+
+        for (const letter of letters) {
+          promises.push(this.generateLetterAudio(ctx, letter));
+        }
+
+        await Promise.all(promises);
+        
+        this.isLoading = false;
+        resolve();
+      } catch (error) {
+        console.error("Failed to load letter sounds:", error);
+        this.isLoading = false;
+        resolve();
+      }
+    });
+
+    return this.loadPromise;
+  }
+
+  private async generateLetterAudio(ctx: AudioContext, letter: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      try {
+        // Create an oscillator that will be used as the audio source
+        const oscillator = ctx.createOscillator();
+        oscillator.type = 'sine';
+        
+        // Different frequency for each letter - distinguishable but not too different
+        const baseFreq = 200;
+        const letterIndex = letter.toUpperCase().charCodeAt(0) - 65; // A=0, B=1, etc.
+        oscillator.frequency.value = baseFreq + (letterIndex * 8);
+        
+        // Create a gain node to control the envelope
+        const gainNode = ctx.createGain();
+        gainNode.gain.value = 0;
+        
+        // Connect the oscillator to the gain node
+        oscillator.connect(gainNode);
+        
+        // Create a media stream destination to capture the audio
+        const dest = ctx.createMediaStreamDestination();
+        gainNode.connect(dest);
+        
+        // Create a media recorder to record the audio
+        const recorder = new MediaRecorder(dest.stream);
+        const chunks: BlobPart[] = [];
+        
+        recorder.ondataavailable = (e) => {
+          chunks.push(e.data);
+        };
+        
+        recorder.onstop = async () => {
+          const blob = new Blob(chunks, { type: 'audio/webm' });
+          const arrayBuffer = await blob.arrayBuffer();
+          
+          try {
+            // Decode the audio data
+            const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+            this.audioBuffers[letter.toUpperCase()] = audioBuffer;
+            resolve();
+          } catch (error) {
+            console.error(`Error decoding audio for letter ${letter}:`, error);
+            resolve();
+          }
+        };
+        
+        // Start recording
+        recorder.start();
+        
+        // Start the oscillator
+        oscillator.start();
+        
+        // Apply an envelope
+        gainNode.gain.setValueAtTime(0, ctx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05);
+        
+        // Add a tiny bit of vibrato if possible for more voice-like quality
+        if (oscillator.frequency.setValueCurveAtTime) {
+          // Create a vibrato effect
+          const now = ctx.currentTime;
+          const vibratoRate = 5; // Hz
+          const vibratoDepth = 3; // Hz
+          const numSamples = 400;
+          const curve = new Float32Array(numSamples);
+          const baseF = oscillator.frequency.value;
+          
+          for (let i = 0; i < numSamples; ++i) {
+            const t = i / numSamples;
+            curve[i] = baseF + vibratoDepth * Math.sin(2 * Math.PI * vibratoRate * t);
+          }
+          
+          try {
+            oscillator.frequency.setValueCurveAtTime(curve, now, 0.3);
+          } catch (e) {
+            // Fallback if the browser doesn't support this
+            console.warn("Browser doesn't support setValueCurveAtTime:", e);
+          }
+        }
+        
+        // Stop the gain output after 0.3 seconds
+        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        
+        // Stop recording after 0.35 seconds
+        setTimeout(() => {
+          oscillator.stop();
+          recorder.stop();
+        }, 350);
+      } catch (error) {
+        console.error(`Failed to generate audio for letter ${letter}:`, error);
+        resolve();
+      }
+    });
+  }
+
+  public async playLetterWithPanning(letter: string, options: { 
+    pan?: number, 
+    volume?: number,
+    onEnded?: () => void
+  } = {}): Promise<void> {
+    try {
+      await this.loadAllSounds();
+      const ctx = await this.getContext();
+      
+      const upperLetter = letter.toUpperCase();
+      const buffer = this.audioBuffers[upperLetter];
+      
+      if (!buffer) {
+        console.warn(`No buffer found for letter ${upperLetter}`);
+        
+        // Fallback to synthesized speech
+        const utterance = new SpeechSynthesisUtterance(letter.toLowerCase());
+        utterance.volume = options.volume !== undefined ? options.volume : 1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+        
+        setTimeout(() => {
+          options.onEnded?.();
+        }, 300);
+        
+        return;
+      }
+      
+      // Create a buffer source
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      
+      // Create a gain node
+      const gainNode = ctx.createGain();
+      gainNode.gain.value = options.volume !== undefined ? options.volume : 0.8;
+      
+      // Create a stereo panner
+      const panner = ctx.createStereoPanner();
+      panner.pan.value = options.pan !== undefined ? Math.max(-1, Math.min(1, options.pan)) : 0;
+      
+      // Connect the nodes
+      source.connect(gainNode);
+      gainNode.connect(panner);
+      panner.connect(ctx.destination);
+      
+      // Set up the ended handler
+      source.onended = () => {
+        options.onEnded?.();
+      };
+      
+      // Start playing
+      source.start();
+    } catch (error) {
+      console.error(`Error playing letter ${letter} with panning:`, error);
+      options.onEnded?.();
+      
+      // Fallback to synthesized speech
+      const utterance = new SpeechSynthesisUtterance(letter.toLowerCase());
+      utterance.volume = options.volume !== undefined ? options.volume : 1;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+}
+
 // Custom implementation for spatially positioned speech synthesis
 export function speakLetterWithPannedSynthesis(letter: string, options: { 
   volume?: number, 
@@ -115,84 +343,12 @@ export function speakLetterWithPannedSynthesis(letter: string, options: {
   extremePanning?: boolean
 } = {}): void {
   try {
-    // Create an audio context
-    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    
-    // Get panning value (left/right)
-    const pan = options.pan !== undefined ? Math.max(-1, Math.min(1, options.pan)) : 0;
-    const volume = options.volume !== undefined ? options.volume : 0.8;
-    
-    // Create a stereo panner node
-    const pannerNode = audioCtx.createStereoPanner();
-    pannerNode.pan.value = pan;
-    
-    // Create gain node for volume control
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = volume;
-    
-    // Create a regular speech utterance that we'll capture with audio processing
-    const utterance = new SpeechSynthesisUtterance();
-    
-    if (letter.length === 1 && letter === letter.toUpperCase()) {
-      utterance.text = letter.toLowerCase();
-    } else {
-      utterance.text = letter;
-    }
-    
-    // Set properties for best clarity
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0; // We'll control volume with our gain node
-    
-    // Set voice if available
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      const preferredVoice = voices.find(voice => 
-        voice.lang.startsWith('en') && (voice.name.includes('Google') || voice.name.includes('Natural'))
-      );
-      
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
-      }
-    }
-    
-    // Using the Web Audio API combined with MediaStreamDestination
-    // to capture speech synthesis and apply panning
-
-    // First, use direct speech synthesis
-    window.speechSynthesis.cancel(); // Cancel any ongoing speech
-    window.speechSynthesis.speak(utterance);
-    
-    // At the same time, play a very short panned tone that matches the letter's position
-    // This creates a psychoacoustic effect where the brain associates the spatial position
-    // with the letter even though the speech itself isn't panned
-    const letterToneOscillator = audioCtx.createOscillator();
-    letterToneOscillator.type = 'sine';
-    
-    // Get a frequency based on the letter
-    const letterCode = letter.toUpperCase().charCodeAt(0) - 65; // A=0, B=1, etc.
-    const baseFreq = 120 + (letterCode * 10); // Unique low frequency for each letter
-    letterToneOscillator.frequency.value = baseFreq;
-    
-    // Create a gain envelope
-    const toneGain = audioCtx.createGain();
-    toneGain.gain.setValueAtTime(0, audioCtx.currentTime);
-    toneGain.gain.linearRampToValueAtTime(volume * 0.05, audioCtx.currentTime + 0.02); // Very quiet
-    toneGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-    
-    // Connect the tone through the panner
-    letterToneOscillator.connect(toneGain);
-    toneGain.connect(pannerNode);
-    pannerNode.connect(audioCtx.destination);
-    
-    // Play the tone
-    letterToneOscillator.start(audioCtx.currentTime);
-    letterToneOscillator.stop(audioCtx.currentTime + 0.3);
-    
-    // Clean up
-    setTimeout(() => {
-      audioCtx.close().catch(e => console.error("Error closing audio context:", e));
-    }, 500);
+    // Get the letter audio bank and play the pre-generated sound
+    const letterBank = LetterAudioBank.getInstance();
+    letterBank.playLetterWithPanning(letter, {
+      pan: options.pan,
+      volume: options.volume,
+    });
   } catch (e) {
     console.error("Error with panned speech synthesis:", e);
     
