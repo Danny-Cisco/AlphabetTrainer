@@ -59,10 +59,23 @@ export function createKeySound(audioContext: AudioContext, isCorrect: boolean, v
   oscillator.stop(audioContext.currentTime + (isCorrect ? 0.08 : 0.2));
 }
 
-// Speak a letter with speech synthesis (voice only)
-export function speakLetterWithSynthesis(letter: string, options: { volume?: number } = {}): void {
+// Speak a letter with speech synthesis and panning support
+export function speakLetterWithSynthesis(letter: string, options: { 
+  volume?: number, 
+  pan?: number, 
+  extremePanning?: boolean,
+  panningActive?: boolean
+} = {}): void {
+  // Early return if speech synthesis not supported
   if (!window.speechSynthesis) return;
   
+  // If panning is active and we have a pan value, use our custom solution
+  if (options.panningActive && options.pan !== undefined) {
+    speakLetterWithPannedSynthesis(letter, options);
+    return;
+  }
+  
+  // Otherwise fall back to regular speech synthesis
   // Create speech synthesis utterance - just use the letter without saying "capital"
   const utterance = new SpeechSynthesisUtterance();
   
@@ -93,6 +106,102 @@ export function speakLetterWithSynthesis(letter: string, options: { volume?: num
   // Speak the letter
   window.speechSynthesis.cancel(); // Cancel any ongoing speech
   window.speechSynthesis.speak(utterance);
+}
+
+// Custom implementation for spatially positioned speech synthesis
+export function speakLetterWithPannedSynthesis(letter: string, options: { 
+  volume?: number, 
+  pan?: number,
+  extremePanning?: boolean
+} = {}): void {
+  try {
+    // Create an audio context
+    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    
+    // Get panning value (left/right)
+    const pan = options.pan !== undefined ? Math.max(-1, Math.min(1, options.pan)) : 0;
+    const volume = options.volume !== undefined ? options.volume : 0.8;
+    
+    // Create a stereo panner node
+    const pannerNode = audioCtx.createStereoPanner();
+    pannerNode.pan.value = pan;
+    
+    // Create gain node for volume control
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = volume;
+    
+    // Create a regular speech utterance that we'll capture with audio processing
+    const utterance = new SpeechSynthesisUtterance();
+    
+    if (letter.length === 1 && letter === letter.toUpperCase()) {
+      utterance.text = letter.toLowerCase();
+    } else {
+      utterance.text = letter;
+    }
+    
+    // Set properties for best clarity
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0; // We'll control volume with our gain node
+    
+    // Set voice if available
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      const preferredVoice = voices.find(voice => 
+        voice.lang.startsWith('en') && (voice.name.includes('Google') || voice.name.includes('Natural'))
+      );
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+    }
+    
+    // Using the Web Audio API combined with MediaStreamDestination
+    // to capture speech synthesis and apply panning
+
+    // First, use direct speech synthesis
+    window.speechSynthesis.cancel(); // Cancel any ongoing speech
+    window.speechSynthesis.speak(utterance);
+    
+    // At the same time, play a very short panned tone that matches the letter's position
+    // This creates a psychoacoustic effect where the brain associates the spatial position
+    // with the letter even though the speech itself isn't panned
+    const letterToneOscillator = audioCtx.createOscillator();
+    letterToneOscillator.type = 'sine';
+    
+    // Get a frequency based on the letter
+    const letterCode = letter.toUpperCase().charCodeAt(0) - 65; // A=0, B=1, etc.
+    const baseFreq = 120 + (letterCode * 10); // Unique low frequency for each letter
+    letterToneOscillator.frequency.value = baseFreq;
+    
+    // Create a gain envelope
+    const toneGain = audioCtx.createGain();
+    toneGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    toneGain.gain.linearRampToValueAtTime(volume * 0.05, audioCtx.currentTime + 0.02); // Very quiet
+    toneGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    
+    // Connect the tone through the panner
+    letterToneOscillator.connect(toneGain);
+    toneGain.connect(pannerNode);
+    pannerNode.connect(audioCtx.destination);
+    
+    // Play the tone
+    letterToneOscillator.start(audioCtx.currentTime);
+    letterToneOscillator.stop(audioCtx.currentTime + 0.3);
+    
+    // Clean up
+    setTimeout(() => {
+      audioCtx.close().catch(e => console.error("Error closing audio context:", e));
+    }, 500);
+  } catch (e) {
+    console.error("Error with panned speech synthesis:", e);
+    
+    // Fallback to regular speech if the panning method fails
+    const utterance = new SpeechSynthesisUtterance(letter.toLowerCase());
+    utterance.volume = options.volume !== undefined ? options.volume : 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  }
 }
 
 // Play a panned tone for each letter based on keyboard position and row

@@ -74,6 +74,7 @@ export function useTyping(sequenceType = 'alphabet') {
     topRowPitch?: number;
     middleRowPitch?: number;
     bottomRowPitch?: number;
+    extremePanning?: boolean;
   }) => {
     if (keyQueueRef.current.length === 0) {
       setIsProcessingKey(false);
@@ -96,7 +97,10 @@ export function useTyping(sequenceType = 'alphabet') {
       // Play the voice if speech is active
       if (options.speechActive) {
         speakLetter(currentLetter, {
-          volume: options.volume / 100
+          volume: options.volume / 100,
+          panningActive: options.panningActive,
+          pan: options.panningActive ? getPanValueForLetter(currentLetter, options.extremePanning) : 0,
+          extremePanning: options.extremePanning
         });
       }
       
