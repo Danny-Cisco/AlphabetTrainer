@@ -94,6 +94,7 @@ export default function TypingInterface({
       panningActive,
       keySoundsActive,
       volume,
+      numberRowPitch,
       topRowPitch,
       middleRowPitch,
       bottomRowPitch,

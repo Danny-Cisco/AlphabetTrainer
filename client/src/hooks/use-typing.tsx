@@ -100,9 +100,11 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     panningActive: boolean;
     keySoundsActive: boolean;
     volume: number;
+    numberRowPitch?: number;
     topRowPitch?: number;
     middleRowPitch?: number;
     bottomRowPitch?: number;
+    extremePanning?: boolean;
   }) => {
     if (keyQueueRef.current.length === 0) {
       setIsProcessingKey(false);
@@ -213,25 +215,54 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     // Left hand: Q, W, E, R, T, A, S, D, F, G, Z, X, C, V, B
     // Right hand: Y, U, I, O, P, H, J, K, L, N, M
     
+    // Special handling for 6^ (left speaker) and 7& (right speaker)
+    if (letter === '6' || letter === '^') {
+      return -1.0; // Full left
+    }
+    if (letter === '7' || letter === '&') {
+      return 1.0; // Full right
+    }
+    
     // For natural panning (gradual left to right):
     const naturalPanValues = {
+      // Letters
       'Q': -1.0,  'W': -0.8,  'E': -0.6,  'R': -0.4,  'T': -0.2,  'Y': 0.2,   'U': 0.4,   'I': 0.6,   'O': 0.8,   'P': 1.0,
       'A': -0.9,  'S': -0.7,  'D': -0.5,  'F': -0.3,  'G': -0.1,  'H': 0.1,   'J': 0.3,   'K': 0.5,   'L': 0.7,
-      'Z': -0.8,  'X': -0.6,  'C': -0.4,  'V': -0.2,  'B': 0.0,   'N': 0.2,   'M': 0.4
+      'Z': -0.8,  'X': -0.6,  'C': -0.4,  'V': -0.2,  'B': 0.0,   'N': 0.2,   'M': 0.4,
+      
+      // Numbers (left to right across keyboard)
+      '1': -1.0,  '2': -0.8,  '3': -0.6,  '4': -0.4,  '5': -0.2,  '8': 0.4,   '9': 0.6,   '0': 0.8,
+      
+      // Number row punctuation
+      '!': -1.0,  '@': -0.8,  '#': -0.6,  '$': -0.4,  '%': -0.2,  '*': 0.4,   '(': 0.6,   ')': 0.8,
+      
+      // Top row punctuation
+      '[': 1.0,   ']': 1.0,   '{': 1.0,   '}': 1.0,   '\\': 1.0,  '|': 1.0,
+      
+      // Middle row punctuation
+      ';': 0.7,   "'": 0.7,   ':': 0.7,   '"': 0.7,
+      
+      // Bottom row punctuation
+      ',': 0.2,   '.': 0.4,   '/': 0.6,   '<': 0.2,   '>': 0.4,   '?': 0.6,
+      
+      // Extended punctuation
+      '`': -1.0,  '~': -1.0,  '-': 0.8,   '_': 0.8,   '=': 0.8,   '+': 0.8
     };
     
     // For extreme panning (full left/right separation):
-    const leftHandKeys = ['Q', 'W', 'E', 'R', 'T', 'A', 'S', 'D', 'F', 'G', 'Z', 'X', 'C', 'V', 'B'];
+    const leftHandKeys = ['Q', 'W', 'E', 'R', 'T', 'A', 'S', 'D', 'F', 'G', 'Z', 'X', 'C', 'V', 'B',
+                          '1', '2', '3', '4', '5', '!', '@', '#', '$', '%', '`', '~'];
     
     // Uppercase the letter for consistency
     const upperLetter = letter.toUpperCase();
     
     if (extremePanning) {
       // Return -1 (full left) for left hand keys, 1 (full right) for right hand keys
-      return leftHandKeys.includes(upperLetter) ? -1.0 : 1.0;
+      return leftHandKeys.includes(upperLetter) || leftHandKeys.includes(letter) ? -1.0 : 1.0;
     } else {
       // Return gradual panning based on keyboard position
-      return naturalPanValues[upperLetter as keyof typeof naturalPanValues] || 0;
+      return naturalPanValues[upperLetter as keyof typeof naturalPanValues] || 
+             naturalPanValues[letter as keyof typeof naturalPanValues] || 0;
     }
   }
   
