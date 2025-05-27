@@ -96,8 +96,9 @@ export default function ControlPanel({
 
   return (
     <div className="space-y-6">
-      {/* Type Sequence Panel */}
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+      {/* Alphabet Controls Panel */}
+      {(!showOnlyAudioControls) && (
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
         <div className="bg-gradient-to-r from-green-500 to-blue-600 px-6 py-4">
           <h2 className="text-lg font-semibold text-white flex items-center">
             <svg 
@@ -116,7 +117,7 @@ export default function ControlPanel({
               <line x1="16" y1="17" x2="8" y2="17"/>
               <polyline points="10,9 9,9 8,9"/>
             </svg>
-            Type Sequence
+            Alphabet Controls
           </h2>
         </div>
         <div className="p-6">
@@ -213,10 +214,12 @@ export default function ControlPanel({
             </div>
           )}
         </div>
-      </div>
+        </div>
+      )}
 
       {/* Audio Controls Panel */}
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+      {(!showOnlyAlphabetControls) && (
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
           <h2 className="text-lg font-semibold text-white flex items-center">
             <svg 
@@ -410,7 +413,8 @@ export default function ControlPanel({
             </div>
           )}
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }
