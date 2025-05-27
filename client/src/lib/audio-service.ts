@@ -99,6 +99,7 @@ export function speakLetterWithSynthesis(letter: string, options: { volume?: num
 export function playPannedToneForLetter(letter: string, options: { 
   pan?: number, 
   volume?: number,
+  numberRowPitch?: number,
   topRowPitch?: number,
   middleRowPitch?: number,
   bottomRowPitch?: number
@@ -117,22 +118,30 @@ export function playPannedToneForLetter(letter: string, options: {
     const volume = options.volume !== undefined ? options.volume : 0.8;
     const pan = options.pan !== undefined ? Math.max(-1, Math.min(1, options.pan)) : 0;
     
-    // Determine which keyboard row the letter belongs to and set the base frequency
+    // Determine which keyboard row the character belongs to and set the base frequency
     // using the customizable pitch values for each row
     const upperLetter = letter.toUpperCase();
-    let baseFreq = options.middleRowPitch || 440; // Default to middle row
+    let baseFreq = options.middleRowPitch || 500; // Default to middle row
     
-    // Top row (QWERTYUIOP) - higher pitch
-    if ('QWERTYUIOP'.includes(upperLetter)) {
-      baseFreq = options.topRowPitch || 587.33; // D5 note - higher pitch
+    // Number row (1234567890 and !@#$%^&*()) - highest pitch
+    if ('1234567890!@#$%^&*()'.includes(letter)) {
+      baseFreq = options.numberRowPitch || 1000;
+    }
+    // Top row (QWERTYUIOP and []{}|\) - higher pitch  
+    else if ('QWERTYUIOP[]{}|\\'.includes(upperLetter)) {
+      baseFreq = options.topRowPitch || 750;
     } 
-    // Middle row (ASDFGHJKL) - medium pitch
-    else if ('ASDFGHJKL'.includes(upperLetter)) {
-      baseFreq = options.middleRowPitch || 440; // A4 note - medium pitch
+    // Middle row (ASDFGHJKL and ;'":) - medium pitch
+    else if ('ASDFGHJKL;\'"'.includes(upperLetter)) {
+      baseFreq = options.middleRowPitch || 500;
     } 
-    // Bottom row (ZXCVBNM) - lower pitch
-    else if ('ZXCVBNM'.includes(upperLetter)) {
-      baseFreq = options.bottomRowPitch || 329.63; // E4 note - lower pitch
+    // Bottom row (ZXCVBNM and ,./<>?) - lower pitch
+    else if ('ZXCVBNM,./<>?'.includes(upperLetter)) {
+      baseFreq = options.bottomRowPitch || 250;
+    }
+    // Extended punctuation that doesn't fit standard rows - use middle row
+    else if ('`~-_=+'.includes(letter)) {
+      baseFreq = options.middleRowPitch || 500;
     }
     
     // Set different frequencies based on pan position for a subtle stereo effect

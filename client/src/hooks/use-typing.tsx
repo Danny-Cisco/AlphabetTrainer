@@ -135,9 +135,10 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           pan: options.panningActive ? getPanValueForLetter(currentLetter, options.extremePanning) : 0,
           volume: options.volume / 100,
           panningActive: options.panningActive,
-          topRowPitch: options.topRowPitch || 587.33,
-          middleRowPitch: options.middleRowPitch || 440,
-          bottomRowPitch: options.bottomRowPitch || 329.63
+          numberRowPitch: options.numberRowPitch || 1000,
+          topRowPitch: options.topRowPitch || 750,
+          middleRowPitch: options.middleRowPitch || 500,
+          bottomRowPitch: options.bottomRowPitch || 250
         });
       }
       

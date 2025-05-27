@@ -28,6 +28,7 @@ export default function TypingInterface({
   keySoundsActive,
   bpm,
   volume,
+  numberRowPitch,
   topRowPitch,
   middleRowPitch,
   bottomRowPitch,
