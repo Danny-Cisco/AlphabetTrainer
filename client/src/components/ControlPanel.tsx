@@ -1,4 +1,4 @@
-import { Toggle } from "@/components/ui/toggle";
+import { Switch } from "@/components/ui/switch";
 
 interface ControlPanelProps {
   panningActive: boolean;
@@ -127,8 +127,8 @@ export default function ControlPanel({
               onClick={() => handleSequenceChange('alphabet')}
               className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                 sequenceType === 'alphabet'
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-400'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`}
             >
               <div className="text-center">
@@ -244,11 +244,10 @@ export default function ControlPanel({
             {/* Key Sounds Toggle */}
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Toggle
-                  pressed={keySoundsActive}
-                  onPressedChange={setKeySoundsActive}
-                  aria-label="Toggle key sounds"
-                  className="mr-3 data-[state=on]:bg-blue-500"
+                <Switch
+                  checked={keySoundsActive}
+                  onCheckedChange={setKeySoundsActive}
+                  className="mr-3"
                 />
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Enable Key Sounds</label>
               </div>
@@ -257,11 +256,10 @@ export default function ControlPanel({
             {/* Spatial Audio Toggle */}
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Toggle
-                  pressed={panningActive}
-                  onPressedChange={setPanningActive}
-                  aria-label="Toggle spatial audio"
-                  className="mr-3 data-[state=on]:bg-green-500"
+                <Switch
+                  checked={panningActive}
+                  onCheckedChange={setPanningActive}
+                  className="mr-3"
                 />
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Enable Spatial Audio</label>
               </div>
@@ -318,7 +316,7 @@ export default function ControlPanel({
                   <svg className="h-4 w-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
                   </svg>
-                  <div className="text-xs text-blue-700">
+                  <div className="text-xs text-blue-700 dark:text-blue-300">
                     Spatial audio pans sounds left/right based on keyboard hand position. Use headphones for best experience.
                   </div>
                 </div>
@@ -328,16 +326,16 @@ export default function ControlPanel({
           
           {/* Show pitch sliders when tone generator is active */}
           {keySoundsActive && (
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Keyboard Row Pitch Settings</h3>
+            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Keyboard Row Pitch Settings</h3>
               
               {/* Number row pitch slider */}
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-1">
-                  <label htmlFor="number-row-pitch" className="text-xs text-gray-600">
+                  <label htmlFor="number-row-pitch" className="text-xs text-gray-600 dark:text-gray-400">
                     Number Row (1234567890!@#$%^&*()`~-_=+)
                   </label>
-                  <span className="text-xs font-mono">{Math.round(numberRowPitch)} Hz</span>
+                  <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(numberRowPitch)} Hz</span>
                 </div>
                 <input 
                   type="range" 
