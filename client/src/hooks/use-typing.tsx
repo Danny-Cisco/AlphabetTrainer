@@ -13,7 +13,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const NUMBERS = '0123456789';
   const COMMON_PUNCTUATION = ',.?!-();:\'"';
-  const EXTENDED_PUNCTUATION = '@#$%^&*+=[]{}|\\~`_';
+  const EXTENDED_PUNCTUATION = '@#$%^&*+=[]{}|\\~`_/<>';
   
   const REVERSE_ALPHABET = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
   
