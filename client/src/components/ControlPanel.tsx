@@ -99,8 +99,8 @@ export default function ControlPanel({
       {/* Alphabet Controls Panel */}
       {(!showOnlyAudioControls) && (
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="bg-gradient-to-r from-green-500 to-blue-600 px-6 py-4">
-          <h2 className="text-lg font-semibold text-white flex items-center">
+          <div className="bg-gradient-to-r from-green-500 to-blue-600 px-6 py-4">
+            <h2 className="text-lg font-semibold text-white flex items-center">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               className="h-5 w-5 mr-2" 
@@ -220,7 +220,7 @@ export default function ControlPanel({
       {/* Audio Controls Panel */}
       {(!showOnlyAlphabetControls) && (
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
+          <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
           <h2 className="text-lg font-semibold text-white flex items-center">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
