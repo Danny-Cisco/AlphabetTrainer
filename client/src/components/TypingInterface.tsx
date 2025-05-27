@@ -201,7 +201,7 @@ export default function TypingInterface({
           {sequenceAttempts.length > 0 && (
             <div className="mt-6">
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Recent Attempts</h3>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
+              <div className="space-y-2 max-h-80 overflow-y-auto">
                 {sequenceAttempts.slice(-5).reverse().map((attempt, index) => (
                   <div key={index} className={`rounded p-3 flex justify-between items-center text-sm ${
                     attempt.accuracy === 100 
