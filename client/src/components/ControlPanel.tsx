@@ -27,6 +27,8 @@ interface ControlPanelProps {
   setIncludeCommonPunctuation: (include: boolean) => void;
   includeExtendedPunctuation: boolean;
   setIncludeExtendedPunctuation: (include: boolean) => void;
+  showOnlyAlphabetControls?: boolean;
+  showOnlyAudioControls?: boolean;
 }
 
 export default function ControlPanel({
@@ -55,7 +57,9 @@ export default function ControlPanel({
   includeCommonPunctuation,
   setIncludeCommonPunctuation,
   includeExtendedPunctuation,
-  setIncludeExtendedPunctuation
+  setIncludeExtendedPunctuation,
+  showOnlyAlphabetControls = false,
+  showOnlyAudioControls = false
 }: ControlPanelProps) {
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVolume(parseInt(e.target.value, 10));

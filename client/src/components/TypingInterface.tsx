@@ -241,7 +241,7 @@ export default function TypingInterface({
                   <line x1="14" y1="14" x2="14" y2="14" />
                   <line x1="18" y1="14" x2="18" y2="14" />
                 </svg>
-                Focus
+                Start
               </button>
               
               {/* New Random Sequence Button - Only show for custom sequence type */}

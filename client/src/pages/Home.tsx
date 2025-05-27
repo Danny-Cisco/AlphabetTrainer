@@ -27,8 +27,9 @@ export default function Home() {
   const [includeCommonPunctuation, setIncludeCommonPunctuation] = useState(false);
   const [includeExtendedPunctuation, setIncludeExtendedPunctuation] = useState(false);
   
-  // Audio controls visibility
+  // Controls visibility
   const [showAudioControls, setShowAudioControls] = useState(false);
+  const [showAlphabetControls, setShowAlphabetControls] = useState(false);
 
   return (
     <>
@@ -64,11 +65,28 @@ export default function Home() {
               includeExtendedPunctuation={includeExtendedPunctuation}
             />
             
-            {/* Audio Controls Toggle */}
-            <div className="mt-6 text-center">
+            {/* Control Panel Toggle Buttons */}
+            <div className="mt-6 flex justify-center gap-3">
+              <button
+                onClick={() => setShowAlphabetControls(!showAlphabetControls)}
+                className="bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors flex items-center justify-center"
+              >
+                {showAlphabetControls ? (
+                  <>
+                    <ChevronUp className="w-5 h-5 mr-2" />
+                    Hide Alphabet Controls
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-5 h-5 mr-2" />
+                    Show Alphabet Controls
+                  </>
+                )}
+              </button>
+              
               <button
                 onClick={() => setShowAudioControls(!showAudioControls)}
-                className="bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center mx-auto"
+                className="bg-green-100 text-green-700 font-medium py-2 px-4 rounded-lg hover:bg-green-200 transition-colors flex items-center justify-center"
               >
                 {showAudioControls ? (
                   <>
@@ -83,6 +101,41 @@ export default function Home() {
                 )}
               </button>
             </div>
+            
+            {/* Collapsible Alphabet Controls */}
+            {showAlphabetControls && (
+              <div className="mt-4 animate-in slide-in-from-top-2 duration-300">
+                <ControlPanel 
+                  panningActive={panningActive}
+                  setPanningActive={setPanningActive}
+                  keySoundsActive={keySoundsActive}
+                  setKeySoundsActive={setKeySoundsActive}
+                  volume={volume}
+                  setVolume={setVolume}
+                  numberRowPitch={numberRowPitch}
+                  setNumberRowPitch={setNumberRowPitch}
+                  topRowPitch={topRowPitch}
+                  setTopRowPitch={setTopRowPitch}
+                  middleRowPitch={middleRowPitch}
+                  setMiddleRowPitch={setMiddleRowPitch}
+                  bottomRowPitch={bottomRowPitch}
+                  setBottomRowPitch={setBottomRowPitch}
+                  sequenceType={sequenceType}
+                  setSequenceType={setSequenceType}
+                  extremePanning={extremePanning}
+                  setExtremePanning={setExtremePanning}
+                  includeLetters={includeLetters}
+                  setIncludeLetters={setIncludeLetters}
+                  includeNumbers={includeNumbers}
+                  setIncludeNumbers={setIncludeNumbers}
+                  includeCommonPunctuation={includeCommonPunctuation}
+                  setIncludeCommonPunctuation={setIncludeCommonPunctuation}
+                  includeExtendedPunctuation={includeExtendedPunctuation}
+                  setIncludeExtendedPunctuation={setIncludeExtendedPunctuation}
+                  showOnlyAlphabetControls={showAlphabetControls && !showAudioControls}
+                />
+              </div>
+            )}
             
             {/* Collapsible Audio Controls */}
             {showAudioControls && (
@@ -114,6 +167,7 @@ export default function Home() {
                   setIncludeCommonPunctuation={setIncludeCommonPunctuation}
                   includeExtendedPunctuation={includeExtendedPunctuation}
                   setIncludeExtendedPunctuation={setIncludeExtendedPunctuation}
+                  showOnlyAudioControls={showAudioControls && !showAlphabetControls}
                 />
               </div>
             )}
