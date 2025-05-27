@@ -120,24 +120,24 @@ export default function TypingInterface({
   const progressPercentage = ((currentLetterIndex) / (getSequenceLength() - 1)) * 100;
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-8">
       <div className="p-6">
         {/* Current Letter Display */}
         <div className="text-center mb-8">
-          <div className="text-9xl font-mono font-bold text-blue-500 mb-4 h-48 flex items-center justify-center">
+          <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
             {currentLetter}
           </div>
           
           {/* Progress bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-6">
             <div 
-              className="bg-blue-500 h-2.5 rounded-full transition-all duration-300" 
+              className="bg-blue-500 dark:bg-blue-400 h-2.5 rounded-full transition-all duration-300" 
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
           
           {/* Letter progress - different for each sequence type */}
-          <div className="flex justify-between font-mono text-xs text-gray-500 mb-8">
+          <div className="flex justify-between font-mono text-xs text-gray-500 dark:text-gray-400 mb-8">
             {sequenceType === 'alphabet' && (
               <>
                 <span>A</span>
@@ -171,7 +171,7 @@ export default function TypingInterface({
           </div>
           
           {/* Instructions - dynamic based on sequence type */}
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             {sequenceType === 'alphabet' && "Type the letter shown above. Progress through A-Z."}
             {sequenceType === 'reverse' && "Type the letter shown above. Progress through Z-A."}
             {sequenceType === 'custom' && "Type the character shown above. Progress through your custom character mix."}
@@ -179,25 +179,25 @@ export default function TypingInterface({
           
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-2">
-            <div className="bg-gray-50 rounded p-3">
-              <p className="text-xs text-gray-500">Correct</p>
-              <p className="text-2xl font-mono font-semibold text-green-500">{correctCount}</p>
+            <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
+              <p className="text-xs text-gray-500 dark:text-gray-400">Correct</p>
+              <p className="text-2xl font-mono font-semibold text-green-500 dark:text-green-400">{correctCount}</p>
             </div>
-            <div className="bg-gray-50 rounded p-3">
-              <p className="text-xs text-gray-500">Errors</p>
-              <p className="text-2xl font-mono font-semibold text-red-500">{errorCount}</p>
+            <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
+              <p className="text-xs text-gray-500 dark:text-gray-400">Errors</p>
+              <p className="text-2xl font-mono font-semibold text-red-500 dark:text-red-400">{errorCount}</p>
             </div>
-            <div className="bg-gray-50 rounded p-3">
-              <p className="text-xs text-gray-500">Accuracy</p>
-              <p className="text-2xl font-mono font-semibold">{accuracy}%</p>
+            <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
+              <p className="text-xs text-gray-500 dark:text-gray-400">Accuracy</p>
+              <p className="text-2xl font-mono font-semibold text-gray-800 dark:text-gray-200">{accuracy}%</p>
             </div>
           </div>
         </div>
         
         {/* Keyboard Focus Area */}
         <div className="mb-8 text-center">
-          <div className="inline-block bg-gray-100 px-4 py-3 rounded-lg">
-            <p className="text-sm text-gray-500 mb-1">
+          <div className="inline-block bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-lg">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
               {isFocused 
                 ? "Keyboard ready! Type the letter shown above." 
                 : "Start typing or press any key to begin"}
@@ -215,7 +215,7 @@ export default function TypingInterface({
             <div className={`grid gap-3 justify-center ${sequenceType === 'custom' ? 'grid-cols-2' : 'grid-cols-1'} max-w-xs mx-auto`}>
               <button 
                 onClick={focusKeyboard}
-                className="bg-blue-100 text-blue-700 font-medium py-3 px-6 rounded-lg hover:bg-blue-200 transition-colors flex items-center justify-center"
+                className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium py-3 px-6 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors flex items-center justify-center"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -247,7 +247,7 @@ export default function TypingInterface({
                     regenerateRandomSequence();
                     focusKeyboard();
                   }}
-                  className="bg-green-100 text-green-700 font-medium py-3 px-6 rounded-lg hover:bg-green-200 transition-colors flex items-center justify-center"
+                  className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-medium py-3 px-6 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
                 >
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
