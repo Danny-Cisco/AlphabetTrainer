@@ -49,7 +49,9 @@ export default function TypingInterface({
     correctCount,
     errorCount,
     accuracy,
+    sequenceAttempts,
     handleKeyPress,
+    letterDisplayRef,
     regenerateRandomSequence
   } = useTyping(sequenceType, {
     includeLetters,

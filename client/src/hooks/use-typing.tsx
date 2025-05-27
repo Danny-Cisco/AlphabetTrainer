@@ -61,15 +61,29 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   // Function to generate a new random sequence
   const regenerateRandomSequence = () => {
     setCurrentLetterIndex(0);
-    setCorrectCount(0);
-    setErrorCount(0);
+    setCurrentCorrectCount(0);
+    setCurrentErrorCount(0);
     setRandomSequence(generateRandomSequence());
   };
   
+  // Sequence attempt tracking
+  interface SequenceAttempt {
+    correct: number;
+    errors: number;
+    accuracy: number;
+    sequenceType: string;
+    completed: boolean;
+  }
+
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0);
-  const [errorCount, setErrorCount] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
+  const [currentCorrectCount, setCurrentCorrectCount] = useState(0);
+  const [currentErrorCount, setCurrentErrorCount] = useState(0);
+  const [sequenceAttempts, setSequenceAttempts] = useState<SequenceAttempt[]>([]);
+  
+  // Current sequence stats
+  const currentAccuracy = currentCorrectCount + currentErrorCount > 0 
+    ? Math.round((currentCorrectCount / (currentCorrectCount + currentErrorCount)) * 100)
+    : 100;
   
   // Get the current sequence and letter
   const activeSequence = getActiveSequence();
@@ -79,15 +93,28 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   
   const { speakLetter, playKeySound, playToneForLetter } = useAudio({});
   
-  // Calculate accuracy whenever correct or error counts change
-  useEffect(() => {
-    const total = correctCount + errorCount;
-    if (total === 0) {
-      setAccuracy(100);
-    } else {
-      setAccuracy(Math.round((correctCount / total) * 100));
+  // Function to complete current sequence and add to history
+  const completeSequence = () => {
+    const newAttempt: SequenceAttempt = {
+      correct: currentCorrectCount,
+      errors: currentErrorCount,
+      accuracy: currentAccuracy,
+      sequenceType: sequenceType,
+      completed: true
+    };
+    
+    setSequenceAttempts(prev => [...prev, newAttempt]);
+    
+    // Reset for new sequence
+    setCurrentLetterIndex(0);
+    setCurrentCorrectCount(0);
+    setCurrentErrorCount(0);
+    
+    // Generate new random sequence if needed
+    if (sequenceType === 'custom') {
+      setRandomSequence(generateRandomSequence());
     }
-  }, [correctCount, errorCount]);
+  };
 
   // Flag to track if we're currently processing a key
   const [isProcessingKey, setIsProcessingKey] = useState(false);
@@ -116,7 +143,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     
     if (keyPressed === currentLetter) {
       // Correct key press
-      setCorrectCount(prev => prev + 1);
+      setCurrentCorrectCount(prev => prev + 1);
       
       // Animate the letter element (in green)
       if (letterDisplayRef.current) {
@@ -159,7 +186,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       }, 100); // Reduced delay for faster typing response
     } else {
       // Incorrect key press
-      setErrorCount(prev => prev + 1);
+      setCurrentErrorCount(prev => prev + 1);
       
       // Animate the letter element (in red)
       if (letterDisplayRef.current) {
@@ -267,9 +294,10 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   return {
     currentLetter,
     currentLetterIndex,
-    correctCount,
-    errorCount,
-    accuracy,
+    correctCount: currentCorrectCount,
+    errorCount: currentErrorCount,
+    accuracy: currentAccuracy,
+    sequenceAttempts,
     handleKeyPress,
     letterDisplayRef,
     regenerateRandomSequence
