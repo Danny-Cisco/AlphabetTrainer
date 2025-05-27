@@ -123,15 +123,12 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     
     setSequenceAttempts(prev => [...prev, newAttempt]);
     
-    // Reset for new sequence
+    // Reset for new sequence (but keep the same sequence)
     setCurrentLetterIndex(0);
     setCurrentCorrectCount(0);
     setCurrentErrorCount(0);
     
-    // Generate new random sequence if needed
-    if (sequenceType === 'custom') {
-      setRandomSequence(generateRandomSequence());
-    }
+    // Don't auto-generate new sequence - let user manually randomize when they want
   };
 
   // Flag to track if we're currently processing a key
