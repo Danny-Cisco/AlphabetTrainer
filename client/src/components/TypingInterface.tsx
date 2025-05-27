@@ -219,7 +219,7 @@ export default function TypingInterface({
             <div className="flex flex-wrap justify-center gap-3">
               <button 
                 onClick={focusKeyboard}
-                className="bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors"
+                className="bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors w-40"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -251,7 +251,7 @@ export default function TypingInterface({
                     regenerateRandomSequence();
                     focusKeyboard();
                   }}
-                  className="bg-green-100 text-green-700 font-medium py-2 px-4 rounded-lg hover:bg-green-200 transition-colors"
+                  className="bg-green-100 text-green-700 font-medium py-2 px-4 rounded-lg hover:bg-green-200 transition-colors w-40"
                 >
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
