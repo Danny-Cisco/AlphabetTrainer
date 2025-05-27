@@ -1,20 +1,49 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useAudio } from './use-audio';
 
-export function useTyping(sequenceType = 'alphabet') {
-  // Different sequences to practice with
+interface CharacterOptions {
+  includeLetters: boolean;
+  includeNumbers: boolean;
+  includeCommonPunctuation: boolean;
+  includeExtendedPunctuation: boolean;
+}
+
+export function useTyping(sequenceType = 'alphabet', characterOptions?: CharacterOptions) {
+  // Different character sets
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const NUMBERS = '0123456789';
+  const COMMON_PUNCTUATION = ',.?!-();:\'"';
+  const EXTENDED_PUNCTUATION = '@#$%^&*+=[]{}|\\~`';
+  
   const REVERSE_ALPHABET = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
   
-  // Generate a random sequence of 26 letters (A-Z shuffled)
+  // Generate a custom character set based on user selections
+  const generateCustomCharacterSet = () => {
+    if (!characterOptions) return ALPHABET;
+    
+    let characters = '';
+    if (characterOptions.includeLetters) characters += ALPHABET;
+    if (characterOptions.includeNumbers) characters += NUMBERS;
+    if (characterOptions.includeCommonPunctuation) characters += COMMON_PUNCTUATION;
+    if (characterOptions.includeExtendedPunctuation) characters += EXTENDED_PUNCTUATION;
+    
+    // If nothing is selected, default to letters
+    if (characters === '') characters = ALPHABET;
+    
+    return characters;
+  };
+  
+  // Generate a random sequence from the selected character set
   const generateRandomSequence = () => {
-    const letters = ALPHABET.split('');
+    const characterSet = sequenceType === 'custom' ? generateCustomCharacterSet() : ALPHABET;
+    const characters = characterSet.split('');
+    
     // Fisher-Yates shuffle algorithm
-    for (let i = letters.length - 1; i > 0; i--) {
+    for (let i = characters.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [letters[i], letters[j]] = [letters[j], letters[i]];
+      [characters[i], characters[j]] = [characters[j], characters[i]];
     }
-    return letters.join('');
+    return characters.join('');
   };
   
   // Initial random sequence
@@ -24,7 +53,7 @@ export function useTyping(sequenceType = 'alphabet') {
   const getActiveSequence = () => {
     switch(sequenceType) {
       case 'reverse': return REVERSE_ALPHABET;
-      case 'random': return randomSequence;
+      case 'custom': return randomSequence;
       default: return ALPHABET;
     }
   };
@@ -163,8 +192,8 @@ export function useTyping(sequenceType = 'alphabet') {
     bottomRowPitch?: number;
     extremePanning?: boolean;
   }) => {
-    // Only process alphabetical keys
-    if (!/^[a-zA-Z]$/.test(key)) return;
+    // Process all printable characters (letters, numbers, punctuation)
+    if (key.length !== 1) return; // Only single characters
     
     // Add key to the queue
     keyQueueRef.current.push(key);

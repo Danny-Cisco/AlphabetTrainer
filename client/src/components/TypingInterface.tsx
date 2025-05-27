@@ -31,7 +31,11 @@ export default function TypingInterface({
   middleRowPitch,
   bottomRowPitch,
   sequenceType,
-  extremePanning
+  extremePanning,
+  includeLetters,
+  includeNumbers,
+  includeCommonPunctuation,
+  includeExtendedPunctuation
 }: TypingInterfaceProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -45,7 +49,12 @@ export default function TypingInterface({
     accuracy,
     handleKeyPress,
     regenerateRandomSequence
-  } = useTyping(sequenceType);
+  } = useTyping(sequenceType, {
+    includeLetters,
+    includeNumbers,
+    includeCommonPunctuation,
+    includeExtendedPunctuation
+  });
 
   // Set up audio features
   const { startMetronome, stopMetronome } = useAudio({
@@ -92,11 +101,16 @@ export default function TypingInterface({
 
   // Get sequence length based on sequence type
   const getSequenceLength = () => {
-    switch(sequenceType) {
-      case 'reverse': return 26; // Z-A has 26 letters
-      case 'random': return 26; // Random sequence has 26 letters
-      default: return 26; // A-Z has 26 letters
+    if (sequenceType === 'custom') {
+      // Calculate based on selected character types
+      let length = 0;
+      if (includeLetters) length += 26;
+      if (includeNumbers) length += 10;
+      if (includeCommonPunctuation) length += 12;
+      if (includeExtendedPunctuation) length += 18;
+      return length || 26; // Default to 26 if nothing selected
     }
+    return 26; // Standard alphabet sequences
   };
   
   // Calculate progress percentage
@@ -143,12 +157,12 @@ export default function TypingInterface({
                 <span>A</span>
               </>
             )}
-            {sequenceType === 'random' && (
+            {sequenceType === 'custom' && (
               <>
-                <span>A-Z</span>
-                <span>in</span>
-                <span>random</span>
-                <span>order</span>
+                <span>Custom</span>
+                <span>mix</span>
+                <span>of</span>
+                <span>characters</span>
               </>
             )}
           </div>
@@ -157,7 +171,7 @@ export default function TypingInterface({
           <p className="text-gray-600 mb-6">
             {sequenceType === 'alphabet' && "Type the letter shown above. Progress through A-Z."}
             {sequenceType === 'reverse' && "Type the letter shown above. Progress through Z-A."}
-            {sequenceType === 'random' && "Type the letter shown above. Progress through a random sequence of A-Z."}
+            {sequenceType === 'custom' && "Type the character shown above. Progress through your custom character mix."}
           </p>
           
           {/* Stats */}
@@ -227,8 +241,8 @@ export default function TypingInterface({
                 Focus Keyboard
               </button>
               
-              {/* New Random Sequence Button - Only show for random sequence type */}
-              {sequenceType === 'random' && (
+              {/* New Random Sequence Button - Only show for custom sequence type */}
+              {sequenceType === 'custom' && (
                 <button 
                   onClick={() => {
                     regenerateRandomSequence();
@@ -251,7 +265,7 @@ export default function TypingInterface({
                     <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
                     <path d="M3 21v-5h5" />
                   </svg>
-                  New Random Sequence
+                  New Character Mix
                 </button>
               )}
             </div>
