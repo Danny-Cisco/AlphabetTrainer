@@ -132,18 +132,18 @@ export default function ControlPanel({
               </div>
             </button>
 
-            {/* Random sequence */}
+            {/* Reverse sequence */}
             <button
-              onClick={() => handleSequenceChange('random')}
+              onClick={() => handleSequenceChange('reverse')}
               className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                sequenceType === 'random'
+                sequenceType === 'reverse'
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
               <div className="text-center">
-                <div className="text-lg font-semibold text-gray-700 mb-1">Random</div>
-                <div className="text-sm text-gray-500">Shuffled A-Z</div>
+                <div className="text-lg font-semibold text-gray-700 mb-1">Reverse</div>
+                <div className="text-sm text-gray-500">Z-A sequence</div>
               </div>
             </button>
 
@@ -209,7 +209,7 @@ export default function ControlPanel({
                 onClick={generateNewSequence}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
-                Random Sequence
+                Randomize Sequence
               </button>
             </div>
           )}
