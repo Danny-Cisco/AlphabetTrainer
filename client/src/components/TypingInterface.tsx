@@ -184,7 +184,7 @@ export default function TypingInterface({
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-2">
             <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Correct</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Characters</p>
               <p className="text-2xl font-mono font-semibold text-green-500 dark:text-green-400">{correctCount}</p>
             </div>
             <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
@@ -203,12 +203,24 @@ export default function TypingInterface({
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Recent Attempts</h3>
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {sequenceAttempts.slice(-5).reverse().map((attempt, index) => (
-                  <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded p-2 flex justify-between items-center text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">{attempt.sequenceType}</span>
+                  <div key={index} className={`rounded p-3 flex justify-between items-center text-sm ${
+                    attempt.accuracy === 100 
+                      ? 'bg-gradient-to-r from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30 border-2 border-yellow-400 dark:border-yellow-500' 
+                      : 'bg-gray-50 dark:bg-gray-700'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600 dark:text-gray-400">{attempt.sequenceType}</span>
+                      {attempt.accuracy === 100 && (
+                        <div className="flex items-center gap-1">
+                          <span className="text-lg">🏆</span>
+                          <span className="text-yellow-700 dark:text-yellow-300 font-bold text-xs">PERFECT!</span>
+                        </div>
+                      )}
+                    </div>
                     <div className="flex gap-3">
-                      <span className="text-green-600 dark:text-green-400">{attempt.correct} correct</span>
+                      <span className="text-green-600 dark:text-green-400">{attempt.correct} characters</span>
                       <span className="text-red-600 dark:text-red-400">{attempt.errors} errors</span>
-                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-yellow-700 dark:text-yellow-300' : 'text-gray-700 dark:text-gray-300'}`}>
                         {attempt.accuracy}%
                       </span>
                     </div>
