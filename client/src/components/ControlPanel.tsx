@@ -250,7 +250,7 @@ export default function ControlPanel({
                   aria-label="Toggle key sounds"
                   className="mr-3 data-[state=on]:bg-blue-500"
                 />
-                <label className="text-sm font-medium text-gray-700">Enable Key Sounds</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Enable Key Sounds</label>
               </div>
             </div>
 
@@ -263,7 +263,7 @@ export default function ControlPanel({
                   aria-label="Toggle spatial audio"
                   className="mr-3 data-[state=on]:bg-green-500"
                 />
-                <label className="text-sm font-medium text-gray-700">Enable Spatial Audio</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Enable Spatial Audio</label>
               </div>
             </div>
           </div>
@@ -271,10 +271,10 @@ export default function ControlPanel({
           {/* Volume Control */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-              <label htmlFor="volume" className="text-sm font-medium text-gray-700">
+              <label htmlFor="volume" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Volume
               </label>
-              <span className="text-sm font-mono">{volume}%</span>
+              <span className="text-sm font-mono text-gray-700 dark:text-gray-300">{volume}%</span>
             </div>
             <input 
               type="range" 
@@ -289,8 +289,8 @@ export default function ControlPanel({
 
           {/* Panning Mode Selection */}
           {panningActive && (
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Spatial Audio Mode</h3>
+            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Spatial Audio Mode</h3>
               <div className="flex items-center gap-4">
                 <label className="flex items-center">
                   <input
@@ -300,7 +300,7 @@ export default function ControlPanel({
                     onChange={() => setExtremePanning(false)}
                     className="mr-2"
                   />
-                  <span className="text-sm">Natural (Gradual panning)</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Natural (Gradual panning)</span>
                 </label>
                 <label className="flex items-center">
                   <input
@@ -310,10 +310,10 @@ export default function ControlPanel({
                     onChange={() => setExtremePanning(true)}
                     className="mr-2"
                   />
-                  <span className="text-sm">Extreme (100% L/R)</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Extreme (100% L/R)</span>
                 </label>
               </div>
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                 <div className="flex items-center">
                   <svg className="h-4 w-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
