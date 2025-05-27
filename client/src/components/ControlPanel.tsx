@@ -13,6 +13,8 @@ interface ControlPanelProps {
   setBpm: (bpm: number) => void;
   volume: number;
   setVolume: (volume: number) => void;
+  numberRowPitch: number;
+  setNumberRowPitch: (pitch: number) => void;
   topRowPitch: number;
   setTopRowPitch: (pitch: number) => void;
   middleRowPitch: number;
@@ -46,6 +48,8 @@ export default function ControlPanel({
   setBpm,
   volume,
   setVolume,
+  numberRowPitch,
+  setNumberRowPitch,
   topRowPitch,
   setTopRowPitch,
   middleRowPitch,
@@ -74,6 +78,10 @@ export default function ControlPanel({
   };
   
   // Handlers for pitch sliders
+  const handleNumberRowPitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNumberRowPitch(parseFloat(e.target.value));
+  };
+  
   const handleTopRowPitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopRowPitch(parseFloat(e.target.value));
   };
@@ -463,6 +471,26 @@ export default function ControlPanel({
             {keySoundsActive && (
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <h3 className="text-sm font-medium text-gray-700 mb-3">Keyboard Row Pitch Settings</h3>
+                
+                {/* Number row pitch slider */}
+                <div className="mb-4">
+                  <div className="flex justify-between items-center mb-1">
+                    <label htmlFor="number-row-pitch" className="text-xs text-gray-600">
+                      Number Row (1234567890!@#$%^&*())
+                    </label>
+                    <span className="text-xs font-mono">{Math.round(numberRowPitch)} Hz</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="800" 
+                    max="1200" 
+                    step="1"
+                    value={numberRowPitch} 
+                    onChange={handleNumberRowPitchChange}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
+                    id="number-row-pitch"
+                  />
+                </div>
                 
                 {/* Top row pitch slider */}
                 <div className="mb-4">

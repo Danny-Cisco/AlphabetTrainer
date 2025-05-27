@@ -12,6 +12,7 @@ export default function Home() {
   const [volume, setVolume] = useState(80);
   
   // Pitch values for each keyboard row
+  const [numberRowPitch, setNumberRowPitch] = useState(1000); // Highest pitch for number row
   const [topRowPitch, setTopRowPitch] = useState(750); // Higher pitch for top row
   const [middleRowPitch, setMiddleRowPitch] = useState(500); // Medium pitch for middle row
   const [bottomRowPitch, setBottomRowPitch] = useState(250); // Lower pitch for bottom row
@@ -74,6 +75,8 @@ export default function Home() {
               setBpm={setBpm}
               volume={volume}
               setVolume={setVolume}
+              numberRowPitch={numberRowPitch}
+              setNumberRowPitch={setNumberRowPitch}
               topRowPitch={topRowPitch}
               setTopRowPitch={setTopRowPitch}
               middleRowPitch={middleRowPitch}

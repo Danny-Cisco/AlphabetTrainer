@@ -9,6 +9,7 @@ interface TypingInterfaceProps {
   keySoundsActive: boolean;
   bpm: number;
   volume: number;
+  numberRowPitch?: number;
   topRowPitch?: number;
   middleRowPitch?: number;
   bottomRowPitch?: number;
