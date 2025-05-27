@@ -20,7 +20,13 @@ export default function Home() {
   const [extremePanning, setExtremePanning] = useState(true); // Use extreme (100% L/R) panning by default
   
   // Sequence options
-  const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet', 'reverse', or 'random'
+  const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet', 'reverse', or 'custom'
+  
+  // Character type options for custom sequences
+  const [includeLetters, setIncludeLetters] = useState(true);
+  const [includeNumbers, setIncludeNumbers] = useState(false);
+  const [includeCommonPunctuation, setIncludeCommonPunctuation] = useState(false);
+  const [includeExtendedPunctuation, setIncludeExtendedPunctuation] = useState(false);
 
   return (
     <>
@@ -49,6 +55,10 @@ export default function Home() {
               bottomRowPitch={bottomRowPitch}
               sequenceType={sequenceType}
               extremePanning={extremePanning}
+              includeLetters={includeLetters}
+              includeNumbers={includeNumbers}
+              includeCommonPunctuation={includeCommonPunctuation}
+              includeExtendedPunctuation={includeExtendedPunctuation}
             />
             
             <ControlPanel 
@@ -74,6 +84,14 @@ export default function Home() {
               setSequenceType={setSequenceType}
               extremePanning={extremePanning}
               setExtremePanning={setExtremePanning}
+              includeLetters={includeLetters}
+              setIncludeLetters={setIncludeLetters}
+              includeNumbers={includeNumbers}
+              setIncludeNumbers={setIncludeNumbers}
+              includeCommonPunctuation={includeCommonPunctuation}
+              setIncludeCommonPunctuation={setIncludeCommonPunctuation}
+              includeExtendedPunctuation={includeExtendedPunctuation}
+              setIncludeExtendedPunctuation={setIncludeExtendedPunctuation}
             />
           </main>
           

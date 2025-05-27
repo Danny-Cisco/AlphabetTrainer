@@ -23,6 +23,14 @@ interface ControlPanelProps {
   setSequenceType: (type: string) => void;
   extremePanning: boolean;
   setExtremePanning: (extreme: boolean) => void;
+  includeLetters: boolean;
+  setIncludeLetters: (include: boolean) => void;
+  includeNumbers: boolean;
+  setIncludeNumbers: (include: boolean) => void;
+  includeCommonPunctuation: boolean;
+  setIncludeCommonPunctuation: (include: boolean) => void;
+  includeExtendedPunctuation: boolean;
+  setIncludeExtendedPunctuation: (include: boolean) => void;
 }
 
 export default function ControlPanel({
@@ -47,7 +55,15 @@ export default function ControlPanel({
   sequenceType,
   setSequenceType,
   extremePanning,
-  setExtremePanning
+  setExtremePanning,
+  includeLetters,
+  setIncludeLetters,
+  includeNumbers,
+  setIncludeNumbers,
+  includeCommonPunctuation,
+  setIncludeCommonPunctuation,
+  includeExtendedPunctuation,
+  setIncludeExtendedPunctuation
 }: ControlPanelProps) {
   const handleBpmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBpm(parseInt(e.target.value, 10));
@@ -112,48 +128,102 @@ export default function ControlPanel({
           <div className="space-y-3">
             <div className="font-medium text-sm mb-2 text-gray-600">Choose what to type:</div>
             
-            <div className="flex flex-col space-y-2">
-              <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
-                <input 
-                  type="radio" 
-                  name="sequenceType" 
-                  className="mr-3" 
-                  checked={sequenceType === 'alphabet'}
-                  onChange={() => handleSequenceChange('alphabet')}
-                />
-                <div>
-                  <div className="font-medium">A to Z</div>
-                  <div className="text-sm text-gray-500">Standard alphabet order</div>
+            <div className="space-y-4">
+              {/* Sequence Type Selection */}
+              <div>
+                <div className="font-medium text-sm mb-2 text-gray-600">Practice Mode:</div>
+                <div className="flex flex-col space-y-2">
+                  <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="sequenceType" 
+                      className="mr-3" 
+                      checked={sequenceType === 'alphabet'}
+                      onChange={() => handleSequenceChange('alphabet')}
+                    />
+                    <div>
+                      <div className="font-medium">A to Z</div>
+                      <div className="text-sm text-gray-500">Standard alphabet order</div>
+                    </div>
+                  </label>
+                  
+                  <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="sequenceType" 
+                      className="mr-3" 
+                      checked={sequenceType === 'reverse'}
+                      onChange={() => handleSequenceChange('reverse')}
+                    />
+                    <div>
+                      <div className="font-medium">Z to A</div>
+                      <div className="text-sm text-gray-500">Reverse alphabet order</div>
+                    </div>
+                  </label>
+                  
+                  <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="sequenceType" 
+                      className="mr-3" 
+                      checked={sequenceType === 'custom'}
+                      onChange={() => handleSequenceChange('custom')}
+                    />
+                    <div>
+                      <div className="font-medium">Custom Mix</div>
+                      <div className="text-sm text-gray-500">Choose what characters to include</div>
+                    </div>
+                  </label>
                 </div>
-              </label>
-              
-              <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
-                <input 
-                  type="radio" 
-                  name="sequenceType" 
-                  className="mr-3" 
-                  checked={sequenceType === 'reverse'}
-                  onChange={() => handleSequenceChange('reverse')}
-                />
-                <div>
-                  <div className="font-medium">Z to A</div>
-                  <div className="text-sm text-gray-500">Reverse alphabet order</div>
+              </div>
+
+              {/* Character Type Selection - only show when custom is selected */}
+              {sequenceType === 'custom' && (
+                <div className="bg-gray-50 p-3 rounded">
+                  <div className="font-medium text-sm mb-2 text-gray-600">Include Characters:</div>
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input 
+                        type="checkbox" 
+                        className="mr-2" 
+                        checked={includeLetters}
+                        onChange={(e) => setIncludeLetters(e.target.checked)}
+                      />
+                      <span className="text-sm">Letters (A-Z)</span>
+                    </label>
+                    
+                    <label className="flex items-center">
+                      <input 
+                        type="checkbox" 
+                        className="mr-2" 
+                        checked={includeNumbers}
+                        onChange={(e) => setIncludeNumbers(e.target.checked)}
+                      />
+                      <span className="text-sm">Numbers (0-9)</span>
+                    </label>
+                    
+                    <label className="flex items-center">
+                      <input 
+                        type="checkbox" 
+                        className="mr-2" 
+                        checked={includeCommonPunctuation}
+                        onChange={(e) => setIncludeCommonPunctuation(e.target.checked)}
+                      />
+                      <span className="text-sm">Common Punctuation (,.?!-();:'")</span>
+                    </label>
+                    
+                    <label className="flex items-center">
+                      <input 
+                        type="checkbox" 
+                        className="mr-2" 
+                        checked={includeExtendedPunctuation}
+                        onChange={(e) => setIncludeExtendedPunctuation(e.target.checked)}
+                      />
+                      <span className="text-sm">Extended Punctuation (@#$%^&*+=[]{}|\~`)</span>
+                    </label>
+                  </div>
                 </div>
-              </label>
-              
-              <label className="flex items-center p-2 rounded hover:bg-gray-50 cursor-pointer">
-                <input 
-                  type="radio" 
-                  name="sequenceType" 
-                  className="mr-3" 
-                  checked={sequenceType === 'random'}
-                  onChange={() => handleSequenceChange('random')}
-                />
-                <div>
-                  <div className="font-medium">Random Letters</div>
-                  <div className="text-sm text-gray-500">Random order of A-Z</div>
-                </div>
-              </label>
+              )}
             </div>
           </div>
         </div>

@@ -14,6 +14,10 @@ interface TypingInterfaceProps {
   bottomRowPitch?: number;
   sequenceType: string;
   extremePanning: boolean;
+  includeLetters: boolean;
+  includeNumbers: boolean;
+  includeCommonPunctuation: boolean;
+  includeExtendedPunctuation: boolean;
 }
 
 export default function TypingInterface({
