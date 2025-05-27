@@ -219,11 +219,11 @@ export default function TypingInterface({
             <div className="flex flex-wrap justify-center gap-3">
               <button 
                 onClick={focusKeyboard}
-                className="bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors w-40"
+                className="bg-blue-100 text-blue-700 font-medium py-3 px-6 rounded-lg hover:bg-blue-200 transition-colors min-w-[120px] flex items-center justify-center"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="inline-block mr-1 h-5 w-5" 
+                  className="inline-block mr-2 h-5 w-5" 
                   viewBox="0 0 24 24" 
                   fill="none" 
                   stroke="currentColor" 
@@ -241,7 +241,7 @@ export default function TypingInterface({
                   <line x1="14" y1="14" x2="14" y2="14" />
                   <line x1="18" y1="14" x2="18" y2="14" />
                 </svg>
-                Focus Keyboard
+                Focus
               </button>
               
               {/* New Random Sequence Button - Only show for custom sequence type */}
@@ -251,11 +251,11 @@ export default function TypingInterface({
                     regenerateRandomSequence();
                     focusKeyboard();
                   }}
-                  className="bg-green-100 text-green-700 font-medium py-2 px-4 rounded-lg hover:bg-green-200 transition-colors w-40"
+                  className="bg-green-100 text-green-700 font-medium py-3 px-6 rounded-lg hover:bg-green-200 transition-colors min-w-[120px] flex items-center justify-center"
                 >
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
-                    className="inline-block mr-1 h-5 w-5" 
+                    className="inline-block mr-2 h-5 w-5" 
                     viewBox="0 0 24 24" 
                     fill="none" 
                     stroke="currentColor" 
