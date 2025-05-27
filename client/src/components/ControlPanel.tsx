@@ -132,8 +132,8 @@ export default function ControlPanel({
               }`}
             >
               <div className="text-center">
-                <div className="text-lg font-semibold text-gray-700 mb-1">Alphabet</div>
-                <div className="text-sm text-gray-500">A-Z sequence</div>
+                <div className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Alphabet</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">A-Z sequence</div>
               </div>
             </button>
 
@@ -142,13 +142,13 @@ export default function ControlPanel({
               onClick={() => handleSequenceChange('reverse')}
               className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                 sequenceType === 'reverse'
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-400'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`}
             >
               <div className="text-center">
-                <div className="text-lg font-semibold text-gray-700 mb-1">Reverse</div>
-                <div className="text-sm text-gray-500">Z-A sequence</div>
+                <div className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Reverse</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Z-A sequence</div>
               </div>
             </button>
 
@@ -157,21 +157,21 @@ export default function ControlPanel({
               onClick={() => handleSequenceChange('custom')}
               className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                 sequenceType === 'custom'
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-400'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`}
             >
               <div className="text-center">
-                <div className="text-lg font-semibold text-gray-700 mb-1">Custom Mix</div>
-                <div className="text-sm text-gray-500">Choose character types</div>
+                <div className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Custom Mix</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Choose character types</div>
               </div>
             </button>
           </div>
 
           {/* Custom Mix Options */}
           {sequenceType === 'custom' && (
-            <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Select Character Types:</h3>
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-4">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Select Character Types:</h3>
               <div className="grid grid-cols-2 gap-3">
                 <label className="flex items-center">
                   <input
@@ -180,7 +180,7 @@ export default function ControlPanel({
                     onChange={(e) => setIncludeLetters(e.target.checked)}
                     className="mr-2"
                   />
-                  <span className="text-sm">Letters (A-Z)</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Letters (A-Z)</span>
                 </label>
                 <label className="flex items-center">
                   <input
@@ -189,7 +189,7 @@ export default function ControlPanel({
                     onChange={(e) => setIncludeNumbers(e.target.checked)}
                     className="mr-2"
                   />
-                  <span className="text-sm">Numbers (0-9)</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Numbers (0-9)</span>
                 </label>
                 <label className="flex items-center">
                   <input
@@ -198,7 +198,7 @@ export default function ControlPanel({
                     onChange={(e) => setIncludeCommonPunctuation(e.target.checked)}
                     className="mr-2"
                   />
-                  <span className="text-sm">Common punctuation</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Common punctuation</span>
                 </label>
                 <label className="flex items-center">
                   <input
