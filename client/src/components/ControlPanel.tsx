@@ -177,12 +177,7 @@ export default function ControlPanel({
                   <input
                     type="checkbox"
                     checked={includeLetters}
-                    onChange={(e) => {
-                      setIncludeLetters(e.target.checked);
-                      if (sequenceType === 'custom') {
-                        generateNewSequence();
-                      }
-                    }}
+                    onChange={(e) => setIncludeLetters(e.target.checked)}
                     className="mr-2"
                   />
                   <span className="text-sm">Letters (A-Z)</span>
@@ -191,12 +186,7 @@ export default function ControlPanel({
                   <input
                     type="checkbox"
                     checked={includeNumbers}
-                    onChange={(e) => {
-                      setIncludeNumbers(e.target.checked);
-                      if (sequenceType === 'custom') {
-                        generateNewSequence();
-                      }
-                    }}
+                    onChange={(e) => setIncludeNumbers(e.target.checked)}
                     className="mr-2"
                   />
                   <span className="text-sm">Numbers (0-9)</span>
@@ -205,12 +195,7 @@ export default function ControlPanel({
                   <input
                     type="checkbox"
                     checked={includeCommonPunctuation}
-                    onChange={(e) => {
-                      setIncludeCommonPunctuation(e.target.checked);
-                      if (sequenceType === 'custom') {
-                        generateNewSequence();
-                      }
-                    }}
+                    onChange={(e) => setIncludeCommonPunctuation(e.target.checked)}
                     className="mr-2"
                   />
                   <span className="text-sm">Common punctuation</span>
@@ -219,12 +204,7 @@ export default function ControlPanel({
                   <input
                     type="checkbox"
                     checked={includeExtendedPunctuation}
-                    onChange={(e) => {
-                      setIncludeExtendedPunctuation(e.target.checked);
-                      if (sequenceType === 'custom') {
-                        generateNewSequence();
-                      }
-                    }}
+                    onChange={(e) => setIncludeExtendedPunctuation(e.target.checked)}
                     className="mr-2"
                   />
                   <span className="text-sm">Extended punctuation</span>

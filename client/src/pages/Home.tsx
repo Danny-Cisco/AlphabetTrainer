@@ -30,6 +30,38 @@ export default function Home() {
   // Controls visibility
   const [showAudioControls, setShowAudioControls] = useState(false);
   const [showAlphabetControls, setShowAlphabetControls] = useState(false);
+  
+  // Force sequence regeneration trigger
+  const [sequenceKey, setSequenceKey] = useState(0);
+  
+  // Reactive handlers that trigger sequence regeneration
+  const handleIncludeLettersChange = (include: boolean) => {
+    setIncludeLetters(include);
+    if (sequenceType === 'custom') {
+      setSequenceKey(prev => prev + 1);
+    }
+  };
+  
+  const handleIncludeNumbersChange = (include: boolean) => {
+    setIncludeNumbers(include);
+    if (sequenceType === 'custom') {
+      setSequenceKey(prev => prev + 1);
+    }
+  };
+  
+  const handleIncludeCommonPunctuationChange = (include: boolean) => {
+    setIncludeCommonPunctuation(include);
+    if (sequenceType === 'custom') {
+      setSequenceKey(prev => prev + 1);
+    }
+  };
+  
+  const handleIncludeExtendedPunctuationChange = (include: boolean) => {
+    setIncludeExtendedPunctuation(include);
+    if (sequenceType === 'custom') {
+      setSequenceKey(prev => prev + 1);
+    }
+  };
 
   return (
     <>
@@ -47,6 +79,7 @@ export default function Home() {
 
           <main>
             <TypingInterface 
+              key={`typing-${sequenceKey}`}
               metronomeActive={false}
               speechActive={false}
               panningActive={panningActive}
@@ -125,13 +158,13 @@ export default function Home() {
                   extremePanning={extremePanning}
                   setExtremePanning={setExtremePanning}
                   includeLetters={includeLetters}
-                  setIncludeLetters={setIncludeLetters}
+                  setIncludeLetters={handleIncludeLettersChange}
                   includeNumbers={includeNumbers}
-                  setIncludeNumbers={setIncludeNumbers}
+                  setIncludeNumbers={handleIncludeNumbersChange}
                   includeCommonPunctuation={includeCommonPunctuation}
-                  setIncludeCommonPunctuation={setIncludeCommonPunctuation}
+                  setIncludeCommonPunctuation={handleIncludeCommonPunctuationChange}
                   includeExtendedPunctuation={includeExtendedPunctuation}
-                  setIncludeExtendedPunctuation={setIncludeExtendedPunctuation}
+                  setIncludeExtendedPunctuation={handleIncludeExtendedPunctuationChange}
                   showOnlyAlphabetControls={showAlphabetControls && !showAudioControls}
                 />
               </div>
@@ -160,13 +193,13 @@ export default function Home() {
                   extremePanning={extremePanning}
                   setExtremePanning={setExtremePanning}
                   includeLetters={includeLetters}
-                  setIncludeLetters={setIncludeLetters}
+                  setIncludeLetters={handleIncludeLettersChange}
                   includeNumbers={includeNumbers}
-                  setIncludeNumbers={setIncludeNumbers}
+                  setIncludeNumbers={handleIncludeNumbersChange}
                   includeCommonPunctuation={includeCommonPunctuation}
-                  setIncludeCommonPunctuation={setIncludeCommonPunctuation}
+                  setIncludeCommonPunctuation={handleIncludeCommonPunctuationChange}
                   includeExtendedPunctuation={includeExtendedPunctuation}
-                  setIncludeExtendedPunctuation={setIncludeExtendedPunctuation}
+                  setIncludeExtendedPunctuation={handleIncludeExtendedPunctuationChange}
                   showOnlyAudioControls={showAudioControls && !showAlphabetControls}
                 />
               </div>
