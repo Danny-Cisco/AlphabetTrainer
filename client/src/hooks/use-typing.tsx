@@ -107,11 +107,16 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const { speakLetter, playKeySound, playToneForLetter } = useAudio({});
   
   // Function to complete current sequence and add to history
-  const completeSequence = () => {
+  const completeSequence = (finalCorrectCount?: number, finalErrorCount?: number) => {
+    const correctCount = finalCorrectCount ?? currentCorrectCount;
+    const errorCount = finalErrorCount ?? currentErrorCount;
+    const totalAttempts = correctCount + errorCount;
+    const accuracy = totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 100;
+    
     const newAttempt: SequenceAttempt = {
-      correct: currentCorrectCount,
-      errors: currentErrorCount,
-      accuracy: currentAccuracy,
+      correct: correctCount,
+      errors: errorCount,
+      accuracy: accuracy,
       sequenceType: sequenceType,
       completed: true
     };
@@ -190,8 +195,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       
       // Check if sequence is complete after moving
       if (nextIndex >= getActiveSequence().length) {
-        // Sequence completed - complete this attempt
-        setTimeout(() => completeSequence(), 100); // Small delay to ensure state updates
+        // Sequence completed - complete this attempt with the final correct count
+        setTimeout(() => completeSequence(currentCorrectCount + 1, currentErrorCount), 100);
       }
       
       // Reset the letter color after a short delay for visual feedback
