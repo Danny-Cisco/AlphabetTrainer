@@ -1,5 +1,8 @@
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface ControlPanelProps {
   panningActive: boolean;
@@ -174,42 +177,38 @@ export default function ControlPanel({
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-4">
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Select Character Types:</h3>
               <div className="grid grid-cols-2 gap-3">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="letters"
                     checked={includeLetters}
-                    onChange={(e) => setIncludeLetters(e.target.checked)}
-                    className="mr-2"
+                    onCheckedChange={setIncludeLetters}
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Letters (A-Z)</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
+                  <Label htmlFor="letters" className="text-sm text-gray-700 dark:text-gray-300">Letters (A-Z)</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="numbers"
                     checked={includeNumbers}
-                    onChange={(e) => setIncludeNumbers(e.target.checked)}
-                    className="mr-2"
+                    onCheckedChange={setIncludeNumbers}
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Numbers (0-9)</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
+                  <Label htmlFor="numbers" className="text-sm text-gray-700 dark:text-gray-300">Numbers (0-9)</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="common-punctuation"
                     checked={includeCommonPunctuation}
-                    onChange={(e) => setIncludeCommonPunctuation(e.target.checked)}
-                    className="mr-2"
+                    onCheckedChange={setIncludeCommonPunctuation}
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Common punctuation</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
+                  <Label htmlFor="common-punctuation" className="text-sm text-gray-700 dark:text-gray-300">Common punctuation</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="extended-punctuation"
                     checked={includeExtendedPunctuation}
-                    onChange={(e) => setIncludeExtendedPunctuation(e.target.checked)}
-                    className="mr-2"
+                    onCheckedChange={setIncludeExtendedPunctuation}
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Extended punctuation</span>
-                </label>
+                  <Label htmlFor="extended-punctuation" className="text-sm text-gray-700 dark:text-gray-300">Extended punctuation</Label>
+                </div>
               </div>
 
             </div>
@@ -288,28 +287,20 @@ export default function ControlPanel({
           {panningActive && (
             <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Spatial Audio Mode</h3>
-              <div className="flex items-center gap-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="panningMode"
-                    checked={!extremePanning}
-                    onChange={() => setExtremePanning(false)}
-                    className="mr-2"
-                  />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Natural (Gradual panning)</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="panningMode"
-                    checked={extremePanning}
-                    onChange={() => setExtremePanning(true)}
-                    className="mr-2"
-                  />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Extreme (100% L/R)</span>
-                </label>
-              </div>
+              <RadioGroup
+                value={extremePanning ? "extreme" : "natural"}
+                onValueChange={(value) => setExtremePanning(value === "extreme")}
+                className="flex items-center gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="natural" id="natural" />
+                  <Label htmlFor="natural" className="text-sm text-gray-700 dark:text-gray-300">Natural (Gradual panning)</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="extreme" id="extreme" />
+                  <Label htmlFor="extreme" className="text-sm text-gray-700 dark:text-gray-300">Extreme (100% L/R)</Label>
+                </div>
+              </RadioGroup>
               <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                 <div className="flex items-center">
                   <svg className="h-4 w-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
