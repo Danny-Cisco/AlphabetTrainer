@@ -1,4 +1,5 @@
 import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
 
 interface ControlPanelProps {
   panningActive: boolean;
@@ -274,14 +275,12 @@ export default function ControlPanel({
               </label>
               <span className="text-sm font-mono text-gray-700 dark:text-gray-300">{volume}%</span>
             </div>
-            <input 
-              type="range" 
-              min="0" 
-              max="100" 
-              value={volume} 
-              onChange={handleVolumeChange}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
-              id="volume"
+            <Slider
+              value={[volume]}
+              onValueChange={(value) => setVolume(value[0])}
+              max={100}
+              step={1}
+              className="w-full"
             />
           </div>
 
@@ -337,25 +336,23 @@ export default function ControlPanel({
                   </label>
                   <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(numberRowPitch)} Hz</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="800" 
-                  max="1200" 
-                  step="1"
-                  value={numberRowPitch} 
-                  onChange={handleNumberRowPitchChange}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
-                  id="number-row-pitch"
+                <Slider
+                  value={[numberRowPitch]}
+                  onValueChange={(value) => setNumberRowPitch(value[0])}
+                  min={800}
+                  max={1200}
+                  step={1}
+                  className="w-full"
                 />
               </div>
               
               {/* Top row pitch slider */}
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-1">
-                  <label htmlFor="top-row-pitch" className="text-xs text-gray-600">
+                  <label htmlFor="top-row-pitch" className="text-xs text-gray-600 dark:text-gray-300">
                     Top Row (QWERTYUIOP)
                   </label>
-                  <span className="text-xs font-mono">{Math.round(topRowPitch)} Hz</span>
+                  <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(topRowPitch)} Hz</span>
                 </div>
                 <input 
                   type="range" 
@@ -372,10 +369,10 @@ export default function ControlPanel({
               {/* Middle row pitch slider */}
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-1">
-                  <label htmlFor="middle-row-pitch" className="text-xs text-gray-600">
+                  <label htmlFor="middle-row-pitch" className="text-xs text-gray-600 dark:text-gray-300">
                     Middle Row (ASDFGHJKL)
                   </label>
-                  <span className="text-xs font-mono">{Math.round(middleRowPitch)} Hz</span>
+                  <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(middleRowPitch)} Hz</span>
                 </div>
                 <input 
                   type="range" 
@@ -392,10 +389,10 @@ export default function ControlPanel({
               {/* Bottom row pitch slider */}
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-1">
-                  <label htmlFor="bottom-row-pitch" className="text-xs text-gray-600">
+                  <label htmlFor="bottom-row-pitch" className="text-xs text-gray-600 dark:text-gray-300">
                     Bottom Row (ZXCVBNM)
                   </label>
-                  <span className="text-xs font-mono">{Math.round(bottomRowPitch)} Hz</span>
+                  <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(bottomRowPitch)} Hz</span>
                 </div>
                 <input 
                   type="range" 
