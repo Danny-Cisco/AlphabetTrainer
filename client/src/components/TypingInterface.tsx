@@ -216,10 +216,10 @@ export default function TypingInterface({
               onKeyDown={handleKeyDown}
               autoComplete="off"
             />
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className={`grid gap-3 justify-center ${sequenceType === 'custom' ? 'grid-cols-2' : 'grid-cols-1'} max-w-xs mx-auto`}>
               <button 
                 onClick={focusKeyboard}
-                className="bg-blue-100 text-blue-700 font-medium py-3 px-6 rounded-lg hover:bg-blue-200 transition-colors min-w-[120px] flex items-center justify-center"
+                className="bg-blue-100 text-blue-700 font-medium py-3 px-6 rounded-lg hover:bg-blue-200 transition-colors flex items-center justify-center"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -251,7 +251,7 @@ export default function TypingInterface({
                     regenerateRandomSequence();
                     focusKeyboard();
                   }}
-                  className="bg-green-100 text-green-700 font-medium py-3 px-6 rounded-lg hover:bg-green-200 transition-colors min-w-[120px] flex items-center justify-center"
+                  className="bg-green-100 text-green-700 font-medium py-3 px-6 rounded-lg hover:bg-green-200 transition-colors flex items-center justify-center"
                 >
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
