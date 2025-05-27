@@ -123,12 +123,12 @@ export function playPannedToneForLetter(letter: string, options: {
     const upperLetter = letter.toUpperCase();
     let baseFreq = options.middleRowPitch || 500; // Default to middle row
     
-    // Number row (1234567890 and !@#$%^&*()) - highest pitch
-    if ('1234567890!@#$%^&*()'.includes(letter)) {
+    // Number row (1234567890 and !@#$%^&*() plus `~-_=+) - highest pitch
+    if ('1234567890!@#$%^&*()`~-_=+'.includes(letter)) {
       baseFreq = options.numberRowPitch || 1000;
     }
     // Top row (QWERTYUIOP and []{}|\) - higher pitch  
-    else if ('QWERTYUIOP[]{}|\\'.includes(upperLetter)) {
+    else if ('QWERTYUIOP[]{}|\\'.includes(upperLetter) || '[]{}|\\'.includes(letter)) {
       baseFreq = options.topRowPitch || 750;
     } 
     // Middle row (ASDFGHJKL and ;'":) - medium pitch

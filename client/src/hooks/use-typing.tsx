@@ -233,8 +233,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       // Numbers (left to right across keyboard)
       '1': -1.0,  '2': -0.8,  '3': -0.6,  '4': -0.4,  '5': -0.2,  '8': 0.4,   '9': 0.6,   '0': 0.8,
       
-      // Number row punctuation
+      // Number row punctuation and symbols
       '!': -1.0,  '@': -0.8,  '#': -0.6,  '$': -0.4,  '%': -0.2,  '*': 0.4,   '(': 0.6,   ')': 0.8,
+      '`': -1.0,  '~': -1.0,  '-': 0.8,   '_': 0.8,   '=': 0.8,   '+': 0.8,
       
       // Top row punctuation
       '[': 1.0,   ']': 1.0,   '{': 1.0,   '}': 1.0,   '\\': 1.0,  '|': 1.0,
@@ -243,10 +244,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       ';': 0.7,   "'": 0.7,   ':': 0.7,   '"': 0.7,
       
       // Bottom row punctuation
-      ',': 0.2,   '.': 0.4,   '/': 0.6,   '<': 0.2,   '>': 0.4,   '?': 0.6,
-      
-      // Extended punctuation
-      '`': -1.0,  '~': -1.0,  '-': 0.8,   '_': 0.8,   '=': 0.8,   '+': 0.8
+      ',': 0.2,   '.': 0.4,   '/': 0.6,   '<': 0.2,   '>': 0.4,   '?': 0.6
     };
     
     // For extreme panning (full left/right separation):

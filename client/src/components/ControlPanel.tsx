@@ -476,7 +476,7 @@ export default function ControlPanel({
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-1">
                     <label htmlFor="number-row-pitch" className="text-xs text-gray-600">
-                      Number Row (1234567890!@#$%^&*())
+                      Number Row (1234567890!@#$%^&*()`~-_=+)
                     </label>
                     <span className="text-xs font-mono">{Math.round(numberRowPitch)} Hz</span>
                   </div>
