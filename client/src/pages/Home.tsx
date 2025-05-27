@@ -2,6 +2,7 @@ import TypingInterface from "@/components/TypingInterface";
 import ControlPanel from "@/components/ControlPanel";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function Home() {
   const [panningActive, setPanningActive] = useState(true);
@@ -25,6 +26,9 @@ export default function Home() {
   const [includeNumbers, setIncludeNumbers] = useState(false);
   const [includeCommonPunctuation, setIncludeCommonPunctuation] = useState(false);
   const [includeExtendedPunctuation, setIncludeExtendedPunctuation] = useState(false);
+  
+  // Audio controls visibility
+  const [showAudioControls, setShowAudioControls] = useState(false);
 
   return (
     <>
@@ -60,34 +64,59 @@ export default function Home() {
               includeExtendedPunctuation={includeExtendedPunctuation}
             />
             
-            <ControlPanel 
-              panningActive={panningActive}
-              setPanningActive={setPanningActive}
-              keySoundsActive={keySoundsActive}
-              setKeySoundsActive={setKeySoundsActive}
-              volume={volume}
-              setVolume={setVolume}
-              numberRowPitch={numberRowPitch}
-              setNumberRowPitch={setNumberRowPitch}
-              topRowPitch={topRowPitch}
-              setTopRowPitch={setTopRowPitch}
-              middleRowPitch={middleRowPitch}
-              setMiddleRowPitch={setMiddleRowPitch}
-              bottomRowPitch={bottomRowPitch}
-              setBottomRowPitch={setBottomRowPitch}
-              sequenceType={sequenceType}
-              setSequenceType={setSequenceType}
-              extremePanning={extremePanning}
-              setExtremePanning={setExtremePanning}
-              includeLetters={includeLetters}
-              setIncludeLetters={setIncludeLetters}
-              includeNumbers={includeNumbers}
-              setIncludeNumbers={setIncludeNumbers}
-              includeCommonPunctuation={includeCommonPunctuation}
-              setIncludeCommonPunctuation={setIncludeCommonPunctuation}
-              includeExtendedPunctuation={includeExtendedPunctuation}
-              setIncludeExtendedPunctuation={setIncludeExtendedPunctuation}
-            />
+            {/* Audio Controls Toggle */}
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setShowAudioControls(!showAudioControls)}
+                className="bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center mx-auto"
+              >
+                {showAudioControls ? (
+                  <>
+                    <ChevronUp className="w-5 h-5 mr-2" />
+                    Hide Audio Controls
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-5 h-5 mr-2" />
+                    Show Audio Controls
+                  </>
+                )}
+              </button>
+            </div>
+            
+            {/* Collapsible Audio Controls */}
+            {showAudioControls && (
+              <div className="mt-4 animate-in slide-in-from-top-2 duration-300">
+                <ControlPanel 
+                  panningActive={panningActive}
+                  setPanningActive={setPanningActive}
+                  keySoundsActive={keySoundsActive}
+                  setKeySoundsActive={setKeySoundsActive}
+                  volume={volume}
+                  setVolume={setVolume}
+                  numberRowPitch={numberRowPitch}
+                  setNumberRowPitch={setNumberRowPitch}
+                  topRowPitch={topRowPitch}
+                  setTopRowPitch={setTopRowPitch}
+                  middleRowPitch={middleRowPitch}
+                  setMiddleRowPitch={setMiddleRowPitch}
+                  bottomRowPitch={bottomRowPitch}
+                  setBottomRowPitch={setBottomRowPitch}
+                  sequenceType={sequenceType}
+                  setSequenceType={setSequenceType}
+                  extremePanning={extremePanning}
+                  setExtremePanning={setExtremePanning}
+                  includeLetters={includeLetters}
+                  setIncludeLetters={setIncludeLetters}
+                  includeNumbers={includeNumbers}
+                  setIncludeNumbers={setIncludeNumbers}
+                  includeCommonPunctuation={includeCommonPunctuation}
+                  setIncludeCommonPunctuation={setIncludeCommonPunctuation}
+                  includeExtendedPunctuation={includeExtendedPunctuation}
+                  setIncludeExtendedPunctuation={setIncludeExtendedPunctuation}
+                />
+              </div>
+            )}
           </main>
           
           <footer className="mt-10 text-center text-gray-500 text-sm">
