@@ -354,15 +354,13 @@ export default function ControlPanel({
                   </label>
                   <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(topRowPitch)} Hz</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="400" 
-                  max="800" 
-                  step="1"
-                  value={topRowPitch} 
-                  onChange={handleTopRowPitchChange}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
-                  id="top-row-pitch"
+                <Slider
+                  value={[topRowPitch]}
+                  onValueChange={(value) => setTopRowPitch(value[0])}
+                  min={400}
+                  max={800}
+                  step={1}
+                  className="w-full"
                 />
               </div>
               
@@ -374,15 +372,13 @@ export default function ControlPanel({
                   </label>
                   <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(middleRowPitch)} Hz</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="300" 
-                  max="600" 
-                  step="1"
-                  value={middleRowPitch} 
-                  onChange={handleMiddleRowPitchChange}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
-                  id="middle-row-pitch"
+                <Slider
+                  value={[middleRowPitch]}
+                  onValueChange={(value) => setMiddleRowPitch(value[0])}
+                  min={300}
+                  max={600}
+                  step={1}
+                  className="w-full"
                 />
               </div>
               
@@ -394,15 +390,13 @@ export default function ControlPanel({
                   </label>
                   <span className="text-xs font-mono text-gray-700 dark:text-gray-300">{Math.round(bottomRowPitch)} Hz</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="200" 
-                  max="400" 
-                  step="1"
-                  value={bottomRowPitch} 
-                  onChange={handleBottomRowPitchChange}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
-                  id="bottom-row-pitch"
+                <Slider
+                  value={[bottomRowPitch]}
+                  onValueChange={(value) => setBottomRowPitch(value[0])}
+                  min={200}
+                  max={400}
+                  step={1}
+                  className="w-full"
                 />
               </div>
             </div>
