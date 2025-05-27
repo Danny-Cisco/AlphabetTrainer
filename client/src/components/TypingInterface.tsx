@@ -84,6 +84,7 @@ export default function TypingInterface({
 
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
+    resetCurrentStats(); // Reset stats when starting
     if (hiddenInputRef.current) {
       hiddenInputRef.current.focus();
       setIsFocused(true);
