@@ -205,7 +205,7 @@ export default function TypingInterface({
                 {sequenceAttempts.slice(-5).reverse().map((attempt, index) => (
                   <div key={index} className={`rounded p-3 flex justify-between items-center text-sm ${
                     attempt.accuracy === 100 
-                      ? 'bg-gradient-to-r from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30 border-2 border-yellow-400 dark:border-yellow-500' 
+                      ? 'bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-500 dark:border-blue-400' 
                       : 'bg-gray-50 dark:bg-gray-700'
                   }`}>
                     <div className="flex items-center gap-2">
@@ -213,14 +213,14 @@ export default function TypingInterface({
                       {attempt.accuracy === 100 && (
                         <div className="flex items-center gap-1">
                           <span className="text-lg">🏆</span>
-                          <span className="text-yellow-700 dark:text-yellow-300 font-bold text-xs">PERFECT!</span>
+                          <span className="text-blue-700 dark:text-blue-300 font-bold text-xs">PERFECT!</span>
                         </div>
                       )}
                     </div>
                     <div className="flex gap-3">
                       <span className="text-green-600 dark:text-green-400">{attempt.correct} characters</span>
                       <span className="text-red-600 dark:text-red-400">{attempt.errors} errors</span>
-                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-yellow-700 dark:text-yellow-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'}`}>
                         {attempt.accuracy}%
                       </span>
                     </div>
