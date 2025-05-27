@@ -169,7 +169,7 @@ export default function Home() {
                   setIncludeCommonPunctuation={handleIncludeCommonPunctuationChange}
                   includeExtendedPunctuation={includeExtendedPunctuation}
                   setIncludeExtendedPunctuation={handleIncludeExtendedPunctuationChange}
-                  showOnlyAlphabetControls={showAlphabetControls && !showAudioControls}
+                  showOnlyAlphabetControls={true}
                 />
               </div>
             )}
@@ -204,7 +204,7 @@ export default function Home() {
                   setIncludeCommonPunctuation={handleIncludeCommonPunctuationChange}
                   includeExtendedPunctuation={includeExtendedPunctuation}
                   setIncludeExtendedPunctuation={handleIncludeExtendedPunctuationChange}
-                  showOnlyAudioControls={showAudioControls && !showAlphabetControls}
+                  showOnlyAudioControls={true}
                 />
               </div>
             )}
