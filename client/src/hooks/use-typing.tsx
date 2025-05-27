@@ -184,14 +184,14 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
         });
       }
       
-      // Check if sequence is complete
+      // Move to next letter first
       const nextIndex = currentLetterIndex + 1;
+      setCurrentLetterIndex(nextIndex);
+      
+      // Check if sequence is complete after moving
       if (nextIndex >= getActiveSequence().length) {
         // Sequence completed - complete this attempt
-        completeSequence();
-      } else {
-        // Move to next letter
-        setCurrentLetterIndex(nextIndex);
+        setTimeout(() => completeSequence(), 100); // Small delay to ensure state updates
       }
       
       // Reset the letter color after a short delay for visual feedback
