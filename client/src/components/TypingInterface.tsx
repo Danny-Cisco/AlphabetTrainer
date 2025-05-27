@@ -52,7 +52,8 @@ export default function TypingInterface({
     sequenceAttempts,
     handleKeyPress,
     letterDisplayRef,
-    regenerateRandomSequence
+    regenerateRandomSequence,
+    resetCurrentStats
   } = useTyping(sequenceType, {
     includeLetters,
     includeNumbers,
@@ -194,6 +195,27 @@ export default function TypingInterface({
               <p className="text-2xl font-mono font-semibold text-gray-800 dark:text-gray-200">{accuracy}%</p>
             </div>
           </div>
+          
+          {/* Sequence Attempts History */}
+          {sequenceAttempts.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Recent Attempts</h3>
+              <div className="space-y-2 max-h-40 overflow-y-auto">
+                {sequenceAttempts.slice(-5).reverse().map((attempt, index) => (
+                  <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded p-2 flex justify-between items-center text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">{attempt.sequenceType}</span>
+                    <div className="flex gap-3">
+                      <span className="text-green-600 dark:text-green-400">{attempt.correct} correct</span>
+                      <span className="text-red-600 dark:text-red-400">{attempt.errors} errors</span>
+                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                        {attempt.accuracy}%
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         
         {/* Keyboard Focus Area */}

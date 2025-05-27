@@ -58,13 +58,26 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     }
   };
   
-  // Function to generate a new random sequence
-  const regenerateRandomSequence = () => {
+  // Function to reset current attempt stats
+  const resetCurrentStats = () => {
     setCurrentLetterIndex(0);
     setCurrentCorrectCount(0);
     setCurrentErrorCount(0);
+  };
+
+  // Function to generate a new random sequence
+  const regenerateRandomSequence = () => {
+    resetCurrentStats();
     setRandomSequence(generateRandomSequence());
   };
+
+  // Reset stats when sequence type or character options change
+  useEffect(() => {
+    resetCurrentStats();
+    if (sequenceType === 'custom') {
+      setRandomSequence(generateRandomSequence());
+    }
+  }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation]);
   
   // Sequence attempt tracking
   interface SequenceAttempt {
@@ -171,8 +184,15 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
         });
       }
       
-      // Advance to next letter immediately
-      setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % getActiveSequence().length);
+      // Check if sequence is complete
+      const nextIndex = currentLetterIndex + 1;
+      if (nextIndex >= getActiveSequence().length) {
+        // Sequence completed - complete this attempt
+        completeSequence();
+      } else {
+        // Move to next letter
+        setCurrentLetterIndex(nextIndex);
+      }
       
       // Reset the letter color after a short delay for visual feedback
       setTimeout(() => {
@@ -300,6 +320,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     sequenceAttempts,
     handleKeyPress,
     letterDisplayRef,
-    regenerateRandomSequence
+    regenerateRandomSequence,
+    resetCurrentStats
   };
 }
