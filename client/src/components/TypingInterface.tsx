@@ -178,11 +178,7 @@ export default function TypingInterface({
           </p>
           
           {/* Stats */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 mb-2">
-            <div className="bg-gray-50 rounded p-3">
-              <p className="text-xs text-gray-500">Current Letter</p>
-              <p className="text-2xl font-mono font-semibold">{currentLetter}</p>
-            </div>
+          <div className="grid grid-cols-3 gap-4 mb-2">
             <div className="bg-gray-50 rounded p-3">
               <p className="text-xs text-gray-500">Correct</p>
               <p className="text-2xl font-mono font-semibold text-green-500">{correctCount}</p>
