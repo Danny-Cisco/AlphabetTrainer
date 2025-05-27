@@ -4,11 +4,8 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 
 export default function Home() {
-  const [metronomeActive, setMetronomeActive] = useState(false);
-  const [speechActive, setSpeechActive] = useState(false);
   const [panningActive, setPanningActive] = useState(true);
   const [keySoundsActive, setKeySoundsActive] = useState(true);
-  const [bpm, setBpm] = useState(60);
   const [volume, setVolume] = useState(80);
   
   // Pitch values for each keyboard row
@@ -21,7 +18,7 @@ export default function Home() {
   const [extremePanning, setExtremePanning] = useState(true); // Use extreme (100% L/R) panning by default
   
   // Sequence options
-  const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet', 'reverse', or 'custom'
+  const [sequenceType, setSequenceType] = useState('custom'); // 'alphabet', 'reverse', or 'custom'
   
   // Character type options for custom sequences
   const [includeLetters, setIncludeLetters] = useState(true);
@@ -45,12 +42,13 @@ export default function Home() {
 
           <main>
             <TypingInterface 
-              metronomeActive={metronomeActive}
-              speechActive={speechActive}
+              metronomeActive={false}
+              speechActive={false}
               panningActive={panningActive}
               keySoundsActive={keySoundsActive}
-              bpm={bpm}
+              bpm={60}
               volume={volume}
+              numberRowPitch={numberRowPitch}
               topRowPitch={topRowPitch}
               middleRowPitch={middleRowPitch}
               bottomRowPitch={bottomRowPitch}
@@ -63,16 +61,10 @@ export default function Home() {
             />
             
             <ControlPanel 
-              metronomeActive={metronomeActive}
-              setMetronomeActive={setMetronomeActive}
-              speechActive={speechActive}
-              setSpeechActive={setSpeechActive}
               panningActive={panningActive}
               setPanningActive={setPanningActive}
               keySoundsActive={keySoundsActive}
               setKeySoundsActive={setKeySoundsActive}
-              bpm={bpm}
-              setBpm={setBpm}
               volume={volume}
               setVolume={setVolume}
               numberRowPitch={numberRowPitch}

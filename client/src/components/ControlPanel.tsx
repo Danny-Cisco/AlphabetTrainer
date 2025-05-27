@@ -1,16 +1,10 @@
 import { Toggle } from "@/components/ui/toggle";
 
 interface ControlPanelProps {
-  metronomeActive: boolean;
-  setMetronomeActive: (active: boolean) => void;
-  speechActive: boolean;
-  setSpeechActive: (active: boolean) => void;
   panningActive: boolean;
   setPanningActive: (active: boolean) => void;
   keySoundsActive: boolean;
   setKeySoundsActive: (active: boolean) => void;
-  bpm: number;
-  setBpm: (bpm: number) => void;
   volume: number;
   setVolume: (volume: number) => void;
   numberRowPitch: number;
