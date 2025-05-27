@@ -207,7 +207,7 @@ export default function ControlPanel({
                     onChange={(e) => setIncludeExtendedPunctuation(e.target.checked)}
                     className="mr-2"
                   />
-                  <span className="text-sm">Extended punctuation</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Extended punctuation</span>
                 </label>
               </div>
 
