@@ -1,5 +1,6 @@
 import TypingInterface from "@/components/TypingInterface";
 import ControlPanel from "@/components/ControlPanel";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -70,11 +71,14 @@ export default function Home() {
         <meta name="description" content="Simple alphabet typing practice with metronome and audio feedback features to enhance your typing skills." />
       </Helmet>
       
-      <div className="bg-gray-50 min-h-screen font-sans text-gray-800">
+      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors">
         <div className="container max-w-4xl mx-auto px-4 py-8">
-          <header className="mb-8 text-center">
-            <h1 className="text-3xl font-bold mb-2 text-blue-600">TypeTone</h1>
-            <p className="text-gray-600">Simple alphabet typing practice with audio feedback</p>
+          <header className="mb-8 flex justify-between items-center">
+            <div className="text-center flex-1">
+              <h1 className="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">TypeTone</h1>
+              <p className="text-gray-600 dark:text-gray-400">Simple alphabet typing practice with audio feedback</p>
+            </div>
+            <ThemeToggle />
           </header>
 
           <main>
@@ -102,7 +106,7 @@ export default function Home() {
             <div className="mt-6 flex justify-center gap-3">
               <button
                 onClick={() => setShowAlphabetControls(!showAlphabetControls)}
-                className="bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors flex items-center justify-center"
+                className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors flex items-center justify-center"
               >
                 {showAlphabetControls ? (
                   <>
@@ -119,7 +123,7 @@ export default function Home() {
               
               <button
                 onClick={() => setShowAudioControls(!showAudioControls)}
-                className="bg-green-100 text-green-700 font-medium py-2 px-4 rounded-lg hover:bg-green-200 transition-colors flex items-center justify-center"
+                className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-medium py-2 px-4 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
               >
                 {showAudioControls ? (
                   <>
@@ -206,7 +210,7 @@ export default function Home() {
             )}
           </main>
           
-          <footer className="mt-10 text-center text-gray-500 text-sm">
+          <footer className="mt-10 text-center text-gray-500 dark:text-gray-400 text-sm">
             <p>TypeTone - Alphabet Typing Practice with Audio Feedback</p>
           </footer>
         </div>
