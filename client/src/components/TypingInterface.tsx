@@ -97,6 +97,11 @@ export default function TypingInterface({
 
   // Handle key press and audio feedback
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Debug Mac key detection
+    if (['Backspace', 'Enter', 'Delete', 'Return'].includes(e.key)) {
+      console.log('Special key detected:', e.key, 'Code:', e.code);
+    }
+    
     handleKeyPress(e.key, {
       speechActive,
       panningActive,

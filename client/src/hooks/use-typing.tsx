@@ -188,10 +188,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     const keyPressed = keyQueueRef.current.shift()!;
     let keyToCheck: string;
     
-    // Debug logging for Mac compatibility
-    console.log('Key pressed:', keyPressed, 'Code:', keyPressed);
+
     
-    // Handle special keys properly (Mac compatibility)
+    // Handle special keys properly (Mac and PC compatibility)
     if (keyPressed === ' ') {
       keyToCheck = ' ';
     } else if (keyPressed === 'Enter' || keyPressed === 'Return') {
@@ -238,18 +237,24 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           // Just completed a challenge key, move to next letter
           setAwaitingChallengeKey(false);
           setCurrentChallengeKey('');
+          
+          // Move to next letter after completing challenge key
           const nextIndex = currentLetterIndex + 1;
           setCurrentLetterIndex(nextIndex);
           
-          // Check if sequence is complete (we've typed all letters)
-          const actualLetterIndex = Math.floor(nextIndex / 2);
-          if (actualLetterIndex >= baseSequence.length) {
+          // In challenge mode, check if we've typed all the letters
+          // Each letter has index: 0, 2, 4, 6... (even numbers)
+          // Each challenge key has index: 1, 3, 5, 7... (odd numbers)
+          const lettersCompleted = Math.ceil(nextIndex / 2);
+          if (lettersCompleted >= baseSequence.length) {
             setTimeout(() => completeSequence(currentCorrectCount + 1, currentErrorCount), 100);
           }
         } else {
           // Just completed a letter, now need challenge key
           setAwaitingChallengeKey(true);
           setCurrentChallengeKey(getChallengeKey());
+          
+          // Don't increment currentLetterIndex here - wait for challenge key
         }
       } else {
         // Normal mode - move to next letter
@@ -310,8 +315,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     bottomRowPitch?: number;
     extremePanning?: boolean;
   }) => {
-    // Process all printable characters (letters, numbers, punctuation)
-    if (key.length !== 1) return; // Only single characters
+    // Process printable characters and special keys needed for challenge modes
+    const allowedSpecialKeys = ['Backspace', 'Enter', 'Delete', 'Return'];
+    if (key.length !== 1 && !allowedSpecialKeys.includes(key)) return;
     
     // Add key to the queue
     keyQueueRef.current.push(key);
