@@ -115,7 +115,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   } else if (awaitingChallengeKey) {
     currentLetter = currentChallengeKey;
   } else {
-    // For challenge modes, divide by 2 since we alternate between letters and challenge keys
+    // For challenge modes, we need the actual letter index
+    // Letters are at positions: 0, 2, 4, 6... (even indices)
+    // Challenge keys are at positions: 1, 3, 5, 7... (odd indices)
     const letterIndex = Math.floor(currentLetterIndex / 2);
     currentLetter = baseSequence[letterIndex] || '';
   }
@@ -254,7 +256,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           setAwaitingChallengeKey(true);
           setCurrentChallengeKey(getChallengeKey());
           
-          // Don't increment currentLetterIndex here - wait for challenge key
+          // Increment by 1 to move to challenge key position
+          setCurrentLetterIndex(prev => prev + 1);
         }
       } else {
         // Normal mode - move to next letter

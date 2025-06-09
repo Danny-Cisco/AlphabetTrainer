@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTyping } from "@/hooks/use-typing";
 import { useAudio } from "@/hooks/use-audio";
+import { Space, Delete, CornerDownLeft } from "lucide-react";
 
 interface TypingInterfaceProps {
   metronomeActive: boolean;
@@ -97,11 +98,6 @@ export default function TypingInterface({
 
   // Handle key press and audio feedback
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Debug Mac key detection
-    if (['Backspace', 'Enter', 'Delete', 'Return'].includes(e.key)) {
-      console.log('Special key detected:', e.key, 'Code:', e.code);
-    }
-    
     handleKeyPress(e.key, {
       speechActive,
       panningActive,
@@ -138,7 +134,15 @@ export default function TypingInterface({
         {/* Current Letter Display */}
         <div className="text-center mb-8">
           <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
-            {currentLetter}
+            {currentLetter === ' ' ? (
+              <Space size={120} className="text-blue-500 dark:text-blue-400" />
+            ) : currentLetter === 'Backspace' ? (
+              <Delete size={120} className="text-blue-500 dark:text-blue-400" />
+            ) : currentLetter === 'Enter' ? (
+              <CornerDownLeft size={120} className="text-blue-500 dark:text-blue-400" />
+            ) : (
+              currentLetter
+            )}
           </div>
           
           {/* Progress bar */}
