@@ -188,12 +188,15 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     const keyPressed = keyQueueRef.current.shift()!;
     let keyToCheck: string;
     
-    // Handle special keys properly
+    // Debug logging for Mac compatibility
+    console.log('Key pressed:', keyPressed, 'Code:', keyPressed);
+    
+    // Handle special keys properly (Mac compatibility)
     if (keyPressed === ' ') {
       keyToCheck = ' ';
-    } else if (keyPressed === 'Enter') {
+    } else if (keyPressed === 'Enter' || keyPressed === 'Return') {
       keyToCheck = 'Enter';
-    } else if (keyPressed === 'Backspace') {
+    } else if (keyPressed === 'Backspace' || keyPressed === 'Delete') {
       keyToCheck = 'Backspace';
     } else {
       keyToCheck = keyPressed.toUpperCase();
