@@ -73,13 +73,13 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     setRandomSequence(generateRandomSequence());
   };
 
-  // Reset stats when sequence type or character options change
+  // Reset stats when sequence type, character options, or challenge mode change
   useEffect(() => {
     resetCurrentStats();
     if (sequenceType === 'custom') {
       setRandomSequence(generateRandomSequence());
     }
-  }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation]);
+  }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation, challengeMode]);
   
   // Sequence attempt tracking
   interface SequenceAttempt {
@@ -110,10 +110,14 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   
   // Determine what we're expecting next
   let currentLetter: string;
-  if (awaitingChallengeKey) {
+  if (challengeMode === 'none') {
+    currentLetter = baseSequence[currentLetterIndex] || '';
+  } else if (awaitingChallengeKey) {
     currentLetter = currentChallengeKey;
   } else {
-    currentLetter = baseSequence[Math.floor(currentLetterIndex / (challengeMode === 'none' ? 1 : 2))];
+    // For challenge modes, divide by 2 since we alternate between letters and challenge keys
+    const letterIndex = Math.floor(currentLetterIndex / 2);
+    currentLetter = baseSequence[letterIndex] || '';
   }
   
   const letterDisplayRef = useRef<HTMLDivElement>(null);
@@ -182,7 +186,18 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     
     // Get the next key from the queue
     const keyPressed = keyQueueRef.current.shift()!;
-    const keyToCheck = keyPressed === ' ' ? ' ' : (keyPressed === 'Enter' ? 'Enter' : (keyPressed === 'Backspace' ? 'Backspace' : keyPressed.toUpperCase()));
+    let keyToCheck: string;
+    
+    // Handle special keys properly
+    if (keyPressed === ' ') {
+      keyToCheck = ' ';
+    } else if (keyPressed === 'Enter') {
+      keyToCheck = 'Enter';
+    } else if (keyPressed === 'Backspace') {
+      keyToCheck = 'Backspace';
+    } else {
+      keyToCheck = keyPressed.toUpperCase();
+    }
     
     if (keyToCheck === currentLetter) {
       // Correct key press
@@ -223,8 +238,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           const nextIndex = currentLetterIndex + 1;
           setCurrentLetterIndex(nextIndex);
           
-          // Check if sequence is complete
-          if (Math.floor(nextIndex / 2) >= baseSequence.length) {
+          // Check if sequence is complete (we've typed all letters)
+          const actualLetterIndex = Math.floor(nextIndex / 2);
+          if (actualLetterIndex >= baseSequence.length) {
             setTimeout(() => completeSequence(currentCorrectCount + 1, currentErrorCount), 100);
           }
         } else {
