@@ -19,6 +19,7 @@ interface TypingInterfaceProps {
   includeNumbers: boolean;
   includeCommonPunctuation: boolean;
   includeExtendedPunctuation: boolean;
+  challengeMode: string;
 }
 
 export default function TypingInterface({
@@ -37,7 +38,8 @@ export default function TypingInterface({
   includeLetters,
   includeNumbers,
   includeCommonPunctuation,
-  includeExtendedPunctuation
+  includeExtendedPunctuation,
+  challengeMode
 }: TypingInterfaceProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -53,13 +55,15 @@ export default function TypingInterface({
     handleKeyPress,
     letterDisplayRef,
     regenerateRandomSequence,
-    resetCurrentStats
+    resetCurrentStats,
+    awaitingChallengeKey,
+    challengeMode: currentChallengeMode
   } = useTyping(sequenceType, {
     includeLetters,
     includeNumbers,
     includeCommonPunctuation,
     includeExtendedPunctuation
-  });
+  }, challengeMode);
 
   // Set up audio features
   const { startMetronome, stopMetronome } = useAudio({

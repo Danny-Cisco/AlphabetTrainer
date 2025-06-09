@@ -8,7 +8,7 @@ interface CharacterOptions {
   includeExtendedPunctuation: boolean;
 }
 
-export function useTyping(sequenceType = 'alphabet', characterOptions?: CharacterOptions) {
+export function useTyping(sequenceType = 'alphabet', characterOptions?: CharacterOptions, challengeMode = 'none') {
   // Different character sets
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const NUMBERS = '0123456789';
@@ -63,6 +63,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     setCurrentLetterIndex(0);
     setCurrentCorrectCount(0);
     setCurrentErrorCount(0);
+    setAwaitingChallengeKey(false);
+    setCurrentChallengeKey('');
   };
 
   // Function to generate a new random sequence
@@ -98,13 +100,38 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     ? Math.round((currentCorrectCount / (currentCorrectCount + currentErrorCount)) * 100)
     : 100;
   
+  // Challenge mode state
+  const [awaitingChallengeKey, setAwaitingChallengeKey] = useState(false);
+  const [currentChallengeKey, setCurrentChallengeKey] = useState<string>('');
+  
   // Get the current sequence and letter
   const activeSequence = getActiveSequence();
-  const currentLetter = activeSequence[currentLetterIndex];
+  const baseSequence = activeSequence;
+  
+  // Determine what we're expecting next
+  let currentLetter: string;
+  if (awaitingChallengeKey) {
+    currentLetter = currentChallengeKey;
+  } else {
+    currentLetter = baseSequence[Math.floor(currentLetterIndex / (challengeMode === 'none' ? 1 : 2))];
+  }
   
   const letterDisplayRef = useRef<HTMLDivElement>(null);
   
   const { speakLetter, playKeySound, playToneForLetter } = useAudio({});
+  
+  // Function to get the required challenge key
+  const getChallengeKey = () => {
+    switch (challengeMode) {
+      case 'space': return ' ';
+      case 'delete': return 'Backspace';
+      case 'return': return 'Enter';
+      case 'random': 
+        const randomKeys = [' ', 'Backspace', 'Enter'];
+        return randomKeys[Math.floor(Math.random() * randomKeys.length)];
+      default: return '';
+    }
+  };
   
   // Function to complete current sequence and add to history
   const completeSequence = (finalCorrectCount?: number, finalErrorCount?: number) => {
@@ -154,9 +181,10 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     }
     
     // Get the next key from the queue
-    const keyPressed = keyQueueRef.current.shift()!.toUpperCase();
+    const keyPressed = keyQueueRef.current.shift()!;
+    const keyToCheck = keyPressed === ' ' ? ' ' : (keyPressed === 'Enter' ? 'Enter' : (keyPressed === 'Backspace' ? 'Backspace' : keyPressed.toUpperCase()));
     
-    if (keyPressed === currentLetter) {
+    if (keyToCheck === currentLetter) {
       // Correct key press
       setCurrentCorrectCount(prev => prev + 1);
       
@@ -186,14 +214,33 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
         });
       }
       
-      // Move to next letter first
-      const nextIndex = currentLetterIndex + 1;
-      setCurrentLetterIndex(nextIndex);
-      
-      // Check if sequence is complete after moving
-      if (nextIndex >= getActiveSequence().length) {
-        // Sequence completed - complete this attempt with the final correct count
-        setTimeout(() => completeSequence(currentCorrectCount + 1, currentErrorCount), 100);
+      // Handle challenge mode progression
+      if (challengeMode !== 'none') {
+        if (awaitingChallengeKey) {
+          // Just completed a challenge key, move to next letter
+          setAwaitingChallengeKey(false);
+          setCurrentChallengeKey('');
+          const nextIndex = currentLetterIndex + 1;
+          setCurrentLetterIndex(nextIndex);
+          
+          // Check if sequence is complete
+          if (Math.floor(nextIndex / 2) >= baseSequence.length) {
+            setTimeout(() => completeSequence(currentCorrectCount + 1, currentErrorCount), 100);
+          }
+        } else {
+          // Just completed a letter, now need challenge key
+          setAwaitingChallengeKey(true);
+          setCurrentChallengeKey(getChallengeKey());
+        }
+      } else {
+        // Normal mode - move to next letter
+        const nextIndex = currentLetterIndex + 1;
+        setCurrentLetterIndex(nextIndex);
+        
+        // Check if sequence is complete
+        if (nextIndex >= getActiveSequence().length) {
+          setTimeout(() => completeSequence(currentCorrectCount + 1, currentErrorCount), 100);
+        }
       }
       
       // Reset the letter color after a short delay for visual feedback
@@ -323,6 +370,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     handleKeyPress,
     letterDisplayRef,
     regenerateRandomSequence,
-    resetCurrentStats
+    resetCurrentStats,
+    awaitingChallengeKey,
+    challengeMode
   };
 }
