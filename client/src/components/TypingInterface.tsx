@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTyping } from "@/hooks/use-typing";
 import { useAudio } from "@/hooks/use-audio";
 import { Space, Delete, CornerDownLeft } from "lucide-react";
+import confetti from "canvas-confetti";
 
 interface TypingInterfaceProps {
   metronomeActive: boolean;
@@ -87,6 +88,17 @@ export default function TypingInterface({
     return () => stopMetronome();
   }, [metronomeActive, bpm, startMetronome, stopMetronome]);
 
+  // Monitor for perfect scores and trigger confetti
+  useEffect(() => {
+    if (sequenceAttempts.length > 0) {
+      const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
+      if (latestAttempt.accuracy === 100) {
+        // Trigger confetti after a short delay to let the UI update
+        setTimeout(triggerConfetti, 300);
+      }
+    }
+  }, [sequenceAttempts]);
+
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
     resetCurrentStats(); // Reset stats when starting
@@ -94,6 +106,42 @@ export default function TypingInterface({
       hiddenInputRef.current.focus();
       setIsFocused(true);
     }
+  };
+
+  // Function to trigger confetti celebration
+  const triggerConfetti = () => {
+    // Fire confetti from multiple positions for a spectacular effect
+    const count = 200;
+    const defaults = {
+      origin: { y: 0.7 }
+    };
+
+    function fire(particleRatio: number, opts: any) {
+      confetti({
+        ...defaults,
+        ...opts,
+        particleCount: Math.floor(count * particleRatio),
+        spread: 26,
+        startVelocity: 55,
+      });
+    }
+
+    // Multiple bursts with different colors and positions
+    fire(0.25, { spread: 26, startVelocity: 55 });
+    fire(0.2, { spread: 60 });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+    fire(0.1, { spread: 120, startVelocity: 45 });
+
+    // Second wave of confetti with blue/gold colors to match theme
+    setTimeout(() => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#3B82F6', '#1D4ED8', '#FBBF24', '#F59E0B']
+      });
+    }, 250);
   };
 
   // Handle key press and audio feedback
