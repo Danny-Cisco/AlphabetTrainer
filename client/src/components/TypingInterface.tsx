@@ -110,11 +110,11 @@ export default function TypingInterface({
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
-    // Subtle confetti from corners - less distracting
+    // Subtle confetti from corners with bigger pieces
     const particleCount = 50;
     const colors = ['#3B82F6', '#1D4ED8', '#FBBF24', '#F59E0B'];
 
-    // Left side confetti
+    // Left side confetti with bigger pieces
     confetti({
       particleCount,
       spread: 60,
@@ -123,10 +123,10 @@ export default function TypingInterface({
       colors,
       startVelocity: 35,
       gravity: 0.8,
-      scalar: 0.8
+      scalar: 1.8
     });
 
-    // Right side confetti  
+    // Right side confetti with bigger pieces
     setTimeout(() => {
       confetti({
         particleCount,
@@ -136,11 +136,11 @@ export default function TypingInterface({
         colors,
         startVelocity: 35,
         gravity: 0.8,
-        scalar: 0.8
+        scalar: 1.8
       });
     }, 150);
 
-    // Top corners - very subtle
+    // Top corners with bigger pieces
     setTimeout(() => {
       confetti({
         particleCount: 30,
@@ -150,7 +150,7 @@ export default function TypingInterface({
         colors,
         startVelocity: 25,
         gravity: 0.6,
-        scalar: 0.6
+        scalar: 1.5
       });
       
       confetti({
@@ -161,7 +161,7 @@ export default function TypingInterface({
         colors,
         startVelocity: 25,
         gravity: 0.6,
-        scalar: 0.6
+        scalar: 1.5
       });
     }, 300);
   };
