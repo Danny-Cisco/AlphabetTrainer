@@ -110,9 +110,25 @@ export default function TypingInterface({
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
-    // Subtle confetti from corners with bigger pieces
+    // Subtle confetti from corners with bigger pieces and rainbow colors
     const particleCount = 50;
-    const colors = ['#3B82F6', '#1D4ED8', '#FBBF24', '#F59E0B'];
+    const colors = [
+      '#FF0000', // Red
+      '#FF7F00', // Orange
+      '#FFFF00', // Yellow
+      '#00FF00', // Green
+      '#0000FF', // Blue
+      '#4B0082', // Indigo
+      '#9400D3', // Violet
+      '#FF1493', // Deep Pink
+      '#00CED1', // Dark Turquoise
+      '#FFD700', // Gold
+      '#FF6347', // Tomato
+      '#32CD32', // Lime Green
+      '#8A2BE2', // Blue Violet
+      '#FF69B4', // Hot Pink
+      '#00FF7F'  // Spring Green
+    ];
 
     // Left side confetti with bigger pieces
     confetti({
