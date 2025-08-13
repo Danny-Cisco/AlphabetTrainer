@@ -22,6 +22,7 @@ interface TypingInterfaceProps {
   includeCommonPunctuation: boolean;
   includeExtendedPunctuation: boolean;
   challengeMode: string;
+  restartOnFail: boolean;
 }
 
 export default function TypingInterface({
@@ -41,7 +42,8 @@ export default function TypingInterface({
   includeNumbers,
   includeCommonPunctuation,
   includeExtendedPunctuation,
-  challengeMode
+  challengeMode,
+  restartOnFail
 }: TypingInterfaceProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -65,7 +67,7 @@ export default function TypingInterface({
     includeNumbers,
     includeCommonPunctuation,
     includeExtendedPunctuation
-  }, challengeMode);
+  }, challengeMode, restartOnFail);
 
   // Set up audio features
   const { startMetronome, stopMetronome } = useAudio({

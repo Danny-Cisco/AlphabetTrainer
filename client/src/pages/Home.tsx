@@ -1,6 +1,7 @@
 import TypingInterface from "@/components/TypingInterface";
 import ControlPanel from "@/components/ControlPanel";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Switch as SwitchComponent } from "@/components/ui/switch";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -34,6 +35,9 @@ export default function Home() {
   
   // Challenge modes - require additional key presses between characters
   const [challengeMode, setChallengeMode] = useState('none'); // 'none', 'space', 'delete', 'return', 'random'
+  
+  // Restart on fail - restarts sequence when user makes a mistake
+  const [restartOnFail, setRestartOnFail] = useState(false);
   
   // Force sequence regeneration trigger
   const [sequenceKey, setSequenceKey] = useState(0);
@@ -104,6 +108,7 @@ export default function Home() {
               includeCommonPunctuation={includeCommonPunctuation}
               includeExtendedPunctuation={includeExtendedPunctuation}
               challengeMode={challengeMode}
+              restartOnFail={restartOnFail}
             />
             
             {/* Control Panel Toggle Buttons */}
@@ -200,6 +205,21 @@ export default function Home() {
                   Disable Challenge Mode
                 </button>
               )}
+            </div>
+            
+            {/* Restart on Fail Setting */}
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Settings</h3>
+              <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <div>
+                  <label className="font-medium text-gray-700 dark:text-gray-300">Restart on Fail</label>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Automatically restart sequence when you make a mistake</p>
+                </div>
+                <SwitchComponent
+                  checked={restartOnFail}
+                  onCheckedChange={setRestartOnFail}
+                />
+              </div>
             </div>
             
             {/* Collapsible Alphabet Controls */}

@@ -8,7 +8,7 @@ interface CharacterOptions {
   includeExtendedPunctuation: boolean;
 }
 
-export function useTyping(sequenceType = 'alphabet', characterOptions?: CharacterOptions, challengeMode = 'none') {
+export function useTyping(sequenceType = 'alphabet', characterOptions?: CharacterOptions, challengeMode = 'none', restartOnFail = false) {
   // Different character sets
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const NUMBERS = '0123456789';
@@ -294,16 +294,29 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
         playKeySound(false, { volume: options.volume / 100 });
       }
       
-      // Reset after brief delay
-      setTimeout(() => {
-        if (letterDisplayRef.current) {
-          letterDisplayRef.current.classList.remove('text-red-500');
-          letterDisplayRef.current.classList.add('text-blue-500');
-        }
-        
-        // Process the next key in the queue if it exists
-        processNextKey(options);
-      }, 100); // Reduced delay for faster typing response
+      // Check if restart on fail is enabled
+      if (restartOnFail) {
+        // Reset the sequence immediately on error
+        setTimeout(() => {
+          resetCurrentStats();
+          if (letterDisplayRef.current) {
+            letterDisplayRef.current.classList.remove('text-red-500');
+            letterDisplayRef.current.classList.add('text-blue-500');
+          }
+          processNextKey(options);
+        }, 300); // Slightly longer delay to show the error
+      } else {
+        // Normal behavior - reset after brief delay
+        setTimeout(() => {
+          if (letterDisplayRef.current) {
+            letterDisplayRef.current.classList.remove('text-red-500');
+            letterDisplayRef.current.classList.add('text-blue-500');
+          }
+          
+          // Process the next key in the queue if it exists
+          processNextKey(options);
+        }, 100); // Reduced delay for faster typing response
+      }
     }
   }, [currentLetter, speakLetter, playKeySound, playToneForLetter]);
   
