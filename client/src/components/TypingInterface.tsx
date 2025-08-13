@@ -63,7 +63,8 @@ export default function TypingInterface({
     awaitingChallengeKey,
     challengeMode: currentChallengeMode,
     bestProgress,
-    resetAllStats
+    resetAllStats,
+    allAttempts
   } = useTyping(sequenceType, {
     includeLetters,
     includeNumbers,
@@ -299,19 +300,59 @@ export default function TypingInterface({
             </div>
           </div>
           
-          {/* Best Progress Display - only show when restart on fail is enabled and there's progress */}
-          {restartOnFail && bestProgress > 0 && (
-            <div className="mt-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded p-3">
-              <div className="flex items-center justify-between">
+          {/* All Attempts History - show when restart on fail is enabled and there are attempts */}
+          {restartOnFail && allAttempts.length > 0 && (
+            <div className="mt-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded p-4">
+              <div className="flex items-center justify-between mb-3">
                 <div>
-                  <p className="text-xs text-amber-700 dark:text-amber-300 font-medium">Best Progress</p>
-                  <p className="text-sm text-amber-800 dark:text-amber-200">
-                    Made it to character {bestProgress + 1} of {getSequenceLength()}
+                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Attempt History</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    {allAttempts.length} attempt{allAttempts.length === 1 ? '' : 's'} • Best: {bestProgress + 1}/{getSequenceLength()}
                   </p>
                 </div>
-                <div className="text-lg font-mono font-bold text-amber-600 dark:text-amber-400">
-                  {Math.round((bestProgress / getSequenceLength()) * 100)}%
-                </div>
+                <button
+                  onClick={() => resetAllStats()}
+                  className="text-xs px-2 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded transition-colors"
+                >
+                  Clear History
+                </button>
+              </div>
+              
+              {/* Visual progress bars for each attempt */}
+              <div className="space-y-1">
+                {allAttempts.slice(-10).map((attempt, index) => (
+                  <div key={attempt.timestamp} className="flex items-center gap-2">
+                    <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-8">
+                      #{allAttempts.length - allAttempts.slice(-10).length + index + 1}
+                    </span>
+                    <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2 relative">
+                      <div 
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          attempt.progress === bestProgress 
+                            ? 'bg-green-500 dark:bg-green-400' 
+                            : attempt.progress === 0
+                            ? 'bg-red-500 dark:bg-red-400'
+                            : 'bg-blue-500 dark:bg-blue-400'
+                        }`}
+                        style={{ width: `${Math.max(2, (attempt.progress / getSequenceLength()) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-mono text-slate-600 dark:text-slate-400 w-8">
+                      {attempt.progress}
+                    </span>
+                    {attempt.progress === 0 && (
+                      <span className="text-xs text-red-500 dark:text-red-400">💀</span>
+                    )}
+                    {attempt.progress === bestProgress && attempt.progress > 0 && (
+                      <span className="text-xs text-green-500 dark:text-green-400">🎯</span>
+                    )}
+                  </div>
+                ))}
+                {allAttempts.length > 10 && (
+                  <p className="text-xs text-slate-500 dark:text-slate-400 text-center pt-1">
+                    Showing last 10 of {allAttempts.length} attempts
+                  </p>
+                )}
               </div>
             </div>
           )}

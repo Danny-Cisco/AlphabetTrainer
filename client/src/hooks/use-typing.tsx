@@ -71,6 +71,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const resetAllStats = () => {
     resetCurrentStats();
     setBestProgress(0);
+    setAllAttempts([]);
   };
 
   // Function to generate a new random sequence
@@ -101,6 +102,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const [currentErrorCount, setCurrentErrorCount] = useState(0);
   const [sequenceAttempts, setSequenceAttempts] = useState<SequenceAttempt[]>([]);
   const [bestProgress, setBestProgress] = useState(0);
+  const [allAttempts, setAllAttempts] = useState<Array<{progress: number, timestamp: number}>>([]);
   
   // Current sequence stats
   const currentAccuracy = currentCorrectCount + currentErrorCount > 0 
@@ -307,6 +309,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           ? currentLetterIndex 
           : Math.floor(currentLetterIndex / 2);
         
+        // Record this attempt in the history
+        setAllAttempts(prev => [...prev, { progress: currentProgress, timestamp: Date.now() }]);
+        
         // Update best progress if this attempt got further
         if (currentProgress > bestProgress) {
           setBestProgress(currentProgress);
@@ -441,6 +446,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     awaitingChallengeKey,
     challengeMode,
     bestProgress,
-    resetAllStats
+    resetAllStats,
+    allAttempts
   };
 }
