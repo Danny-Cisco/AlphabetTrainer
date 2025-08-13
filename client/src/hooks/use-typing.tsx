@@ -67,6 +67,12 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     setCurrentChallengeKey('');
   };
 
+  // Function to reset everything including progress tracking
+  const resetAllStats = () => {
+    resetCurrentStats();
+    setBestProgress(0);
+  };
+
   // Function to generate a new random sequence
   const regenerateRandomSequence = () => {
     resetCurrentStats();
@@ -75,7 +81,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
 
   // Reset stats when sequence type, character options, or challenge mode change
   useEffect(() => {
-    resetCurrentStats();
+    resetAllStats();
     if (sequenceType === 'custom') {
       setRandomSequence(generateRandomSequence());
     }
@@ -94,6 +100,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const [currentCorrectCount, setCurrentCorrectCount] = useState(0);
   const [currentErrorCount, setCurrentErrorCount] = useState(0);
   const [sequenceAttempts, setSequenceAttempts] = useState<SequenceAttempt[]>([]);
+  const [bestProgress, setBestProgress] = useState(0);
   
   // Current sequence stats
   const currentAccuracy = currentCorrectCount + currentErrorCount > 0 
@@ -226,7 +233,6 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           pan: options.panningActive ? getPanValueForLetter(currentLetter, options.extremePanning) : 0,
           volume: options.volume / 100,
           panningActive: options.panningActive,
-          numberRowPitch: options.numberRowPitch || 1000,
           topRowPitch: options.topRowPitch || 750,
           middleRowPitch: options.middleRowPitch || 500,
           bottomRowPitch: options.bottomRowPitch || 250
@@ -296,6 +302,22 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       
       // Check if restart on fail is enabled
       if (restartOnFail) {
+        // Track progress - how many characters were typed correctly
+        const currentProgress = challengeMode === 'none' 
+          ? currentLetterIndex 
+          : Math.floor(currentLetterIndex / 2);
+        
+        // Update best progress if this attempt got further
+        if (currentProgress > bestProgress) {
+          setBestProgress(currentProgress);
+        }
+        
+        // Enhanced visual feedback - make the whole interface briefly flash red
+        const interfaceElement = letterDisplayRef.current?.closest('.typing-interface');
+        if (interfaceElement) {
+          interfaceElement.classList.add('bg-red-100', 'dark:bg-red-900');
+        }
+        
         // Reset the sequence immediately on error
         setTimeout(() => {
           resetCurrentStats();
@@ -303,8 +325,12 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
             letterDisplayRef.current.classList.remove('text-red-500');
             letterDisplayRef.current.classList.add('text-blue-500');
           }
+          // Remove the red background flash
+          if (interfaceElement) {
+            interfaceElement.classList.remove('bg-red-100', 'dark:bg-red-900');
+          }
           processNextKey(options);
-        }, 300); // Slightly longer delay to show the error
+        }, 500); // Longer delay to show the error clearly
       } else {
         // Normal behavior - reset after brief delay
         setTimeout(() => {
@@ -413,6 +439,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     regenerateRandomSequence,
     resetCurrentStats,
     awaitingChallengeKey,
-    challengeMode
+    challengeMode,
+    bestProgress,
+    resetAllStats
   };
 }

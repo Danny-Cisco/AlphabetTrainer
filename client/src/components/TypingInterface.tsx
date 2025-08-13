@@ -61,7 +61,9 @@ export default function TypingInterface({
     regenerateRandomSequence,
     resetCurrentStats,
     awaitingChallengeKey,
-    challengeMode: currentChallengeMode
+    challengeMode: currentChallengeMode,
+    bestProgress,
+    resetAllStats
   } = useTyping(sequenceType, {
     includeLetters,
     includeNumbers,
@@ -191,7 +193,6 @@ export default function TypingInterface({
       panningActive,
       keySoundsActive,
       volume,
-      numberRowPitch,
       topRowPitch,
       middleRowPitch,
       bottomRowPitch,
@@ -217,7 +218,7 @@ export default function TypingInterface({
   const progressPercentage = ((currentLetterIndex) / (getSequenceLength() - 1)) * 100;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-8">
+    <div className="typing-interface bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-8 transition-all duration-300">
       <div className="p-6">
         {/* Current Letter Display */}
         <div className="text-center mb-8">
@@ -297,6 +298,23 @@ export default function TypingInterface({
               <p className="text-2xl font-mono font-semibold text-gray-800 dark:text-gray-200">{accuracy}%</p>
             </div>
           </div>
+          
+          {/* Best Progress Display - only show when restart on fail is enabled and there's progress */}
+          {restartOnFail && bestProgress > 0 && (
+            <div className="mt-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded p-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-amber-700 dark:text-amber-300 font-medium">Best Progress</p>
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
+                    Made it to character {bestProgress + 1} of {getSequenceLength()}
+                  </p>
+                </div>
+                <div className="text-lg font-mono font-bold text-amber-600 dark:text-amber-400">
+                  {Math.round((bestProgress / getSequenceLength()) * 100)}%
+                </div>
+              </div>
+            </div>
+          )}
           
           {/* Sequence Attempts History */}
           {sequenceAttempts.length > 0 && (

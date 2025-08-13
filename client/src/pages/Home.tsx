@@ -37,7 +37,7 @@ export default function Home() {
   const [challengeMode, setChallengeMode] = useState('none'); // 'none', 'space', 'delete', 'return', 'random'
   
   // Restart on fail - restarts sequence when user makes a mistake
-  const [restartOnFail, setRestartOnFail] = useState(false);
+  const [restartOnFail, setRestartOnFail] = useState(true);
   
   // Force sequence regeneration trigger
   const [sequenceKey, setSequenceKey] = useState(0);
