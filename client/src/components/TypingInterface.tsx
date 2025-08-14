@@ -66,7 +66,8 @@ export default function TypingInterface({
     resetAllStats,
     allAttempts,
     isWaitingToStart,
-    startNewAttempt
+    startNewAttempt,
+    getActiveSequence
   } = useTyping(sequenceType, {
     includeLetters,
     includeNumbers,
@@ -214,18 +215,9 @@ export default function TypingInterface({
     });
   };
 
-  // Get sequence length based on sequence type
+  // Get sequence length based on sequence type - should match actual sequence
   const getSequenceLength = () => {
-    if (sequenceType === 'custom') {
-      // Calculate based on selected character types
-      let length = 0;
-      if (includeLetters) length += 26;
-      if (includeNumbers) length += 10;
-      if (includeCommonPunctuation) length += 12;
-      if (includeExtendedPunctuation) length += 18;
-      return length || 26; // Default to 26 if nothing selected
-    }
-    return 26; // Standard alphabet sequences
+    return getActiveSequence().length;
   };
   
   // Calculate progress percentage

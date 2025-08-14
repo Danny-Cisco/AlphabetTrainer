@@ -520,6 +520,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     resetAllStats,
     allAttempts,
     isWaitingToStart,
-    startNewAttempt
+    startNewAttempt,
+    getActiveSequence
   };
 }
