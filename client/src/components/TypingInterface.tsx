@@ -106,6 +106,17 @@ export default function TypingInterface({
     }
   }, [sequenceAttempts]);
 
+  // Monitor for completed attempts in restart-on-fail mode and trigger confetti
+  useEffect(() => {
+    if (restartOnFail && allAttempts.length > 0) {
+      const latestAttempt = allAttempts[allAttempts.length - 1];
+      if (latestAttempt.completed) {
+        // Trigger confetti after a short delay to let the UI update
+        setTimeout(triggerConfetti, 300);
+      }
+    }
+  }, [allAttempts, restartOnFail]);
+
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
     resetCurrentStats(); // Reset stats when starting
@@ -320,7 +331,7 @@ export default function TypingInterface({
                 <div>
                   <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Attempt History</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {allAttempts.length} attempt{allAttempts.length === 1 ? '' : 's'} • Best: {bestProgress + 1}/{getSequenceLength()}
+                    {allAttempts.length} attempt{allAttempts.length === 1 ? '' : 's'} • Best: {bestProgress}/{getSequenceLength()}
                     {allAttempts.some(a => a.cps) && (
                       <>
                         {' • '}Average: {(
