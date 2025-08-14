@@ -104,6 +104,14 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     accuracy: number;
     sequenceType: string;
     completed: boolean;
+    cps?: number;
+  }
+
+  interface AttemptHistory {
+    progress: number;
+    timestamp: number;
+    completed: boolean;
+    cps?: number;
   }
 
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -111,7 +119,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const [currentErrorCount, setCurrentErrorCount] = useState(0);
   const [sequenceAttempts, setSequenceAttempts] = useState<SequenceAttempt[]>([]);
   const [bestProgress, setBestProgress] = useState(0);
-  const [allAttempts, setAllAttempts] = useState<Array<{progress: number, timestamp: number, completed: boolean, timePerChar?: number}>>([]);
+  const [allAttempts, setAllAttempts] = useState<AttemptHistory[]>([]);
   const [isWaitingToStart, setIsWaitingToStart] = useState(true);
   const [attemptStartTime, setAttemptStartTime] = useState<number | null>(null);
   

@@ -360,23 +360,24 @@ export default function TypingInterface({
                         style={{ width: `${Math.max(2, (attempt.progress / getSequenceLength()) * 100)}%` }}
                       />
                     </div>
-                    <span className="text-xs font-mono text-slate-600 dark:text-slate-400 w-8">
-                      {attempt.progress}
-                    </span>
-                    {attempt.cps && attempt.progress > 0 && (
-                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-16">
-                        {attempt.cps.toFixed(2)} cps
+                    <div className="flex items-center gap-1 min-w-[140px] justify-end">
+                      <span className="text-xs font-mono text-slate-600 dark:text-slate-400 w-4 text-right">
+                        {attempt.progress}
                       </span>
-                    )}
-                    {attempt.progress === 0 && (
-                      <span className="text-xs text-red-500 dark:text-red-400">💀</span>
-                    )}
-                    {attempt.progress === bestProgress && attempt.progress > 0 && (
-                      <span className="text-xs text-green-500 dark:text-green-400">🎯</span>
-                    )}
-                    {attempt.completed && (
-                      <span className="text-xs text-blue-500 dark:text-blue-400">✓</span>
-                    )}
+                      <span className="text-xs font-mono text-slate-600 dark:text-slate-400">/</span>
+                      <span className="text-xs font-mono text-slate-600 dark:text-slate-400 w-6">
+                        {getSequenceLength()}
+                      </span>
+                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-20 text-right">
+                        {attempt.cps && attempt.progress > 0 ? `${attempt.cps.toFixed(2)} cps` : '0.00 cps'}
+                      </span>
+                      <span className="text-xs w-4 text-center">
+                        {attempt.progress === 0 && '💀'}
+                        {attempt.progress === bestProgress && attempt.progress > 0 && '🎯'}
+                        {attempt.completed && '✓'}
+                        {attempt.progress > 0 && !attempt.completed && attempt.progress !== bestProgress && ' '}
+                      </span>
+                    </div>
                   </div>
                 ))}
                 {allAttempts.length > 10 && (
