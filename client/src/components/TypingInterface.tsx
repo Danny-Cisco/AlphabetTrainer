@@ -238,12 +238,43 @@ export default function TypingInterface({
         <div className="text-center mb-8">
           {isWaitingToStart ? (
             <div className="h-48 flex flex-col items-center justify-center">
-              <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+              <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-2">
                 Press Space to Start
               </div>
-              <div className="text-lg text-gray-500 dark:text-gray-500">
-                Get ready to type the sequence
-              </div>
+              
+              {/* Show last attempt stats if available */}
+              {allAttempts.length > 0 && (() => {
+                const lastAttempt = allAttempts[allAttempts.length - 1];
+                return (
+                  <div className="text-center mb-2">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Last: {lastAttempt.progress}/{getSequenceLength()}
+                      {lastAttempt.cps && ` • ${lastAttempt.cps.toFixed(2)} cps`}
+                      {lastAttempt.completed && ' • Complete ✓'}
+                      {lastAttempt.progress === 0 && ' • Failed 💀'}
+                    </div>
+                  </div>
+                );
+              })()}
+              
+              {/* First time user instruction */}
+              {allAttempts.length === 0 && (
+                <div className="text-center">
+                  <div className="text-sm text-orange-600 dark:text-orange-400 font-medium mb-1">
+                    First time? Click "Start Application" button to capture keyboard
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">
+                    Then press Space to begin typing
+                  </div>
+                </div>
+              )}
+              
+              {/* Returning user instruction */}
+              {allAttempts.length > 0 && (
+                <div className="text-xs text-gray-500 dark:text-gray-500">
+                  Get ready to type the sequence
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
