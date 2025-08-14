@@ -238,12 +238,54 @@ export default function TypingInterface({
         <div className="text-center mb-8">
           {isWaitingToStart ? (
             <div className="h-48 flex flex-col items-center justify-center">
-              <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
-                Press Space to Start
-              </div>
-              <div className="text-lg text-gray-500 dark:text-gray-500">
-                Get ready to type the sequence
-              </div>
+              {!isFocused ? (
+                <>
+                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+                    Press Start to Capture Keyboard
+                  </div>
+                  <div className="text-lg text-gray-500 dark:text-gray-500">
+                    Click the Start button below to begin typing
+                  </div>
+                </>
+              ) : allAttempts.length > 0 ? (
+                <>
+                  {/* Show stats from the last attempt */}
+                  {(() => {
+                    const lastAttempt = allAttempts[allAttempts.length - 1];
+                    return (
+                      <>
+                        <div className="text-6xl font-bold mb-4">
+                          {lastAttempt.completed ? (
+                            <span className="text-green-500 dark:text-green-400">✓ PERFECT!</span>
+                          ) : (
+                            <span className="text-red-500 dark:text-red-400">💀 FAILED</span>
+                          )}
+                        </div>
+                        <div className="text-3xl font-mono font-bold text-gray-700 dark:text-gray-300 mb-2">
+                          {lastAttempt.progress}/{getSequenceLength()}
+                        </div>
+                        {lastAttempt.cps && (
+                          <div className="text-2xl font-mono text-gray-600 dark:text-gray-400 mb-4">
+                            {lastAttempt.cps.toFixed(2)} cps
+                          </div>
+                        )}
+                        <div className="text-lg text-gray-500 dark:text-gray-500">
+                          Press Space to Start Again
+                        </div>
+                      </>
+                    );
+                  })()}
+                </>
+              ) : (
+                <>
+                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+                    Press Space to Start
+                  </div>
+                  <div className="text-lg text-gray-500 dark:text-gray-500">
+                    Get ready to type the sequence
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
