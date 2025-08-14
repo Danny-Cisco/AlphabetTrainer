@@ -110,7 +110,9 @@ export default function TypingInterface({
   useEffect(() => {
     if (restartOnFail && allAttempts.length > 0) {
       const latestAttempt = allAttempts[allAttempts.length - 1];
+      console.log('Checking latest attempt:', latestAttempt); // Debug log
       if (latestAttempt.completed) {
+        console.log('Triggering confetti for completed attempt!'); // Debug log
         // Trigger confetti after a short delay to let the UI update
         setTimeout(triggerConfetti, 300);
       }
