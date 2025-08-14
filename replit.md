@@ -4,6 +4,15 @@
 
 TypeTone is a web-based typing practice application that focuses on alphabet sequences with audio feedback and metronome timing. The app uses sound cues including speech synthesis, key press sounds, and stereo panning to help users develop muscle memory and improve their typing skills. It supports various character sets (letters, numbers, punctuation) and includes customizable audio features for enhanced learning.
 
+## Recent Changes (August 2025)
+
+- **Enhanced Attempt Tracking System**: Complete overhaul with visual progress bars, timing data, and comprehensive history
+- **Space-to-Start Functionality**: Prevents accidental restarts and ensures accurate timing measurements
+- **Characters Per Second (CPS) Display**: Shows typing speed in intuitive CPS format with 2 decimal precision
+- **Restart-on-Fail Mode Improvements**: Default mode with complete attempt tracking and confetti celebrations
+- **Perfect Alignment System**: All attempt history items display consistently with progress/total format and aligned columns
+- **Dual Confetti Triggers**: Celebrations work in both normal and restart-on-fail modes for completed sequences
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
