@@ -254,24 +254,19 @@ export default function TypingInterface({
                     const lastAttempt = allAttempts[allAttempts.length - 1];
                     return (
                       <>
-                        <div className="text-6xl font-bold mb-4">
-                          {lastAttempt.completed ? (
-                            <span className="text-green-500 dark:text-green-400">✓ PERFECT!</span>
-                          ) : (
-                            <span className="text-red-500 dark:text-red-400">💀 FAILED</span>
-                          )}
+                        <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+                          Press Space to Start
                         </div>
-                        <div className="text-3xl font-mono font-bold text-gray-700 dark:text-gray-300 mb-2">
-                          {lastAttempt.progress}/{getSequenceLength()}
+                        <div className="text-3xl font-mono font-bold mb-2">
+                          <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-gray-300"}>
+                            {lastAttempt.progress}/{getSequenceLength()}
+                          </span>
                         </div>
                         {lastAttempt.cps && (
-                          <div className="text-2xl font-mono text-gray-600 dark:text-gray-400 mb-4">
+                          <div className="text-2xl font-mono text-gray-600 dark:text-gray-400">
                             {lastAttempt.cps.toFixed(2)} cps
                           </div>
                         )}
-                        <div className="text-lg text-gray-500 dark:text-gray-500">
-                          Press Space to Start Again
-                        </div>
                       </>
                     );
                   })()}
