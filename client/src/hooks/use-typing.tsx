@@ -166,11 +166,11 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     const totalAttempts = correctCount + errorCount;
     const accuracy = totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 100;
     
-    // Calculate time per character if we have a start time
-    let timePerChar: number | undefined;
+    // Calculate characters per second if we have a start time
+    let cps: number | undefined;
     if (attemptStartTime) {
       const totalTime = (Date.now() - attemptStartTime) / 1000; // Convert to seconds
-      timePerChar = totalTime / correctCount;
+      cps = correctCount / totalTime;
     }
 
     // Record the completed attempt
@@ -179,7 +179,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       progress: sequenceLength, 
       timestamp: Date.now(), 
       completed: true,
-      timePerChar 
+      cps 
     }]);
 
     // Update best progress
@@ -348,11 +348,11 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           ? currentLetterIndex 
           : Math.floor(currentLetterIndex / 2);
         
-        // Calculate time per character if we have a start time
-        let timePerChar: number | undefined;
+        // Calculate characters per second if we have a start time
+        let cps: number | undefined;
         if (attemptStartTime && currentProgress > 0) {
           const totalTime = (Date.now() - attemptStartTime) / 1000;
-          timePerChar = totalTime / currentProgress;
+          cps = currentProgress / totalTime;
         }
         
         // Record this attempt in the history
@@ -360,7 +360,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           progress: currentProgress, 
           timestamp: Date.now(), 
           completed: false,
-          timePerChar 
+          cps 
         }]);
         
         // Update best progress if this attempt got further

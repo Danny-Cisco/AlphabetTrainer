@@ -321,14 +321,14 @@ export default function TypingInterface({
                   <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Attempt History</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
                     {allAttempts.length} attempt{allAttempts.length === 1 ? '' : 's'} • Best: {bestProgress + 1}/{getSequenceLength()}
-                    {allAttempts.some(a => a.timePerChar) && (
+                    {allAttempts.some(a => a.cps) && (
                       <>
                         {' • '}Average: {(
                           allAttempts
-                            .filter(a => a.timePerChar && a.progress > 0)
-                            .reduce((sum, a) => sum + (a.timePerChar || 0), 0) /
-                          Math.max(1, allAttempts.filter(a => a.timePerChar && a.progress > 0).length)
-                        ).toFixed(2)}s/char
+                            .filter(a => a.cps && a.progress > 0)
+                            .reduce((sum, a) => sum + (a.cps || 0), 0) /
+                          Math.max(1, allAttempts.filter(a => a.cps && a.progress > 0).length)
+                        ).toFixed(2)} cps
                       </>
                     )}
                   </p>
@@ -363,9 +363,9 @@ export default function TypingInterface({
                     <span className="text-xs font-mono text-slate-600 dark:text-slate-400 w-8">
                       {attempt.progress}
                     </span>
-                    {attempt.timePerChar && attempt.progress > 0 && (
-                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-12">
-                        {attempt.timePerChar.toFixed(2)}s
+                    {attempt.cps && attempt.progress > 0 && (
+                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-16">
+                        {attempt.cps.toFixed(2)} cps
                       </span>
                     )}
                     {attempt.progress === 0 && (
