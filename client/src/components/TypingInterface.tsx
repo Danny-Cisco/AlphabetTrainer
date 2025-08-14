@@ -64,7 +64,9 @@ export default function TypingInterface({
     challengeMode: currentChallengeMode,
     bestProgress,
     resetAllStats,
-    allAttempts
+    allAttempts,
+    isWaitingToStart,
+    startNewAttempt
   } = useTyping(sequenceType, {
     includeLetters,
     includeNumbers,
@@ -221,19 +223,30 @@ export default function TypingInterface({
   return (
     <div className="typing-interface bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-8 transition-all duration-300">
       <div className="p-6">
-        {/* Current Letter Display */}
+        {/* Current Letter Display or Press Space to Start */}
         <div className="text-center mb-8">
-          <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
-            {currentLetter === ' ' ? (
-              <Space size={120} className="text-blue-500 dark:text-blue-400" />
-            ) : currentLetter === 'Backspace' ? (
-              <Delete size={120} className="text-blue-500 dark:text-blue-400" />
-            ) : currentLetter === 'Enter' ? (
-              <CornerDownLeft size={120} className="text-blue-500 dark:text-blue-400" />
-            ) : (
-              currentLetter
-            )}
-          </div>
+          {isWaitingToStart ? (
+            <div className="h-48 flex flex-col items-center justify-center">
+              <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+                Press Space to Start
+              </div>
+              <div className="text-lg text-gray-500 dark:text-gray-500">
+                Get ready to type the sequence
+              </div>
+            </div>
+          ) : (
+            <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
+              {currentLetter === ' ' ? (
+                <Space size={120} className="text-blue-500 dark:text-blue-400" />
+              ) : currentLetter === 'Backspace' ? (
+                <Delete size={120} className="text-blue-500 dark:text-blue-400" />
+              ) : currentLetter === 'Enter' ? (
+                <CornerDownLeft size={120} className="text-blue-500 dark:text-blue-400" />
+              ) : (
+                currentLetter
+              )}
+            </div>
+          )}
           
           {/* Progress bar */}
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-6">
@@ -308,6 +321,16 @@ export default function TypingInterface({
                   <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Attempt History</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
                     {allAttempts.length} attempt{allAttempts.length === 1 ? '' : 's'} • Best: {bestProgress + 1}/{getSequenceLength()}
+                    {allAttempts.some(a => a.timePerChar) && (
+                      <>
+                        {' • '}Average: {(
+                          allAttempts
+                            .filter(a => a.timePerChar && a.progress > 0)
+                            .reduce((sum, a) => sum + (a.timePerChar || 0), 0) /
+                          Math.max(1, allAttempts.filter(a => a.timePerChar && a.progress > 0).length)
+                        ).toFixed(2)}s/char
+                      </>
+                    )}
                   </p>
                 </div>
                 <button
@@ -340,11 +363,19 @@ export default function TypingInterface({
                     <span className="text-xs font-mono text-slate-600 dark:text-slate-400 w-8">
                       {attempt.progress}
                     </span>
+                    {attempt.timePerChar && attempt.progress > 0 && (
+                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-12">
+                        {attempt.timePerChar.toFixed(2)}s
+                      </span>
+                    )}
                     {attempt.progress === 0 && (
                       <span className="text-xs text-red-500 dark:text-red-400">💀</span>
                     )}
                     {attempt.progress === bestProgress && attempt.progress > 0 && (
                       <span className="text-xs text-green-500 dark:text-green-400">🎯</span>
+                    )}
+                    {attempt.completed && (
+                      <span className="text-xs text-blue-500 dark:text-blue-400">✓</span>
                     )}
                   </div>
                 ))}
@@ -357,8 +388,8 @@ export default function TypingInterface({
             </div>
           )}
           
-          {/* Sequence Attempts History */}
-          {sequenceAttempts.length > 0 && (
+          {/* Sequence Attempts History - only show when NOT in restart mode */}
+          {!restartOnFail && sequenceAttempts.length > 0 && (
             <div className="mt-6">
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Recent Attempts</h3>
               <div className="space-y-2 max-h-80 overflow-y-auto">

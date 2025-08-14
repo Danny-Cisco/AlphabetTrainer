@@ -72,6 +72,15 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     resetCurrentStats();
     setBestProgress(0);
     setAllAttempts([]);
+    setIsWaitingToStart(true);
+    setAttemptStartTime(null);
+  };
+
+  // Function to start a new attempt
+  const startNewAttempt = () => {
+    setIsWaitingToStart(false);
+    setAttemptStartTime(Date.now());
+    resetCurrentStats();
   };
 
   // Function to generate a new random sequence
@@ -102,7 +111,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const [currentErrorCount, setCurrentErrorCount] = useState(0);
   const [sequenceAttempts, setSequenceAttempts] = useState<SequenceAttempt[]>([]);
   const [bestProgress, setBestProgress] = useState(0);
-  const [allAttempts, setAllAttempts] = useState<Array<{progress: number, timestamp: number}>>([]);
+  const [allAttempts, setAllAttempts] = useState<Array<{progress: number, timestamp: number, completed: boolean, timePerChar?: number}>>([]);
+  const [isWaitingToStart, setIsWaitingToStart] = useState(true);
+  const [attemptStartTime, setAttemptStartTime] = useState<number | null>(null);
   
   // Current sequence stats
   const currentAccuracy = currentCorrectCount + currentErrorCount > 0 
@@ -155,15 +166,43 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     const totalAttempts = correctCount + errorCount;
     const accuracy = totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 100;
     
-    const newAttempt: SequenceAttempt = {
-      correct: correctCount,
-      errors: errorCount,
-      accuracy: accuracy,
-      sequenceType: sequenceType,
-      completed: true
-    };
+    // Calculate time per character if we have a start time
+    let timePerChar: number | undefined;
+    if (attemptStartTime) {
+      const totalTime = (Date.now() - attemptStartTime) / 1000; // Convert to seconds
+      timePerChar = totalTime / correctCount;
+    }
+
+    // Record the completed attempt
+    const sequenceLength = getActiveSequence().length;
+    setAllAttempts(prev => [...prev, { 
+      progress: sequenceLength, 
+      timestamp: Date.now(), 
+      completed: true,
+      timePerChar 
+    }]);
+
+    // Update best progress
+    if (sequenceLength > bestProgress) {
+      setBestProgress(sequenceLength);
+    }
     
-    setSequenceAttempts(prev => [...prev, newAttempt]);
+    // Only add to legacy sequence attempts if not in restart mode
+    if (!restartOnFail) {
+      const newAttempt: SequenceAttempt = {
+        correct: correctCount,
+        errors: errorCount,
+        accuracy: accuracy,
+        sequenceType: sequenceType,
+        completed: true
+      };
+      
+      setSequenceAttempts(prev => [...prev, newAttempt]);
+    }
+    
+    // Set waiting to start for next attempt
+    setIsWaitingToStart(true);
+    setAttemptStartTime(null);
     
     // Reset for new sequence (but keep the same sequence)
     setCurrentLetterIndex(0);
@@ -309,8 +348,20 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           ? currentLetterIndex 
           : Math.floor(currentLetterIndex / 2);
         
+        // Calculate time per character if we have a start time
+        let timePerChar: number | undefined;
+        if (attemptStartTime && currentProgress > 0) {
+          const totalTime = (Date.now() - attemptStartTime) / 1000;
+          timePerChar = totalTime / currentProgress;
+        }
+        
         // Record this attempt in the history
-        setAllAttempts(prev => [...prev, { progress: currentProgress, timestamp: Date.now() }]);
+        setAllAttempts(prev => [...prev, { 
+          progress: currentProgress, 
+          timestamp: Date.now(), 
+          completed: false,
+          timePerChar 
+        }]);
         
         // Update best progress if this attempt got further
         if (currentProgress > bestProgress) {
@@ -325,6 +376,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
         
         // Reset the sequence immediately on error
         setTimeout(() => {
+          setIsWaitingToStart(true);
+          setAttemptStartTime(null);
           resetCurrentStats();
           if (letterDisplayRef.current) {
             letterDisplayRef.current.classList.remove('text-red-500');
@@ -334,7 +387,9 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           if (interfaceElement) {
             interfaceElement.classList.remove('bg-red-100', 'dark:bg-red-900');
           }
-          processNextKey(options);
+          // Clear any pending keystrokes
+          keyQueueRef.current = [];
+          setIsProcessingKey(false);
         }, 500); // Longer delay to show the error clearly
       } else {
         // Normal behavior - reset after brief delay
@@ -362,6 +417,14 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     bottomRowPitch?: number;
     extremePanning?: boolean;
   }) => {
+    // If waiting to start, only accept space key
+    if (isWaitingToStart) {
+      if (key === ' ') {
+        startNewAttempt();
+      }
+      return;
+    }
+    
     // Process printable characters and special keys needed for challenge modes
     const allowedSpecialKeys = ['Backspace', 'Enter', 'Delete', 'Return'];
     if (key.length !== 1 && !allowedSpecialKeys.includes(key)) return;
@@ -374,7 +437,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       setIsProcessingKey(true);
       processNextKey(options);
     }
-  }, [isProcessingKey, processNextKey]);
+  }, [isProcessingKey, processNextKey, isWaitingToStart, startNewAttempt]);
 
   // Helper function to get a pan value based on keyboard position
   function getPanValueForLetter(letter: string, extremePanning: boolean = false): number {
@@ -447,6 +510,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     challengeMode,
     bestProgress,
     resetAllStats,
-    allAttempts
+    allAttempts,
+    isWaitingToStart,
+    startNewAttempt
   };
 }
