@@ -1,8 +1,8 @@
-# TypeTone - Alphabet Typing Practice
+# DigitDojo - Single Character Typing Practice
 
 ## Overview
 
-TypeTone is a web-based typing practice application that focuses on alphabet sequences with audio feedback and metronome timing. The app uses sound cues including speech synthesis, key press sounds, and stereo panning to help users develop muscle memory and improve their typing skills. It supports various character sets (letters, numbers, punctuation) and includes customizable audio features for enhanced learning.
+DigitDojo is a web-based typing practice application that focuses on single character typing practice with audio feedback and metronome timing. The app uses sound cues including speech synthesis, key press sounds, and stereo panning to help users develop muscle memory and improve their typing skills. It supports various character sets (letters, numbers, punctuation) and includes customizable audio features for enhanced learning.
 
 ## Recent Changes (August 2025)
 

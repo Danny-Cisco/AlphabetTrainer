@@ -97,7 +97,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>DigitGym - Single Character Typing Practice</title>
+        <title>DigitDojo - Single Character Typing Practice</title>
         <meta name="description" content="Single character typing practice with advanced audio features to improve your typing speed and accuracy." />
       </Helmet>
       
@@ -105,7 +105,7 @@ export default function Home() {
         <div className="container max-w-4xl mx-auto px-4 py-8">
           <header className="mb-8 flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">DigitGym</h1>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">DigitDojo</h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">Single Character Typing Practice</p>
             </div>
             <ThemeToggle />
