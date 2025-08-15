@@ -157,13 +157,7 @@ export default function Home() {
         <meta name="description" content="Single character typing practice with advanced audio features to improve your typing speed and accuracy." />
       </Helmet>
       
-      <div className={`min-h-screen font-sans transition-colors ${
-        beltPreset === 'white' ? 'bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200' :
-        beltPreset === 'blue' ? 'bg-blue-50 dark:bg-blue-950 text-blue-900 dark:text-blue-100' :
-        beltPreset === 'purple' ? 'bg-purple-50 dark:bg-purple-950 text-purple-900 dark:text-purple-100' :
-        beltPreset === 'brown' ? 'bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-100' :
-        'bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-50'
-      }`}>
+      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors">
         <div className="container max-w-4xl mx-auto px-4 py-8">
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
@@ -255,7 +249,14 @@ export default function Home() {
           </header>
 
           <main>
-            <TypingInterface 
+            <div className={`rounded-lg p-6 transition-colors ${
+              beltPreset === 'white' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100' :
+              beltPreset === 'blue' ? 'bg-blue-600 dark:bg-blue-700 text-white' :
+              beltPreset === 'purple' ? 'bg-purple-600 dark:bg-purple-700 text-white' :
+              beltPreset === 'brown' ? 'bg-amber-700 dark:bg-amber-800 text-white' :
+              'bg-gray-900 dark:bg-black text-white'
+            }`}>
+              <TypingInterface 
               key={`typing-${sequenceKey}`}
               metronomeActive={false}
               speechActive={false}
@@ -277,6 +278,7 @@ export default function Home() {
               restartOnFail={restartOnFail}
               onReset={handleReset}
             />
+            </div>
             
             {/* Control Panel Toggle Buttons */}
             <div className="mt-6 flex justify-center gap-3">
