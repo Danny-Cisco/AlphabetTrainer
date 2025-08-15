@@ -104,7 +104,10 @@ export default function Home() {
       <div className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors">
         <div className="container max-w-4xl mx-auto px-4 py-8">
           <header className="mb-8 flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">DigitGym</h1>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">DigitGym</h1>
+              <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">Single Character Typing Practice</p>
+            </div>
             <ThemeToggle />
           </header>
 
