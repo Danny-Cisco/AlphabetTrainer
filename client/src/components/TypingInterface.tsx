@@ -23,6 +23,7 @@ interface TypingInterfaceProps {
   includeExtendedPunctuation: boolean;
   challengeMode: string;
   restartOnFail: boolean;
+  onReset: () => void;
 }
 
 export default function TypingInterface({
@@ -43,7 +44,8 @@ export default function TypingInterface({
   includeCommonPunctuation,
   includeExtendedPunctuation,
   challengeMode,
-  restartOnFail
+  restartOnFail,
+  onReset
 }: TypingInterfaceProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -228,12 +230,7 @@ export default function TypingInterface({
       {/* Start/Randomize Button Section - Moved to top */}
       <div className="bg-gray-100 dark:bg-gray-700 px-6 py-6 border-b border-gray-200 dark:border-gray-600">
         <div className="text-center">
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-            {isFocused 
-              ? "Start typing or press any key to begin" 
-              : "Start typing or press any key to begin"}
-          </p>
-          <div className={`grid gap-3 justify-center ${sequenceType === 'custom' ? 'grid-cols-2' : 'grid-cols-1'} max-w-md mx-auto`}>
+          <div className="grid gap-3 justify-center grid-cols-3 max-w-2xl mx-auto">
             <button 
               onClick={focusKeyboard}
               className="bg-blue-500 dark:bg-blue-600 text-white font-medium py-4 px-8 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors flex items-center justify-center text-lg"
@@ -262,7 +259,7 @@ export default function TypingInterface({
             </button>
             
             {/* Randomize Button - Only show for custom sequence type */}
-            {sequenceType === 'custom' && (
+            {sequenceType === 'custom' ? (
               <button 
                 onClick={() => {
                   regenerateRandomSequence();
@@ -287,7 +284,38 @@ export default function TypingInterface({
                 </svg>
                 Randomize
               </button>
+            ) : (
+              <div></div>
             )}
+            
+            {/* Reset Button - Always show */}
+            <button 
+              onClick={() => {
+                resetAllStats();
+                regenerateRandomSequence();
+                onReset();
+                focusKeyboard();
+              }}
+              className="bg-red-500 dark:bg-red-600 text-white font-medium py-4 px-8 rounded-lg hover:bg-red-600 dark:hover:bg-red-700 transition-colors flex items-center justify-center text-lg"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="inline-block mr-2 h-5 w-5" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                <line x1="10" y1="11" x2="10" y2="17" />
+                <line x1="14" y1="11" x2="14" y2="17" />
+              </svg>
+              Reset
+            </button>
           </div>
         </div>
       </div>

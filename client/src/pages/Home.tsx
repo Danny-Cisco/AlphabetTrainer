@@ -71,6 +71,29 @@ export default function Home() {
     }
   };
 
+  // Reset function to restore all settings to defaults
+  const handleReset = () => {
+    // Reset all settings to their default values
+    setPanningActive(true);
+    setKeySoundsActive(true);
+    setVolume(80);
+    setNumberRowPitch(1000);
+    setTopRowPitch(750);
+    setMiddleRowPitch(500);
+    setBottomRowPitch(250);
+    setExtremePanning(true);
+    setSequenceType('custom');
+    setIncludeLetters(true);
+    setIncludeNumbers(false);
+    setIncludeCommonPunctuation(false);
+    setIncludeExtendedPunctuation(false);
+    setChallengeMode('none');
+    setRestartOnFail(true);
+    
+    // Force sequence regeneration
+    setSequenceKey(prev => prev + 1);
+  };
+
   return (
     <>
       <Helmet>
@@ -105,6 +128,7 @@ export default function Home() {
               includeExtendedPunctuation={includeExtendedPunctuation}
               challengeMode={challengeMode}
               restartOnFail={restartOnFail}
+              onReset={handleReset}
             />
             
             {/* Control Panel Toggle Buttons */}
