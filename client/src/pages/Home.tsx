@@ -197,7 +197,7 @@ export default function Home() {
 
               {/* Belt Selector (collapsible) */}
               {showBeltSelector && (
-                <div className="flex flex-wrap gap-3 justify-center">
+                <div className="flex flex-col gap-3 items-center max-w-xs mx-auto">
                   <button
                     onClick={() => {
                       setBeltPreset('white');
