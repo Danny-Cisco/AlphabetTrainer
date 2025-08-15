@@ -116,9 +116,31 @@ export default function TypingInterface({
     return () => stopMetronome();
   }, [metronomeActive, bpm, startMetronome, stopMetronome]);
 
+  // Monitor for perfect scores and trigger confetti (no belt advancement)
+  useEffect(() => {
+    let shouldTriggerConfetti = false;
+    
+    if (restartOnFail && allAttempts.length > 0) {
+      // In restart-on-fail mode, check allAttempts for completed attempts
+      const latestAttempt = allAttempts[allAttempts.length - 1];
+      if (latestAttempt.completed) {
+        shouldTriggerConfetti = true;
+      }
+    } else if (sequenceAttempts.length > 0) {
+      // In normal mode, check sequenceAttempts for perfect scores
+      const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
+      if (latestAttempt.accuracy === 100) {
+        shouldTriggerConfetti = true;
+      }
+    }
+    
+    if (shouldTriggerConfetti) {
+      // Trigger confetti after a short delay to let the UI update
+      setTimeout(triggerConfetti, 300);
+    }
+  }, [sequenceAttempts, allAttempts, restartOnFail]);
 
-
-  // Function to trigger confetti celebration (manual trigger only)
+  // Function to trigger confetti celebration
   const triggerConfetti = () => {
     // Subtle confetti from corners with bigger pieces and rainbow colors
     const colors = [
