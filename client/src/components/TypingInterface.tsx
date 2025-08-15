@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTyping } from "@/hooks/use-typing";
 import { useAudio } from "@/hooks/use-audio";
 import { Space, Delete, CornerDownLeft } from "lucide-react";
-import confetti from "canvas-confetti";
+
 
 interface TypingInterfaceProps {
   metronomeActive: boolean;
@@ -25,7 +25,7 @@ interface TypingInterfaceProps {
   restartOnFail: boolean;
   beltLevel: 'white' | 'blue' | 'purple' | 'brown' | 'black';
   onReset: () => void;
-  onBeltAdvancement?: () => void;
+
 }
 
 export default function TypingInterface({
@@ -48,10 +48,9 @@ export default function TypingInterface({
   challengeMode,
   restartOnFail,
   beltLevel,
-  onReset,
-  onBeltAdvancement
+  onReset
 }: TypingInterfaceProps) {
-  const [beltAdvanced, setBeltAdvanced] = useState(false);
+
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -116,123 +115,18 @@ export default function TypingInterface({
     return () => stopMetronome();
   }, [metronomeActive, bpm, startMetronome, stopMetronome]);
 
-  // Monitor for perfect scores and trigger confetti and belt advancement
-  useEffect(() => {
-    let shouldTriggerAdvancement = false;
-    
-    if (restartOnFail && allAttempts.length > 0) {
-      // In restart-on-fail mode, check allAttempts for completed attempts
-      const latestAttempt = allAttempts[allAttempts.length - 1];
-      if (latestAttempt.completed) {
-        shouldTriggerAdvancement = true;
-      }
-    } else if (sequenceAttempts.length > 0) {
-      // In normal mode, check sequenceAttempts for perfect scores
-      const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
-      if (latestAttempt.accuracy === 100) {
-        shouldTriggerAdvancement = true;
-      }
-    }
-    
-    if (shouldTriggerAdvancement && !beltAdvanced) {
-      // Trigger confetti after a short delay to let the UI update
-      setTimeout(triggerConfetti, 300);
-      
-      // Just show the suggestion message, no automatic advancement
-      setBeltAdvanced(true);
-    }
-  }, [sequenceAttempts, allAttempts, restartOnFail, onBeltAdvancement, beltAdvanced]);
 
-  // Reset belt advanced flag when new sequence starts
-  useEffect(() => {
-    if (!isWaitingToStart) {
-      setBeltAdvanced(false);
-    }
-  }, [isWaitingToStart]);
 
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
     resetCurrentStats(); // Reset stats when starting
-    setBeltAdvanced(false); // Reset belt advancement flag
     if (hiddenInputRef.current) {
       hiddenInputRef.current.focus();
       setIsFocused(true);
     }
   };
 
-  // Function to trigger confetti celebration
-  const triggerConfetti = () => {
-    // Subtle confetti from corners with bigger pieces and rainbow colors
-    const particleCount = 50;
-    const colors = [
-      '#FF0000', // Red
-      '#FF7F00', // Orange
-      '#FFFF00', // Yellow
-      '#00FF00', // Green
-      '#0000FF', // Blue
-      '#4B0082', // Indigo
-      '#9400D3', // Violet
-      '#FF1493', // Deep Pink
-      '#00CED1', // Dark Turquoise
-      '#FFD700', // Gold
-      '#FF6347', // Tomato
-      '#32CD32', // Lime Green
-      '#8A2BE2', // Blue Violet
-      '#FF69B4', // Hot Pink
-      '#00FF7F'  // Spring Green
-    ];
 
-    // Left side confetti with bigger pieces
-    confetti({
-      particleCount,
-      spread: 60,
-      origin: { x: 0, y: 0.8 },
-      angle: 60,
-      colors,
-      startVelocity: 35,
-      gravity: 0.8,
-      scalar: 1.8
-    });
-
-    // Right side confetti with bigger pieces
-    setTimeout(() => {
-      confetti({
-        particleCount,
-        spread: 60,
-        origin: { x: 1, y: 0.8 },
-        angle: 120,
-        colors,
-        startVelocity: 35,
-        gravity: 0.8,
-        scalar: 1.8
-      });
-    }, 150);
-
-    // Top corners with bigger pieces
-    setTimeout(() => {
-      confetti({
-        particleCount: 30,
-        spread: 45,
-        origin: { x: 0.1, y: 0.1 },
-        angle: 45,
-        colors,
-        startVelocity: 25,
-        gravity: 0.6,
-        scalar: 1.5
-      });
-      
-      confetti({
-        particleCount: 30,
-        spread: 45,
-        origin: { x: 0.9, y: 0.1 },
-        angle: 135,
-        colors,
-        startVelocity: 25,
-        gravity: 0.6,
-        scalar: 1.5
-      });
-    }, 300);
-  };
 
   // Handle key press and audio feedback
   const handleKeyDown = (e: React.KeyboardEvent) => {

@@ -144,11 +144,7 @@ export default function Home() {
     }
   };
 
-  // Belt advancement suggestion (no longer automatic)
-  const handleBeltAdvancement = () => {
-    // This function is no longer used for automatic advancement
-    // Users can manually navigate belts using the carousel controls
-  };
+
 
   // Reset function to restore all settings to defaults
   const handleReset = () => {
@@ -287,7 +283,6 @@ export default function Home() {
               restartOnFail={restartOnFail}
               beltLevel={beltPreset}
               onReset={handleReset}
-              onBeltAdvancement={handleBeltAdvancement}
             />
             </div>
             
