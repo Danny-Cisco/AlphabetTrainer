@@ -172,7 +172,7 @@ export default function Home() {
             <div className="text-center">
               {/* Current Belt Display */}
               <div className="mb-4">
-                <h2 className={`text-2xl font-bold mb-2 ${
+                <h2 className={`text-5xl md:text-6xl font-bold mb-4 ${
                   beltPreset === 'white' ? 'text-gray-900 dark:text-gray-100' :
                   beltPreset === 'blue' ? 'text-blue-700 dark:text-blue-300' :
                   beltPreset === 'purple' ? 'text-purple-700 dark:text-purple-300' :
