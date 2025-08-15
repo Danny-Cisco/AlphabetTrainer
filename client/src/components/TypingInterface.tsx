@@ -68,6 +68,30 @@ export default function TypingInterface({
     }
   };
 
+  // Function to get belt text color for typing letters
+  const getBeltTextColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
+    switch (belt) {
+      case 'white': return 'text-gray-800 dark:text-gray-800';
+      case 'blue': return 'text-blue-600 dark:text-blue-400';
+      case 'purple': return 'text-purple-600 dark:text-purple-400';
+      case 'brown': return 'text-amber-700 dark:text-amber-500';
+      case 'black': return 'text-gray-900 dark:text-gray-100';
+      default: return 'text-gray-800 dark:text-gray-800';
+    }
+  };
+
+  // Function to get belt progress bar color
+  const getBeltProgressColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
+    switch (belt) {
+      case 'white': return 'bg-gray-600 dark:bg-gray-500';
+      case 'blue': return 'bg-blue-600 dark:bg-blue-500';
+      case 'purple': return 'bg-purple-600 dark:bg-purple-500';
+      case 'brown': return 'bg-amber-700 dark:bg-amber-600';
+      case 'black': return 'bg-gray-900 dark:bg-gray-200';
+      default: return 'bg-gray-600 dark:bg-gray-500';
+    }
+  };
+
   // Set up typing logic
   const {
     currentLetter,
@@ -391,13 +415,13 @@ export default function TypingInterface({
               )}
             </div>
           ) : (
-            <div className="text-9xl font-bold text-blue-500 dark:text-amber-100 mb-4 h-48 flex items-center justify-center" style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
+            <div className={`text-9xl font-bold ${getBeltTextColor(beltLevel)} mb-4 h-48 flex items-center justify-center`} style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
               {currentLetter === ' ' ? (
-                <Space size={120} className="text-blue-500 dark:text-amber-100" />
+                <Space size={120} className={getBeltTextColor(beltLevel)} />
               ) : currentLetter === 'Backspace' ? (
-                <Delete size={120} className="text-blue-500 dark:text-amber-100" />
+                <Delete size={120} className={getBeltTextColor(beltLevel)} />
               ) : currentLetter === 'Enter' ? (
-                <CornerDownLeft size={120} className="text-blue-500 dark:text-amber-100" />
+                <CornerDownLeft size={120} className={getBeltTextColor(beltLevel)} />
               ) : (
                 currentLetter
               )}
@@ -405,9 +429,9 @@ export default function TypingInterface({
           )}
           
           {/* Progress bar */}
-          <div className="w-full bg-gray-200 dark:bg-amber-900 rounded-full h-2.5 mb-6">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-6">
             <div 
-              className="bg-blue-500 dark:bg-blue-400 h-2.5 rounded-full transition-all duration-300" 
+              className={`${getBeltProgressColor(beltLevel)} h-2.5 rounded-full transition-all duration-300`}
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
@@ -416,10 +440,10 @@ export default function TypingInterface({
           
           {/* Character Progress Counter */}
           <div className="text-center mb-6">
-            <p className="text-2xl font-mono text-gray-700 dark:text-amber-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 400 }}>
+            <p className={`text-2xl font-mono ${getBeltTextColor(beltLevel)}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 400 }}>
               {currentLetterIndex}/{getSequenceLength()}
             </p>
-            <p className="text-sm text-gray-500 dark:text-amber-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+            <p className={`text-sm ${getBeltTextColor(beltLevel)} opacity-70`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
               characters
             </p>
           </div>
