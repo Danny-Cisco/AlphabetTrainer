@@ -227,7 +227,7 @@ export default function Home() {
                         belts[currentBeltIndex].id === 'brown' ? 'bg-amber-700' :
                         'bg-gray-900'
                       }`}></div>
-                      <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                      <h2 className={`text-5xl md:text-6xl whitespace-nowrap ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                         🥋 {belts[currentBeltIndex].name}
                       </h2>
                     </div>
