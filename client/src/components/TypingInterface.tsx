@@ -284,7 +284,7 @@ export default function TypingInterface({
             {sequenceType === 'custom' ? (
               <button 
                 onClick={() => {
-                  resetCurrentStats();
+                  resetForBeltAdvancement();
                   regenerateRandomSequence();
                   focusKeyboard();
                 }}
