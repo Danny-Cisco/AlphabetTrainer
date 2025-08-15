@@ -327,7 +327,7 @@ export default function TypingInterface({
             <div className="h-48 flex flex-col items-center justify-center">
               {!isFocused ? (
                 <>
-                  <div className="text-4xl font-bold text-gray-600 dark:text-amber-200 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                  <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Press Start to Capture Keyboard
                   </div>
 
@@ -339,16 +339,16 @@ export default function TypingInterface({
                     const lastAttempt = allAttempts[allAttempts.length - 1];
                     return (
                       <>
-                        <div className="text-4xl font-bold text-gray-600 dark:text-amber-200 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                        <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                           Press Space to Start
                         </div>
                         <div className="text-3xl font-mono font-bold mb-2">
-                          <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-amber-300"}>
+                          <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-amber-100"}>
                             {lastAttempt.progress}/{getSequenceLength()}
                           </span>
                         </div>
                         {lastAttempt.cps && (
-                          <div className="text-2xl font-mono text-gray-600 dark:text-amber-300">
+                          <div className="text-2xl font-mono text-gray-600 dark:text-amber-100">
                             {lastAttempt.cps.toFixed(2)} cps
                           </div>
                         )}
@@ -358,23 +358,23 @@ export default function TypingInterface({
                 </>
               ) : (
                 <>
-                  <div className="text-4xl font-bold text-gray-600 dark:text-amber-200 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                  <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Press Space to Start
                   </div>
-                  <div className="text-lg text-gray-500 dark:text-amber-300" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                  <div className="text-lg text-gray-500 dark:text-amber-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Get ready to type the sequence
                   </div>
                 </>
               )}
             </div>
           ) : (
-            <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
+            <div className="text-9xl font-mono font-bold text-blue-500 dark:text-white mb-4 h-48 flex items-center justify-center">
               {currentLetter === ' ' ? (
-                <Space size={120} className="text-blue-500 dark:text-blue-400" />
+                <Space size={120} className="text-blue-500 dark:text-white" />
               ) : currentLetter === 'Backspace' ? (
-                <Delete size={120} className="text-blue-500 dark:text-blue-400" />
+                <Delete size={120} className="text-blue-500 dark:text-white" />
               ) : currentLetter === 'Enter' ? (
-                <CornerDownLeft size={120} className="text-blue-500 dark:text-blue-400" />
+                <CornerDownLeft size={120} className="text-blue-500 dark:text-white" />
               ) : (
                 currentLetter
               )}
@@ -393,10 +393,10 @@ export default function TypingInterface({
           
           {/* Character Progress Counter */}
           <div className="text-center mb-6">
-            <p className="text-2xl font-mono text-gray-700 dark:text-amber-200" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 400 }}>
+            <p className="text-2xl font-mono text-gray-700 dark:text-amber-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 400 }}>
               {currentLetterIndex}/{getSequenceLength()}
             </p>
-            <p className="text-sm text-gray-500 dark:text-amber-300" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+            <p className="text-sm text-gray-500 dark:text-amber-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
               characters
             </p>
           </div>
@@ -482,7 +482,7 @@ export default function TypingInterface({
           {/* Sequence Attempts History - only show when NOT in restart mode */}
           {!restartOnFail && sequenceAttempts.length > 0 && (
             <div className="mt-6">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-amber-200 mb-3">Recent Attempts</h3>
+              <h3 className="text-sm font-medium text-gray-700 dark:text-amber-100 mb-3">Recent Attempts</h3>
               <div className="space-y-2 max-h-80 overflow-y-auto">
                 {sequenceAttempts.slice(-5).reverse().map((attempt, index) => (
                   <div key={index} className={`rounded p-3 flex justify-between items-center text-sm ${
@@ -491,7 +491,7 @@ export default function TypingInterface({
                       : 'bg-gray-50 dark:bg-amber-900'
                   }`}>
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-600 dark:text-amber-300">{attempt.sequenceType}</span>
+                      <span className="text-gray-600 dark:text-amber-100">{attempt.sequenceType}</span>
                       {attempt.accuracy === 100 && (
                         <div className="flex items-center gap-1">
                           <span className="text-lg">🏆</span>
@@ -502,7 +502,7 @@ export default function TypingInterface({
                     <div className="flex gap-3">
                       <span className="text-green-600 dark:text-green-400">{attempt.correct} characters</span>
                       <span className="text-red-600 dark:text-red-400">{attempt.errors} errors</span>
-                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-amber-200'}`}>
+                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-amber-100'}`}>
                         {attempt.accuracy}%
                       </span>
                     </div>
