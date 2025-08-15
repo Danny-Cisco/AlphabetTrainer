@@ -141,14 +141,16 @@ export default function Home() {
     setSequenceKey(prev => prev + 1);
   };
 
-  // Belt advancement handler
+  // Belt advancement handler (for automatic advancement)
   const handleBeltAdvancement = () => {
     const currentIndex = belts.findIndex(belt => belt.id === beltPreset);
     // Don't advance if already at black belt
     if (currentIndex < belts.length - 1) {
       const nextBelt = belts[currentIndex + 1];
-      setBeltPreset(nextBelt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
-      // Don't change sequenceKey to avoid losing keyboard focus
+      // Delay the belt advancement by 5 seconds to allow user to see stats
+      setTimeout(() => {
+        setBeltPreset(nextBelt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
+      }, 5000);
     }
   };
 
