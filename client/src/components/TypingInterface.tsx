@@ -389,39 +389,7 @@ export default function TypingInterface({
             ></div>
           </div>
           
-          {/* Letter progress - different for each sequence type */}
-          <div className="flex justify-between font-mono text-xs text-gray-500 dark:text-gray-400 mb-8">
-            {sequenceType === 'alphabet' && (
-              <>
-                <span>A</span>
-                <span>D</span>
-                <span>H</span>
-                <span>L</span>
-                <span>P</span>
-                <span>T</span>
-                <span>Z</span>
-              </>
-            )}
-            {sequenceType === 'reverse' && (
-              <>
-                <span>Z</span>
-                <span>T</span>
-                <span>P</span>
-                <span>L</span>
-                <span>H</span>
-                <span>D</span>
-                <span>A</span>
-              </>
-            )}
-            {sequenceType === 'custom' && (
-              <>
-                <span>Custom</span>
-                <span>mix</span>
-                <span>of</span>
-                <span>characters</span>
-              </>
-            )}
-          </div>
+
           
           {/* Instructions - dynamic based on sequence type */}
           <p className="text-gray-600 dark:text-gray-400 mb-6" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
