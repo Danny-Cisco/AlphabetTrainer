@@ -197,7 +197,7 @@ export default function Home() {
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h1 className="text-3xl text-gray-900 dark:text-gray-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>DigitDojo</h1>
+                <h1 className="text-3xl text-gray-900 dark:text-gray-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>🥋 DigitDojo</h1>
                 <p className="text-lg text-gray-600 dark:text-gray-400 mt-1" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>Single Character Typing Practice</p>
               </div>
               <ThemeToggle />
