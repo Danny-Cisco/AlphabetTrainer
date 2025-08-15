@@ -44,7 +44,26 @@ export default function Home() {
   
   // BJJ Belt preset system
   const [beltPreset, setBeltPresetState] = useState<'white' | 'blue' | 'purple' | 'brown' | 'black'>('white');
-  const [showBeltSelector, setShowBeltSelector] = useState(false);
+  
+  const belts = [
+    { id: 'white', name: '1. White Belt', color: 'text-gray-900 dark:text-gray-100' },
+    { id: 'blue', name: '2. Blue Belt', color: 'text-blue-700 dark:text-blue-300' },
+    { id: 'purple', name: '3. Purple Belt', color: 'text-purple-700 dark:text-purple-300' },
+    { id: 'brown', name: '4. Brown Belt', color: 'text-amber-700 dark:text-amber-300' },
+    { id: 'black', name: '5. Black Belt', color: 'text-gray-900 dark:text-gray-100' }
+  ] as const;
+  
+  const currentBeltIndex = belts.findIndex(belt => belt.id === beltPreset);
+  
+  const navigateBelt = (direction: 'prev' | 'next') => {
+    let newIndex;
+    if (direction === 'prev') {
+      newIndex = currentBeltIndex === 0 ? belts.length - 1 : currentBeltIndex - 1;
+    } else {
+      newIndex = currentBeltIndex === belts.length - 1 ? 0 : currentBeltIndex + 1;
+    }
+    setBeltPreset(belts[newIndex].id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
+  };
   
   // Reactive handlers that trigger sequence regeneration
   const handleIncludeLettersChange = (include: boolean) => {
@@ -142,9 +161,8 @@ export default function Home() {
     setChallengeMode('none');
     setRestartOnFail(true);
     
-    // Reset belt to white belt and hide belt selector
+    // Reset belt to white belt
     setBeltPresetState('white');
-    setShowBeltSelector(false);
     
     // Force sequence regeneration
     setSequenceKey(prev => prev + 1);
@@ -168,83 +186,50 @@ export default function Home() {
               <ThemeToggle />
             </div>
             
-            {/* BJJ Belt Preset System */}
+            {/* BJJ Belt Preset System - Carousel Style */}
             <div className="text-center">
-              {/* Current Belt Display */}
-              <div className="mb-4">
-                <h2 className={`text-5xl md:text-6xl font-bold mb-4 ${
-                  beltPreset === 'white' ? 'text-gray-900 dark:text-gray-100' :
-                  beltPreset === 'blue' ? 'text-blue-700 dark:text-blue-300' :
-                  beltPreset === 'purple' ? 'text-purple-700 dark:text-purple-300' :
-                  beltPreset === 'brown' ? 'text-amber-700 dark:text-amber-300' :
-                  'text-gray-900 dark:text-gray-100'
-                }`}>
-                  🥋 {
-                    beltPreset === 'white' ? '1. White Belt' :
-                    beltPreset === 'blue' ? '2. Blue Belt' :
-                    beltPreset === 'purple' ? '3. Purple Belt' :
-                    beltPreset === 'brown' ? '4. Brown Belt' :
-                    '5. Black Belt'
-                  }
-                </h2>
+              <div className="flex items-center justify-center gap-6">
+                {/* Previous Belt Button */}
                 <button
-                  onClick={() => setShowBeltSelector(!showBeltSelector)}
-                  className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                  onClick={() => navigateBelt('prev')}
+                  className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 p-3 rounded-full transition-colors"
+                  aria-label="Previous belt"
                 >
-                  {showBeltSelector ? 'Hide Belt Selection' : 'Change Belt'}
+                  <ChevronDown className="w-6 h-6 rotate-90" />
+                </button>
+                
+                {/* Current Belt Display */}
+                <div className="min-w-0 flex-1 max-w-lg">
+                  <h2 className={`text-5xl md:text-6xl font-bold ${belts[currentBeltIndex].color}`}>
+                    🥋 {belts[currentBeltIndex].name}
+                  </h2>
+                </div>
+                
+                {/* Next Belt Button */}
+                <button
+                  onClick={() => navigateBelt('next')}
+                  className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 p-3 rounded-full transition-colors"
+                  aria-label="Next belt"
+                >
+                  <ChevronDown className="w-6 h-6 -rotate-90" />
                 </button>
               </div>
-
-              {/* Belt Selector (collapsible) */}
-              {showBeltSelector && (
-                <div className="flex flex-col gap-3 items-center max-w-xs mx-auto">
+              
+              {/* Belt Progress Dots */}
+              <div className="flex justify-center gap-2 mt-4">
+                {belts.map((belt, index) => (
                   <button
-                    onClick={() => {
-                      setBeltPreset('white');
-                      setShowBeltSelector(false);
-                    }}
-                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600"
-                  >
-                    🥋 1. White Belt
-                  </button>
-                  <button
-                    onClick={() => {
-                      setBeltPreset('blue');
-                      setShowBeltSelector(false);
-                    }}
-                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-blue-200 dark:border-blue-700"
-                  >
-                    🥋 2. Blue Belt
-                  </button>
-                  <button
-                    onClick={() => {
-                      setBeltPreset('purple');
-                      setShowBeltSelector(false);
-                    }}
-                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 border border-purple-200 dark:border-purple-700"
-                  >
-                    🥋 3. Purple Belt
-                  </button>
-                  <button
-                    onClick={() => {
-                      setBeltPreset('brown');
-                      setShowBeltSelector(false);
-                    }}
-                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 border border-amber-200 dark:border-amber-700"
-                  >
-                    🥋 4. Brown Belt
-                  </button>
-                  <button
-                    onClick={() => {
-                      setBeltPreset('black');
-                      setShowBeltSelector(false);
-                    }}
-                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
-                  >
-                    🥋 5. Black Belt
-                  </button>
-                </div>
-              )}
+                    key={belt.id}
+                    onClick={() => setBeltPreset(belt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black')}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index === currentBeltIndex 
+                        ? 'bg-gray-600 dark:bg-gray-300' 
+                        : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                    }`}
+                    aria-label={`Select ${belt.name}`}
+                  />
+                ))}
+              </div>
             </div>
           </header>
 
