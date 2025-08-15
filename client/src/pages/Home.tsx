@@ -192,8 +192,8 @@ export default function Home() {
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h1 className="text-3xl text-gray-900 dark:text-gray-100">DigitDojo</h1>
-                <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">Single Character Typing Practice</p>
+                <h1 className="text-3xl text-gray-900 dark:text-gray-100" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>DigitDojo</h1>
+                <p className="text-lg text-gray-600 dark:text-gray-400 mt-1" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>Single Character Typing Practice</p>
               </div>
               <ThemeToggle />
             </div>
@@ -212,10 +212,10 @@ export default function Home() {
                 
                 {/* Current Belt Display */}
                 <div className="min-w-0 flex-1 max-w-lg">
-                  <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`}>
+                  <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     🥋 {belts[currentBeltIndex].name}
                   </h2>
-                  <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">
+                  <p className="text-lg text-gray-600 dark:text-gray-400 mt-2" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     {belts[currentBeltIndex].tagline}
                   </p>
                 </div>
