@@ -216,7 +216,7 @@ export default function Home() {
                 </button>
                 
                 {/* Current Belt Display */}
-                <div className="min-w-0 flex-1 max-w-lg">
+                <div className="min-w-0 flex-1 max-w-2xl">
                   {/* Background container for better readability */}
                   <div className="bg-white/40 dark:bg-black/35 backdrop-blur-sm rounded-lg px-6 py-4 shadow-lg">
                     <div className="flex items-center gap-4 mb-2">
