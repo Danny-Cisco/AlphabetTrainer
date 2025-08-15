@@ -20,10 +20,10 @@ export default function Home() {
   // Audio panning options
   const [extremePanning, setExtremePanning] = useState(false); // Disabled by default
   
-  // Sequence options
-  const [sequenceType, setSequenceType] = useState('custom'); // 'alphabet' or 'custom'
+  // Sequence options - White Belt default (alphabetical sequence)
+  const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet' or 'custom'
   
-  // Character type options for custom sequences
+  // Character type options for custom sequences - White Belt default (letters only)
   const [includeLetters, setIncludeLetters] = useState(true);
   const [includeNumbers, setIncludeNumbers] = useState(false);
   const [includeCommonPunctuation, setIncludeCommonPunctuation] = useState(false);
