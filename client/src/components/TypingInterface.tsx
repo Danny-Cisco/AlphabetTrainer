@@ -485,13 +485,7 @@ export default function TypingInterface({
                     <div className={`w-3 h-3 rounded-full border-2 ${getBeltColor(attempt.beltLevel)}`}></div>
                     <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2 relative">
                       <div 
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          attempt.progress === bestProgress 
-                            ? 'bg-green-500 dark:bg-green-400' 
-                            : attempt.progress === 0
-                            ? 'bg-red-500 dark:bg-red-400'
-                            : 'bg-blue-500 dark:bg-blue-400'
-                        }`}
+                        className={`h-2 rounded-full transition-all duration-300 ${getBeltProgressColor(attempt.beltLevel)}`}
                         style={{ width: `${Math.max(2, (attempt.progress / attempt.sequenceLength) * 100)}%` }}
                       />
                     </div>
