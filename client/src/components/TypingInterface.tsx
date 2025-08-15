@@ -343,7 +343,7 @@ export default function TypingInterface({
         </div>
       </div>
       
-      <div className="px-6 py-4">
+      <div className="px-6 pt-2 pb-0">
         {/* Current Letter Display or Press Space to Start */}
         <div className="text-center mb-8">
           {isWaitingToStart ? (
