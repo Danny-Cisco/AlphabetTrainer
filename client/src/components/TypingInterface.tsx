@@ -54,6 +54,7 @@ export default function TypingInterface({
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [lastConfettiAttemptId, setLastConfettiAttemptId] = useState<number | null>(null);
 
   // Function to get belt color for display
   const getBeltColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
@@ -119,26 +120,40 @@ export default function TypingInterface({
   // Monitor for perfect scores and trigger confetti (no belt advancement)
   useEffect(() => {
     let shouldTriggerConfetti = false;
+    let attemptId = null;
     
     if (restartOnFail && allAttempts.length > 0) {
       // In restart-on-fail mode, check allAttempts for completed attempts
       const latestAttempt = allAttempts[allAttempts.length - 1];
-      if (latestAttempt.completed) {
+      attemptId = latestAttempt.timestamp;
+      if (latestAttempt.completed && attemptId !== lastConfettiAttemptId) {
         shouldTriggerConfetti = true;
       }
     } else if (sequenceAttempts.length > 0) {
       // In normal mode, check sequenceAttempts for perfect scores
       const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
-      if (latestAttempt.accuracy === 100) {
+      // Use a combination of timestamp and accuracy for unique ID
+      attemptId = latestAttempt.sequenceType + latestAttempt.accuracy + Date.now();
+      if (latestAttempt.accuracy === 100 && attemptId !== lastConfettiAttemptId) {
         shouldTriggerConfetti = true;
       }
     }
     
-    if (shouldTriggerConfetti) {
+    if (shouldTriggerConfetti && attemptId) {
       // Trigger confetti after a short delay to let the UI update
-      setTimeout(triggerConfetti, 300);
+      setTimeout(() => {
+        triggerConfetti();
+        setLastConfettiAttemptId(attemptId);
+      }, 300);
     }
-  }, [sequenceAttempts, allAttempts, restartOnFail]);
+  }, [sequenceAttempts, allAttempts, restartOnFail, lastConfettiAttemptId]);
+
+  // Reset confetti lock when starting a new attempt
+  useEffect(() => {
+    if (!isWaitingToStart) {
+      setLastConfettiAttemptId(null);
+    }
+  }, [isWaitingToStart]);
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
