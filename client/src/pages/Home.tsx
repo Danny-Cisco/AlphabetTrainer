@@ -46,11 +46,11 @@ export default function Home() {
   const [beltPreset, setBeltPresetState] = useState<'white' | 'blue' | 'purple' | 'brown' | 'black'>('white');
   
   const belts = [
-    { id: 'white', name: '1. White Belt', color: 'text-gray-900 dark:text-gray-100' },
-    { id: 'blue', name: '2. Blue Belt', color: 'text-blue-700 dark:text-blue-300' },
-    { id: 'purple', name: '3. Purple Belt', color: 'text-purple-700 dark:text-purple-300' },
-    { id: 'brown', name: '4. Brown Belt', color: 'text-amber-700 dark:text-amber-300' },
-    { id: 'black', name: '5. Black Belt', color: 'text-gray-900 dark:text-gray-100' }
+    { id: 'white', name: '1. White Belt', color: 'text-gray-900 dark:text-gray-100', tagline: 'Beginner A-Z mode' },
+    { id: 'blue', name: '2. Blue Belt', color: 'text-blue-700 dark:text-blue-300', tagline: 'Random A-Z mode' },
+    { id: 'purple', name: '3. Purple Belt', color: 'text-purple-700 dark:text-purple-300', tagline: 'Random A-Z mode with common punctuation' },
+    { id: 'brown', name: '4. Brown Belt', color: 'text-amber-700 dark:text-amber-300', tagline: 'Random A-Z mode with numbers and common punctuation' },
+    { id: 'black', name: '5. Black Belt', color: 'text-gray-900 dark:text-gray-100', tagline: 'Random A-Z mode with numbers and advanced punctuation' }
   ] as const;
   
   const currentBeltIndex = belts.findIndex(belt => belt.id === beltPreset);
@@ -203,6 +203,9 @@ export default function Home() {
                   <h2 className={`text-5xl md:text-6xl font-bold ${belts[currentBeltIndex].color}`}>
                     🥋 {belts[currentBeltIndex].name}
                   </h2>
+                  <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">
+                    {belts[currentBeltIndex].tagline}
+                  </p>
                 </div>
                 
                 {/* Next Belt Button */}
