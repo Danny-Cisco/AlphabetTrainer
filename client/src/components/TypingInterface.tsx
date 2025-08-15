@@ -69,6 +69,7 @@ export default function TypingInterface({
     challengeMode: currentChallengeMode,
     bestProgress,
     resetAllStats,
+    resetForBeltAdvancement,
     allAttempts,
     isWaitingToStart,
     startNewAttempt,

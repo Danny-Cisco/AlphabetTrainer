@@ -75,6 +75,15 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     setAttemptStartTime(null);
   };
 
+  // Function specifically for belt advancement - preserves attempt history
+  const resetForBeltAdvancement = () => {
+    resetCurrentStats();
+    setSequenceAttempts([]);
+    setIsWaitingToStart(true);
+    setAttemptStartTime(null);
+    // Preserve: bestProgress, allAttempts
+  };
+
   // Function to start a new attempt
   const startNewAttempt = () => {
     setIsWaitingToStart(false);
@@ -90,14 +99,10 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
 
   // Reset stats when sequence type, character options, or challenge mode change
   useEffect(() => {
-    resetCurrentStats();
-    setSequenceAttempts([]);
+    resetForBeltAdvancement(); // Use belt advancement reset to preserve history
     if (sequenceType === 'custom') {
       setRandomSequence(generateRandomSequence());
     }
-    // Don't reset allAttempts and bestProgress to preserve history across belt changes
-    setIsWaitingToStart(true);
-    setAttemptStartTime(null);
   }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation, challengeMode]);
 
   // Function to get sequence length for progress calculations
@@ -528,6 +533,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     challengeMode,
     bestProgress,
     resetAllStats,
+    resetForBeltAdvancement,
     allAttempts,
     isWaitingToStart,
     startNewAttempt,
