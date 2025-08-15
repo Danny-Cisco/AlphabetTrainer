@@ -272,7 +272,7 @@ export default function Home() {
             <div className="mt-6 flex justify-center gap-3">
               <button
                 onClick={() => setShowAlphabetControls(!showAlphabetControls)}
-                className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium py-2 px-4 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors flex items-center justify-center"
+                className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center"
               >
                 {showAlphabetControls ? (
                   <>
@@ -289,7 +289,7 @@ export default function Home() {
               
               <button
                 onClick={() => setShowAudioControls(!showAudioControls)}
-                className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-medium py-2 px-4 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
+                className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center"
               >
                 {showAudioControls ? (
                   <>
