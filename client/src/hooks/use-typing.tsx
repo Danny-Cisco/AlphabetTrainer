@@ -125,6 +125,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     timestamp: number;
     completed: boolean;
     cps?: number;
+    sequenceLength: number;
   }
 
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -201,7 +202,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       progress: sequenceLength, 
       timestamp: Date.now(), 
       completed: true,
-      cps 
+      cps,
+      sequenceLength: sequenceLength
     }]);
 
     // Update best progress
@@ -383,7 +385,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           progress: currentProgress, 
           timestamp: Date.now(), 
           completed: false,
-          cps 
+          cps,
+          sequenceLength: getSequenceLength()
         }]);
         
         // Update best progress if this attempt got further

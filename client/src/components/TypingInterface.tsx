@@ -367,7 +367,7 @@ export default function TypingInterface({
                         )}
                         <div className="text-3xl font-mono font-bold mb-2">
                           <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-amber-100"}>
-                            {lastAttempt.progress}/{getSequenceLength()}
+                            {lastAttempt.progress}/{lastAttempt.sequenceLength}
                           </span>
                         </div>
                         {lastAttempt.cps && (
@@ -470,7 +470,7 @@ export default function TypingInterface({
                             ? 'bg-red-500 dark:bg-red-400'
                             : 'bg-blue-500 dark:bg-blue-400'
                         }`}
-                        style={{ width: `${Math.max(2, (attempt.progress / getSequenceLength()) * 100)}%` }}
+                        style={{ width: `${Math.max(2, (attempt.progress / attempt.sequenceLength) * 100)}%` }}
                       />
                     </div>
                     <div className="flex items-center gap-1 min-w-[140px] justify-end">
@@ -479,7 +479,7 @@ export default function TypingInterface({
                       </span>
                       <span className="text-xs font-mono text-slate-600 dark:text-slate-400">/</span>
                       <span className="text-xs font-mono text-slate-600 dark:text-slate-400 w-6">
-                        {getSequenceLength()}
+                        {attempt.sequenceLength}
                       </span>
                       <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-20 text-right">
                         {attempt.cps && attempt.progress > 0 ? `${attempt.cps.toFixed(2)} cps` : '0.00 cps'}
