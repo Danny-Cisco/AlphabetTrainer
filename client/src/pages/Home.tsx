@@ -217,12 +217,15 @@ export default function Home() {
                 
                 {/* Current Belt Display */}
                 <div className="min-w-0 flex-1 max-w-lg">
-                  <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-                    🥋 {belts[currentBeltIndex].name}
-                  </h2>
-                  <p className="text-lg text-gray-600 dark:text-gray-400 mt-2" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-                    {belts[currentBeltIndex].tagline}
-                  </p>
+                  {/* Background container for better readability */}
+                  <div className="bg-white/80 dark:bg-black/70 backdrop-blur-sm rounded-lg px-6 py-4 shadow-lg">
+                    <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                      🥋 {belts[currentBeltIndex].name}
+                    </h2>
+                    <p className="text-lg text-gray-800 dark:text-gray-200 mt-2" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                      {belts[currentBeltIndex].tagline}
+                    </p>
+                  </div>
                 </div>
                 
                 {/* Next Belt Button */}
