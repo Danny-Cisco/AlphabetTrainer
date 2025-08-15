@@ -5,6 +5,7 @@ import { Switch as SwitchComponent } from "@/components/ui/switch";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import dojoBg from "@/assets/dojo-bg1.jpg";
 
 export default function Home() {
   const [panningActive, setPanningActive] = useState(false);
@@ -175,8 +176,19 @@ export default function Home() {
         <meta name="description" content="Single character typing practice with advanced audio features to improve your typing speed and accuracy." />
       </Helmet>
       
-      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors">
-        <div className="container max-w-4xl mx-auto px-4 py-8">
+      <div 
+        className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors relative"
+        style={{
+          backgroundImage: `url(${dojoBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        {/* Background overlay for better text readability */}
+        <div className="absolute inset-0 bg-white/40 dark:bg-black/60"></div>
+        
+        <div className="container max-w-4xl mx-auto px-4 py-8 relative z-10">
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
               <div>
