@@ -193,7 +193,7 @@ export default function Home() {
         {/* Background overlay for better text readability */}
         <div className="absolute inset-0 bg-white/40 dark:bg-black/60"></div>
         
-        <div className="container max-w-4xl mx-auto px-4 pt-8 pb-4 relative z-10">
+        <div className="container max-w-4xl mx-auto px-4 pt-8 relative z-10">
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
               <div>
@@ -299,7 +299,7 @@ export default function Home() {
             </div>
             
             {/* Control Panel Toggle Buttons */}
-            <div className="mt-6 flex justify-center gap-3">
+            <div className="mt-3 flex justify-center gap-3">
               <button
                 onClick={() => setShowAlphabetControls(!showAlphabetControls)}
                 className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center"
