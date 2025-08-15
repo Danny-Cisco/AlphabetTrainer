@@ -265,7 +265,7 @@ export default function TypingInterface({
                   regenerateRandomSequence();
                   focusKeyboard();
                 }}
-                className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg"
+                className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg whitespace-nowrap"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
