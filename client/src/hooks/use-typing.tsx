@@ -178,7 +178,10 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     let cps: number | undefined;
     if (attemptStartTime) {
       const totalTime = (Date.now() - attemptStartTime) / 1000; // Convert to seconds
-      cps = correctCount / totalTime;
+      // In challenge mode, each character requires 2 key presses (character + challenge key)
+      // So we need to account for this in the CPS calculation
+      const effectiveKeysPressed = challengeMode === 'none' ? correctCount : correctCount * 2;
+      cps = effectiveKeysPressed / totalTime;
     }
 
     // Record the completed attempt
@@ -360,7 +363,10 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
         let cps: number | undefined;
         if (attemptStartTime && currentProgress > 0) {
           const totalTime = (Date.now() - attemptStartTime) / 1000;
-          cps = currentProgress / totalTime;
+          // In challenge mode, each character requires 2 key presses (character + challenge key)
+          // So we need to account for this in the CPS calculation
+          const effectiveKeysPressed = challengeMode === 'none' ? currentProgress : currentProgress * 2;
+          cps = effectiveKeysPressed / totalTime;
         }
         
         // Record this attempt in the history
