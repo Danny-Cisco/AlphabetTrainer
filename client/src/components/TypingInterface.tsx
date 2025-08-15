@@ -391,7 +391,7 @@ export default function TypingInterface({
               )}
             </div>
           ) : (
-            <div className="text-9xl font-bold text-blue-500 dark:text-white mb-4 h-48 flex items-center justify-center" style={{ fontFamily: '"Roboto Condensed", sans-serif', fontWeight: 200 }}>
+            <div className="text-9xl font-bold text-blue-500 dark:text-white mb-4 h-48 flex items-center justify-center" style={{ fontFamily: '"Roboto Condensed", sans-serif', fontWeight: 700 }}>
               {currentLetter === ' ' ? (
                 <Space size={120} className="text-blue-500 dark:text-white" />
               ) : currentLetter === 'Backspace' ? (
