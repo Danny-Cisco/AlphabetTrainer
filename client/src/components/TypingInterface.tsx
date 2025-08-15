@@ -496,6 +496,8 @@ export default function TypingInterface({
                         <div className="flex items-center gap-1">
                           <span className="text-lg">🏆</span>
                           <span className="text-blue-700 dark:text-blue-300 font-bold text-xs" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 600 }}>PERFECT!</span>
+                          <span className="text-lg">🥋</span>
+                          <span className="text-green-700 dark:text-green-300 font-bold text-xs" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 600 }}>BELT UP!</span>
                         </div>
                       )}
                     </div>

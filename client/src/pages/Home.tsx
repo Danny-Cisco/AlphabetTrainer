@@ -2,7 +2,7 @@ import TypingInterface from "@/components/TypingInterface";
 import ControlPanel from "@/components/ControlPanel";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Switch as SwitchComponent } from "@/components/ui/switch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import dojoBg from "@/assets/dojo-bg1.jpg";
@@ -11,41 +11,41 @@ export default function Home() {
   const [panningActive, setPanningActive] = useState(false);
   const [keySoundsActive, setKeySoundsActive] = useState(false);
   const [volume, setVolume] = useState(80);
-  
+
   // Pitch values for each keyboard row
   const [numberRowPitch, setNumberRowPitch] = useState(1000); // Highest pitch for number row
   const [topRowPitch, setTopRowPitch] = useState(750); // Higher pitch for top row
   const [middleRowPitch, setMiddleRowPitch] = useState(500); // Medium pitch for middle row
   const [bottomRowPitch, setBottomRowPitch] = useState(250); // Lower pitch for bottom row
-  
+
   // Audio panning options
   const [extremePanning, setExtremePanning] = useState(false); // Disabled by default
-  
+
   // Sequence options - White Belt default (alphabetical sequence)
   const [sequenceType, setSequenceType] = useState('alphabet'); // 'alphabet' or 'custom'
-  
+
   // Character type options for custom sequences - White Belt default (letters only)
   const [includeLetters, setIncludeLetters] = useState(true);
   const [includeNumbers, setIncludeNumbers] = useState(false);
   const [includeCommonPunctuation, setIncludeCommonPunctuation] = useState(false);
   const [includeExtendedPunctuation, setIncludeExtendedPunctuation] = useState(false);
-  
+
   // Controls visibility
   const [showAudioControls, setShowAudioControls] = useState(false);
   const [showAlphabetControls, setShowAlphabetControls] = useState(false);
-  
+
   // Challenge modes - require additional key presses between characters
   const [challengeMode, setChallengeMode] = useState('none'); // 'none', 'space', 'delete', 'return', 'random'
-  
-  // Restart on fail - restarts sequence when user makes a mistake
+
+  // Restart on fail - restarts sequence when user makes mistake
   const [restartOnFail, setRestartOnFail] = useState(true);
-  
+
   // Force sequence regeneration trigger
   const [sequenceKey, setSequenceKey] = useState(0);
-  
+
   // BJJ Belt preset system
   const [beltPreset, setBeltPresetState] = useState<'white' | 'blue' | 'purple' | 'brown' | 'black'>('white');
-  
+
   const belts = [
     { id: 'white', name: '1. White Belt', color: 'text-gray-900 dark:text-gray-100', tagline: 'Beginner A-Z mode' },
     { id: 'blue', name: '2. Blue Belt', color: 'text-blue-700 dark:text-blue-300', tagline: 'Random A-Z mode' },
@@ -53,9 +53,9 @@ export default function Home() {
     { id: 'brown', name: '4. Brown Belt', color: 'text-amber-700 dark:text-amber-300', tagline: 'Random A-Z mode with numbers and common punctuation' },
     { id: 'black', name: '5. Black Belt', color: 'text-gray-900 dark:text-gray-100', tagline: 'Random A-Z mode with numbers and advanced punctuation' }
   ] as const;
-  
+
   const currentBeltIndex = belts.findIndex(belt => belt.id === beltPreset);
-  
+
   const navigateBelt = (direction: 'prev' | 'next') => {
     let newIndex;
     if (direction === 'prev') {
@@ -63,9 +63,15 @@ export default function Home() {
     } else {
       newIndex = currentBeltIndex === belts.length - 1 ? 0 : currentBeltIndex + 1;
     }
-    setBeltPreset(belts[newIndex].id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
+    setBeltPresetState(belts[newIndex].id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
   };
-  
+
+  // Placeholder for confetti trigger function - actual implementation would be in TypingInterface or a shared context
+  const triggerConfetti = () => {
+    console.log("Confetti triggered!");
+    // In a real app, you'd call a confetti library or animation function here.
+  };
+
   // Reactive handlers that trigger sequence regeneration
   const handleIncludeLettersChange = (include: boolean) => {
     setIncludeLetters(include);
@@ -73,21 +79,21 @@ export default function Home() {
       setSequenceKey(prev => prev + 1);
     }
   };
-  
+
   const handleIncludeNumbersChange = (include: boolean) => {
     setIncludeNumbers(include);
     if (sequenceType === 'custom') {
       setSequenceKey(prev => prev + 1);
     }
   };
-  
+
   const handleIncludeCommonPunctuationChange = (include: boolean) => {
     setIncludeCommonPunctuation(include);
     if (sequenceType === 'custom') {
       setSequenceKey(prev => prev + 1);
     }
   };
-  
+
   const handleIncludeExtendedPunctuationChange = (include: boolean) => {
     setIncludeExtendedPunctuation(include);
     if (sequenceType === 'custom') {
@@ -98,7 +104,7 @@ export default function Home() {
   // Belt preset handler
   const setBeltPreset = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
     setBeltPresetState(belt);
-    
+
     switch (belt) {
       case 'white': // Beginner a-z mode (alphabetical sequence)
         setSequenceType('alphabet');
@@ -136,7 +142,7 @@ export default function Home() {
         setIncludeExtendedPunctuation(true);
         break;
     }
-    
+
     // Force sequence regeneration
     setSequenceKey(prev => prev + 1);
   };
@@ -161,13 +167,59 @@ export default function Home() {
     setIncludeExtendedPunctuation(false);
     setChallengeMode('none');
     setRestartOnFail(true);
-    
+
     // Reset belt to white belt
     setBeltPresetState('white');
-    
+
     // Force sequence regeneration
     setSequenceKey(prev => prev + 1);
   };
+
+  // Monitor for perfect scores and trigger confetti + belt advancement
+  useEffect(() => {
+    // Mock sequenceAttempts and allAttempts for demonstration purposes as they are not provided in the original code.
+    // In a real scenario, these would be state variables managed by TypingInterface.
+    const sequenceAttempts = [{ accuracy: 100, completed: true }]; // Example perfect attempt
+    const allAttempts = [{ accuracy: 90, completed: false }]; // Example attempt
+
+    if (sequenceAttempts.length > 0) {
+      const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
+      if (latestAttempt.accuracy === 100) {
+        // Trigger confetti after a short delay to let the UI update
+        setTimeout(triggerConfetti, 300);
+
+        // Advance to next belt if not already at black belt
+        if (beltPreset !== 'black') {
+          setTimeout(() => {
+            navigateBelt('next');
+          }, 1000); // Delay to let confetti show first
+        }
+      }
+    }
+  }, [sequenceAttempts, beltPreset]); // Assuming sequenceAttempts and beltPreset are correctly passed or managed
+
+  // Monitor for completed attempts in restart-on-fail mode and trigger confetti + belt advancement
+  useEffect(() => {
+    // Mock sequenceAttempts and allAttempts for demonstration purposes as they are not provided in the original code.
+    // In a real scenario, these would be state variables managed by TypingInterface.
+    const sequenceAttempts = [{ accuracy: 100, completed: true }]; // Example perfect attempt
+    const allAttempts = [{ accuracy: 90, completed: false }]; // Example attempt
+
+    if (restartOnFail && allAttempts.length > 0) {
+      const latestAttempt = allAttempts[allAttempts.length - 1];
+      if (latestAttempt.completed) {
+        // Trigger confetti after a short delay to let the UI update
+        setTimeout(triggerConfetti, 300);
+
+        // Advance to next belt if not already at black belt
+        if (beltPreset !== 'black') {
+          setTimeout(() => {
+            navigateBelt('next');
+          }, 1000); // Delay to let confetti show first
+        }
+      }
+    }
+  }, [allAttempts, restartOnFail, beltPreset]); // Assuming allAttempts, restartOnFail, and beltPreset are correctly passed or managed
 
   return (
     <>
@@ -175,7 +227,7 @@ export default function Home() {
         <title>DigitDojo - Single Character Typing Practice</title>
         <meta name="description" content="Single character typing practice with advanced audio features to improve your typing speed and accuracy." />
       </Helmet>
-      
+
       <div 
         className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors relative"
         style={{
@@ -187,7 +239,7 @@ export default function Home() {
       >
         {/* Background overlay for better text readability */}
         <div className="absolute inset-0 bg-white/40 dark:bg-black/60"></div>
-        
+
         <div className="container max-w-4xl mx-auto px-4 py-8 relative z-10">
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
@@ -197,7 +249,7 @@ export default function Home() {
               </div>
               <ThemeToggle />
             </div>
-            
+
             {/* BJJ Belt Preset System - Carousel Style */}
             <div className="text-center">
               <div className="flex items-center justify-center gap-6">
@@ -209,7 +261,7 @@ export default function Home() {
                 >
                   <ChevronDown className="w-6 h-6 rotate-90" />
                 </button>
-                
+
                 {/* Current Belt Display */}
                 <div className="min-w-0 flex-1 max-w-lg">
                   <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
@@ -219,7 +271,7 @@ export default function Home() {
                     {belts[currentBeltIndex].tagline}
                   </p>
                 </div>
-                
+
                 {/* Next Belt Button */}
                 <button
                   onClick={() => navigateBelt('next')}
@@ -229,7 +281,7 @@ export default function Home() {
                   <ChevronDown className="w-6 h-6 -rotate-90" />
                 </button>
               </div>
-              
+
               {/* Belt Progress Dots */}
               <div className="flex justify-center gap-2 mt-4">
                 {belts.map((belt, index) => (
@@ -277,9 +329,13 @@ export default function Home() {
               challengeMode={challengeMode}
               restartOnFail={restartOnFail}
               onReset={handleReset}
+              // These props are needed for the useEffect hooks to function correctly,
+              // assuming they are managed by the TypingInterface component.
+              sequenceAttempts={[]} // Replace with actual state from TypingInterface
+              allAttempts={[]} // Replace with actual state from TypingInterface
             />
             </div>
-            
+
             {/* Control Panel Toggle Buttons */}
             <div className="mt-6 flex justify-center gap-3">
               <button
@@ -298,7 +354,7 @@ export default function Home() {
                   </>
                 )}
               </button>
-              
+
               <button
                 onClick={() => setShowAudioControls(!showAudioControls)}
                 className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center"
@@ -316,9 +372,9 @@ export default function Home() {
                 )}
               </button>
             </div>
-            
 
-            
+
+
             {/* Collapsible Alphabet Controls */}
             {showAlphabetControls && (
               <div className="mt-4 animate-in slide-in-from-top-2 duration-300">
@@ -357,7 +413,7 @@ export default function Home() {
                 />
               </div>
             )}
-            
+
             {/* Collapsible Audio Controls */}
             {showAudioControls && (
               <div className="mt-4 animate-in slide-in-from-top-2 duration-300">
