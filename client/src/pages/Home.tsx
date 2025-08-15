@@ -143,19 +143,10 @@ export default function Home() {
     }
   };
 
-  // Belt advancement handler (for automatic advancement)
+  // Belt advancement suggestion (no longer automatic)
   const handleBeltAdvancement = () => {
-    const currentIndex = belts.findIndex(belt => belt.id === beltPreset);
-    // Don't advance if already at black belt
-    if (currentIndex < belts.length - 1) {
-      const nextBelt = belts[currentIndex + 1];
-      // Delay the belt advancement by 5 seconds to allow user to see stats
-      setTimeout(() => {
-        // Don't force sequence regeneration to preserve attempt history
-        // The typing hook will handle proper reset via resetForBeltAdvancement
-        setBeltPreset(nextBelt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black', false);
-      }, 5000);
-    }
+    // This function is no longer used for automatic advancement
+    // Users can manually navigate belts using the carousel controls
   };
 
   // Reset function to restore all settings to defaults

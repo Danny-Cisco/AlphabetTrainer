@@ -124,13 +124,8 @@ export default function TypingInterface({
       // Trigger confetti after a short delay to let the UI update
       setTimeout(triggerConfetti, 300);
       
-      // Trigger belt advancement after confetti celebration
-      if (onBeltAdvancement) {
-        setTimeout(() => {
-          onBeltAdvancement();
-          setBeltAdvanced(true);
-        }, 1000); // Wait 1 second after confetti to advance belt
-      }
+      // Just show the suggestion message, no automatic advancement
+      setBeltAdvanced(true);
     }
   }, [sequenceAttempts, allAttempts, restartOnFail, onBeltAdvancement, beltAdvanced]);
 
@@ -363,7 +358,7 @@ export default function TypingInterface({
                       <>
                         {beltAdvanced ? (
                           <div className="text-4xl font-bold text-green-500 dark:text-green-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-                            Move to next belt!
+                            Perhaps try the next belt!
                           </div>
                         ) : (
                           <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
