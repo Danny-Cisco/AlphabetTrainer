@@ -193,7 +193,7 @@ export default function Home() {
         {/* Background overlay for better text readability */}
         <div className="absolute inset-0 bg-white/40 dark:bg-black/60"></div>
         
-        <div className="container max-w-4xl mx-auto px-4 py-8 relative z-10">
+        <div className="container max-w-4xl mx-auto px-4 pt-8 pb-4 relative z-10">
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
               <div>
@@ -266,7 +266,7 @@ export default function Home() {
           </header>
 
           <main>
-            <div className={`rounded-2xl p-4 transition-colors ${
+            <div className={`rounded-2xl p-3 border-2 border-gray-400 transition-colors ${
               beltPreset === 'white' ? 'bg-white dark:bg-white text-gray-900 dark:text-gray-900' :
               beltPreset === 'blue' ? 'bg-blue-600 dark:bg-blue-700 text-white' :
               beltPreset === 'purple' ? 'bg-purple-600 dark:bg-purple-700 text-white' :
