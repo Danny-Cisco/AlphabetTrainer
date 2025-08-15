@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTyping } from "@/hooks/use-typing";
 import { useAudio } from "@/hooks/use-audio";
 import { Space, Delete, CornerDownLeft } from "lucide-react";
+import confetti from "canvas-confetti";
 
 
 interface TypingInterfaceProps {
@@ -116,6 +117,69 @@ export default function TypingInterface({
   }, [metronomeActive, bpm, startMetronome, stopMetronome]);
 
 
+
+  // Function to trigger confetti celebration (manual trigger only)
+  const triggerConfetti = () => {
+    // Subtle confetti from corners with bigger pieces and rainbow colors
+    const colors = [
+      '#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', 
+      '#4B0082', '#9400D3', '#FF1493', '#00CED1', '#FFD700',
+      '#FF6347', '#32CD32', '#8A2BE2', '#FF69B4', '#00FF7F'
+    ];
+    
+    const particleCount = 50;
+    
+    // Left side confetti
+    confetti({
+      particleCount,
+      spread: 60,
+      origin: { x: 0, y: 0.8 },
+      angle: 60,
+      colors,
+      startVelocity: 35,
+      gravity: 0.8,
+      scalar: 1.8
+    });
+
+    // Right side confetti with timing
+    setTimeout(() => {
+      confetti({
+        particleCount,
+        spread: 60,
+        origin: { x: 1, y: 0.8 },
+        angle: 120,
+        colors,
+        startVelocity: 35,
+        gravity: 0.8,
+        scalar: 1.8
+      });
+    }, 150);
+
+    // Top corners
+    setTimeout(() => {
+      confetti({
+        particleCount: 30,
+        spread: 45,
+        origin: { x: 0.1, y: 0.1 },
+        angle: 45,
+        colors,
+        startVelocity: 25,
+        gravity: 0.6,
+        scalar: 1.5
+      });
+      
+      confetti({
+        particleCount: 30,
+        spread: 45,
+        origin: { x: 0.9, y: 0.1 },
+        angle: 135,
+        colors,
+        startVelocity: 25,
+        gravity: 0.6,
+        scalar: 1.5
+      });
+    }, 300);
+  };
 
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
