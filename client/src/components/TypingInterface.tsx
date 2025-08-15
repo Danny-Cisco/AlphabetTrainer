@@ -23,6 +23,7 @@ interface TypingInterfaceProps {
   includeExtendedPunctuation: boolean;
   challengeMode: string;
   restartOnFail: boolean;
+  beltLevel: 'white' | 'blue' | 'purple' | 'brown' | 'black';
   onReset: () => void;
   onBeltAdvancement?: () => void;
 }
@@ -46,12 +47,25 @@ export default function TypingInterface({
   includeExtendedPunctuation,
   challengeMode,
   restartOnFail,
+  beltLevel,
   onReset,
   onBeltAdvancement
 }: TypingInterfaceProps) {
   const [beltAdvanced, setBeltAdvanced] = useState(false);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+
+  // Function to get belt color for display
+  const getBeltColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
+    switch (belt) {
+      case 'white': return 'bg-gray-100 border-gray-300';
+      case 'blue': return 'bg-blue-500 border-blue-600';
+      case 'purple': return 'bg-purple-500 border-purple-600';
+      case 'brown': return 'bg-amber-600 border-amber-700';
+      case 'black': return 'bg-gray-900 border-gray-700';
+      default: return 'bg-gray-100 border-gray-300';
+    }
+  };
 
   // Set up typing logic
   const {
@@ -79,7 +93,7 @@ export default function TypingInterface({
     includeNumbers,
     includeCommonPunctuation,
     includeExtendedPunctuation
-  }, challengeMode, restartOnFail);
+  }, challengeMode, restartOnFail, beltLevel);
 
   // Set up audio features
   const { startMetronome, stopMetronome } = useAudio({
@@ -458,9 +472,7 @@ export default function TypingInterface({
               <div className="space-y-1">
                 {allAttempts.slice(-10).map((attempt, index) => (
                   <div key={attempt.timestamp} className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-slate-500 dark:text-slate-400 w-8">
-                      #{allAttempts.length - allAttempts.slice(-10).length + index + 1}
-                    </span>
+                    <div className={`w-3 h-3 rounded-full border-2 ${getBeltColor(attempt.beltLevel)}`}></div>
                     <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2 relative">
                       <div 
                         className={`h-2 rounded-full transition-all duration-300 ${

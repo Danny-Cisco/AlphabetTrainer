@@ -8,7 +8,7 @@ interface CharacterOptions {
   includeExtendedPunctuation: boolean;
 }
 
-export function useTyping(sequenceType = 'alphabet', characterOptions?: CharacterOptions, challengeMode = 'none', restartOnFail = false) {
+export function useTyping(sequenceType = 'alphabet', characterOptions?: CharacterOptions, challengeMode = 'none', restartOnFail = false, beltLevel: 'white' | 'blue' | 'purple' | 'brown' | 'black' = 'white') {
   // Different character sets
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const NUMBERS = '0123456789';
@@ -126,6 +126,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     completed: boolean;
     cps?: number;
     sequenceLength: number;
+    beltLevel: 'white' | 'blue' | 'purple' | 'brown' | 'black';
   }
 
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -203,7 +204,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
       timestamp: Date.now(), 
       completed: true,
       cps,
-      sequenceLength: sequenceLength
+      sequenceLength: sequenceLength,
+      beltLevel: beltLevel
     }]);
 
     // Update best progress
@@ -386,7 +388,8 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
           timestamp: Date.now(), 
           completed: false,
           cps,
-          sequenceLength: getSequenceLength()
+          sequenceLength: getSequenceLength(),
+          beltLevel: beltLevel
         }]);
         
         // Update best progress if this attempt got further

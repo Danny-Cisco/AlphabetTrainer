@@ -285,6 +285,7 @@ export default function Home() {
               includeExtendedPunctuation={includeExtendedPunctuation}
               challengeMode={challengeMode}
               restartOnFail={restartOnFail}
+              beltLevel={beltPreset}
               onReset={handleReset}
               onBeltAdvancement={handleBeltAdvancement}
             />
