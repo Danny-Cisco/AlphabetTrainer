@@ -225,6 +225,73 @@ export default function TypingInterface({
 
   return (
     <div className="typing-interface bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-8 transition-all duration-300">
+      {/* Start/Randomize Button Section - Moved to top */}
+      <div className="bg-gray-100 dark:bg-gray-700 px-6 py-6 border-b border-gray-200 dark:border-gray-600">
+        <div className="text-center">
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
+            {isFocused 
+              ? "Start typing or press any key to begin" 
+              : "Start typing or press any key to begin"}
+          </p>
+          <div className={`grid gap-3 justify-center ${sequenceType === 'custom' ? 'grid-cols-2' : 'grid-cols-1'} max-w-md mx-auto`}>
+            <button 
+              onClick={focusKeyboard}
+              className="bg-blue-500 dark:bg-blue-600 text-white font-medium py-4 px-8 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors flex items-center justify-center text-lg"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="inline-block mr-2 h-5 w-5" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <rect x="2" y="6" width="20" height="12" rx="2" />
+                <line x1="6" y1="10" x2="6" y2="10" />
+                <line x1="10" y1="10" x2="10" y2="10" />
+                <line x1="14" y1="10" x2="14" y2="10" />
+                <line x1="18" y1="10" x2="18" y2="10" />
+                <line x1="6" y1="14" x2="6" y2="14" />
+                <line x1="10" y1="14" x2="10" y2="14" />
+                <line x1="14" y1="14" x2="14" y2="14" />
+                <line x1="18" y1="14" x2="18" y2="14" />
+              </svg>
+              Start
+            </button>
+            
+            {/* Randomize Button - Only show for custom sequence type */}
+            {sequenceType === 'custom' && (
+              <button 
+                onClick={() => {
+                  regenerateRandomSequence();
+                  focusKeyboard();
+                }}
+                className="bg-green-500 dark:bg-green-600 text-white font-medium py-4 px-8 rounded-lg hover:bg-green-600 dark:hover:bg-green-700 transition-colors flex items-center justify-center text-lg"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="inline-block mr-2 h-5 w-5" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                  <path d="M3 21v-5h5" />
+                </svg>
+                Randomize
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+      
       <div className="p-6">
         {/* Current Letter Display or Press Space to Start */}
         <div className="text-center mb-8">
@@ -463,82 +530,17 @@ export default function TypingInterface({
           )}
         </div>
         
-        {/* Keyboard Focus Area */}
-        <div className="mb-8 text-center">
-          <div className="inline-block bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-lg">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-              {isFocused 
-                ? "Keyboard ready! Type the letter shown above." 
-                : "Start typing or press any key to begin"}
-            </p>
-            <input 
-              ref={hiddenInputRef}
-              type="text" 
-              className="sr-only" 
-              aria-hidden="true"
-              onBlur={() => setIsFocused(false)}
-              onFocus={() => setIsFocused(true)}
-              onKeyDown={handleKeyDown}
-              autoComplete="off"
-            />
-            <div className={`grid gap-3 justify-center ${sequenceType === 'custom' ? 'grid-cols-2' : 'grid-cols-1'} max-w-xs mx-auto`}>
-              <button 
-                onClick={focusKeyboard}
-                className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium py-3 px-6 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors flex items-center justify-center"
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="inline-block mr-2 h-5 w-5" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <rect x="2" y="6" width="20" height="12" rx="2" />
-                  <line x1="6" y1="10" x2="6" y2="10" />
-                  <line x1="10" y1="10" x2="10" y2="10" />
-                  <line x1="14" y1="10" x2="14" y2="10" />
-                  <line x1="18" y1="10" x2="18" y2="10" />
-                  <line x1="6" y1="14" x2="6" y2="14" />
-                  <line x1="10" y1="14" x2="10" y2="14" />
-                  <line x1="14" y1="14" x2="14" y2="14" />
-                  <line x1="18" y1="14" x2="18" y2="14" />
-                </svg>
-                Start
-              </button>
-              
-              {/* New Random Sequence Button - Only show for custom sequence type */}
-              {sequenceType === 'custom' && (
-                <button 
-                  onClick={() => {
-                    regenerateRandomSequence();
-                    focusKeyboard();
-                  }}
-                  className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-medium py-3 px-6 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
-                >
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="inline-block mr-2 h-5 w-5" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  >
-                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-                    <path d="M21 3v5h-5" />
-                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-                    <path d="M3 21v-5h5" />
-                  </svg>
-                  Randomize
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
+        {/* Hidden input for keyboard capture */}
+        <input 
+          ref={hiddenInputRef}
+          type="text" 
+          className="sr-only" 
+          aria-hidden="true"
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+          onKeyDown={handleKeyDown}
+          autoComplete="off"
+        />
       </div>
     </div>
   );
