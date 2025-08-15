@@ -157,7 +157,13 @@ export default function Home() {
         <meta name="description" content="Single character typing practice with advanced audio features to improve your typing speed and accuracy." />
       </Helmet>
       
-      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors">
+      <div className={`min-h-screen font-sans transition-colors ${
+        beltPreset === 'white' ? 'bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200' :
+        beltPreset === 'blue' ? 'bg-blue-50 dark:bg-blue-950 text-blue-900 dark:text-blue-100' :
+        beltPreset === 'purple' ? 'bg-purple-50 dark:bg-purple-950 text-purple-900 dark:text-purple-100' :
+        beltPreset === 'brown' ? 'bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-100' :
+        'bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-50'
+      }`}>
         <div className="container max-w-4xl mx-auto px-4 py-8">
           <header className="mb-8">
             <div className="flex justify-between items-center mb-6">
@@ -179,7 +185,7 @@ export default function Home() {
                   beltPreset === 'brown' ? 'text-amber-700 dark:text-amber-300' :
                   'text-gray-900 dark:text-gray-100'
                 }`}>
-                  🥋 Lv {
+                  🥋 {
                     beltPreset === 'white' ? '1. White Belt' :
                     beltPreset === 'blue' ? '2. Blue Belt' :
                     beltPreset === 'purple' ? '3. Purple Belt' :
@@ -205,7 +211,7 @@ export default function Home() {
                     }}
                     className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600"
                   >
-                    🥋 Lv 1. White Belt
+                    🥋 1. White Belt
                   </button>
                   <button
                     onClick={() => {
@@ -214,7 +220,7 @@ export default function Home() {
                     }}
                     className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-blue-200 dark:border-blue-700"
                   >
-                    🥋 Lv 2. Blue Belt
+                    🥋 2. Blue Belt
                   </button>
                   <button
                     onClick={() => {
@@ -223,7 +229,7 @@ export default function Home() {
                     }}
                     className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 border border-purple-200 dark:border-purple-700"
                   >
-                    🥋 Lv 3. Purple Belt
+                    🥋 3. Purple Belt
                   </button>
                   <button
                     onClick={() => {
@@ -232,7 +238,7 @@ export default function Home() {
                     }}
                     className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 border border-amber-200 dark:border-amber-700"
                   >
-                    🥋 Lv 4. Brown Belt
+                    🥋 4. Brown Belt
                   </button>
                   <button
                     onClick={() => {
@@ -241,7 +247,7 @@ export default function Home() {
                     }}
                     className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
                   >
-                    🥋 Lv 5. Black Belt
+                    🥋 5. Black Belt
                   </button>
                 </div>
               )}
