@@ -71,12 +71,12 @@ export default function TypingInterface({
   // Function to get belt text color for typing letters
   const getBeltTextColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
     switch (belt) {
-      case 'white': return 'text-gray-800 dark:text-gray-800';
+      case 'white': return 'text-gray-800 dark:text-gray-200';
       case 'blue': return 'text-blue-600 dark:text-blue-400';
       case 'purple': return 'text-purple-600 dark:text-purple-400';
       case 'brown': return 'text-amber-700 dark:text-amber-500';
       case 'black': return 'text-gray-900 dark:text-gray-100';
-      default: return 'text-gray-800 dark:text-gray-800';
+      default: return 'text-gray-800 dark:text-gray-200';
     }
   };
 
