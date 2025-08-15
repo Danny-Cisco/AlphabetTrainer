@@ -233,7 +233,7 @@ export default function TypingInterface({
           <div className="grid gap-3 justify-center grid-cols-3 max-w-2xl mx-auto">
             <button 
               onClick={focusKeyboard}
-              className="bg-blue-500 dark:bg-blue-600 text-white font-medium py-4 px-8 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors flex items-center justify-center text-lg"
+              className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -265,7 +265,7 @@ export default function TypingInterface({
                   regenerateRandomSequence();
                   focusKeyboard();
                 }}
-                className="bg-green-500 dark:bg-green-600 text-white font-medium py-4 px-8 rounded-lg hover:bg-green-600 dark:hover:bg-green-700 transition-colors flex items-center justify-center text-lg"
+                className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -282,7 +282,7 @@ export default function TypingInterface({
                   <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
                   <path d="M3 21v-5h5" />
                 </svg>
-                Randomize
+                Shuffle
               </button>
             ) : (
               <div></div>
@@ -296,7 +296,7 @@ export default function TypingInterface({
                 onReset();
                 focusKeyboard();
               }}
-              className="bg-red-500 dark:bg-red-600 text-white font-medium py-4 px-8 rounded-lg hover:bg-red-600 dark:hover:bg-red-700 transition-colors flex items-center justify-center text-lg"
+              className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
