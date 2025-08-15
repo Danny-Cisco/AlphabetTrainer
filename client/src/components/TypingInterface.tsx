@@ -226,14 +226,14 @@ export default function TypingInterface({
   const progressPercentage = ((currentLetterIndex) / (getSequenceLength() - 1)) * 100;
 
   return (
-    <div className="typing-interface bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-8 transition-all duration-300">
+    <div className="typing-interface bg-white dark:bg-amber-950 rounded-xl shadow-md overflow-hidden mb-8 transition-all duration-300">
       {/* Start/Randomize Button Section - Moved to top */}
-      <div className="bg-gray-100 dark:bg-gray-700 px-6 py-6 border-b border-gray-200 dark:border-gray-600">
+      <div className="bg-gray-100 dark:bg-amber-900 px-6 py-6 border-b border-gray-200 dark:border-amber-800">
         <div className="text-center">
           <div className="grid gap-3 justify-center grid-cols-3 max-w-2xl mx-auto">
             <button 
               onClick={focusKeyboard}
-              className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg"
+              className="bg-gray-200 dark:bg-amber-800 text-gray-900 dark:text-amber-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-amber-700 transition-colors flex items-center justify-center text-lg"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -265,7 +265,7 @@ export default function TypingInterface({
                   regenerateRandomSequence();
                   focusKeyboard();
                 }}
-                className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg whitespace-nowrap"
+                className="bg-gray-200 dark:bg-amber-800 text-gray-900 dark:text-amber-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-amber-700 transition-colors flex items-center justify-center text-lg whitespace-nowrap"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -296,7 +296,7 @@ export default function TypingInterface({
                 onReset();
                 focusKeyboard();
               }}
-              className="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex items-center justify-center text-lg"
+              className="bg-gray-200 dark:bg-amber-800 text-gray-900 dark:text-amber-100 font-medium py-4 px-8 rounded-lg hover:bg-gray-300 dark:hover:bg-amber-700 transition-colors flex items-center justify-center text-lg"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -327,7 +327,7 @@ export default function TypingInterface({
             <div className="h-48 flex flex-col items-center justify-center">
               {!isFocused ? (
                 <>
-                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                  <div className="text-4xl font-bold text-gray-600 dark:text-amber-200 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Press Start to Capture Keyboard
                   </div>
 
@@ -339,16 +339,16 @@ export default function TypingInterface({
                     const lastAttempt = allAttempts[allAttempts.length - 1];
                     return (
                       <>
-                        <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                        <div className="text-4xl font-bold text-gray-600 dark:text-amber-200 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                           Press Space to Start
                         </div>
                         <div className="text-3xl font-mono font-bold mb-2">
-                          <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-gray-300"}>
+                          <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-amber-300"}>
                             {lastAttempt.progress}/{getSequenceLength()}
                           </span>
                         </div>
                         {lastAttempt.cps && (
-                          <div className="text-2xl font-mono text-gray-600 dark:text-gray-400">
+                          <div className="text-2xl font-mono text-gray-600 dark:text-amber-300">
                             {lastAttempt.cps.toFixed(2)} cps
                           </div>
                         )}
@@ -358,10 +358,10 @@ export default function TypingInterface({
                 </>
               ) : (
                 <>
-                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                  <div className="text-4xl font-bold text-gray-600 dark:text-amber-200 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Press Space to Start
                   </div>
-                  <div className="text-lg text-gray-500 dark:text-gray-500" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                  <div className="text-lg text-gray-500 dark:text-amber-300" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Get ready to type the sequence
                   </div>
                 </>
@@ -382,7 +382,7 @@ export default function TypingInterface({
           )}
           
           {/* Progress bar */}
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-6">
+          <div className="w-full bg-gray-200 dark:bg-amber-900 rounded-full h-2.5 mb-6">
             <div 
               className="bg-blue-500 dark:bg-blue-400 h-2.5 rounded-full transition-all duration-300" 
               style={{ width: `${progressPercentage}%` }}
@@ -393,10 +393,10 @@ export default function TypingInterface({
           
           {/* Character Progress Counter */}
           <div className="text-center mb-6">
-            <p className="text-2xl font-mono text-gray-700 dark:text-gray-300" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 400 }}>
+            <p className="text-2xl font-mono text-gray-700 dark:text-amber-200" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 400 }}>
               {currentLetterIndex}/{getSequenceLength()}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-500 mt-1" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+            <p className="text-sm text-gray-500 dark:text-amber-300" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
               characters
             </p>
           </div>
@@ -482,16 +482,16 @@ export default function TypingInterface({
           {/* Sequence Attempts History - only show when NOT in restart mode */}
           {!restartOnFail && sequenceAttempts.length > 0 && (
             <div className="mt-6">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Recent Attempts</h3>
+              <h3 className="text-sm font-medium text-gray-700 dark:text-amber-200 mb-3">Recent Attempts</h3>
               <div className="space-y-2 max-h-80 overflow-y-auto">
                 {sequenceAttempts.slice(-5).reverse().map((attempt, index) => (
                   <div key={index} className={`rounded p-3 flex justify-between items-center text-sm ${
                     attempt.accuracy === 100 
                       ? 'bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-500 dark:border-blue-400' 
-                      : 'bg-gray-50 dark:bg-gray-700'
+                      : 'bg-gray-50 dark:bg-amber-900'
                   }`}>
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-600 dark:text-gray-400">{attempt.sequenceType}</span>
+                      <span className="text-gray-600 dark:text-amber-300">{attempt.sequenceType}</span>
                       {attempt.accuracy === 100 && (
                         <div className="flex items-center gap-1">
                           <span className="text-lg">🏆</span>
@@ -502,7 +502,7 @@ export default function TypingInterface({
                     <div className="flex gap-3">
                       <span className="text-green-600 dark:text-green-400">{attempt.correct} characters</span>
                       <span className="text-red-600 dark:text-red-400">{attempt.errors} errors</span>
-                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                      <span className={`font-semibold ${attempt.accuracy === 100 ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-amber-200'}`}>
                         {attempt.accuracy}%
                       </span>
                     </div>
