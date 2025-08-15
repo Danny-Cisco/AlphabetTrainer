@@ -401,21 +401,7 @@ export default function TypingInterface({
             </p>
           </div>
           
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mb-2">
-            <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Characters</p>
-              <p className="text-2xl font-mono font-semibold text-green-500 dark:text-green-400">{correctCount}</p>
-            </div>
-            <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Errors</p>
-              <p className="text-2xl font-mono font-semibold text-red-500 dark:text-red-400">{errorCount}</p>
-            </div>
-            <div className="bg-gray-50 dark:bg-gray-700 rounded p-3">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Accuracy</p>
-              <p className="text-2xl font-mono font-semibold text-gray-800 dark:text-gray-200">{accuracy}%</p>
-            </div>
-          </div>
+
           
           {/* All Attempts History - show when restart on fail is enabled and there are attempts */}
           {restartOnFail && allAttempts.length > 0 && (
