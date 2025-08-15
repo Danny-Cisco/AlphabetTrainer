@@ -54,7 +54,7 @@ export default function TypingInterface({
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [lastConfettiAttemptId, setLastConfettiAttemptId] = useState<number | null>(null);
+  const [lockoutConfetti, setLockoutConfetti] = useState(false);
 
   // Function to get belt color for display
   const getBeltColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
@@ -120,38 +120,38 @@ export default function TypingInterface({
   // Monitor for perfect scores and trigger confetti (no belt advancement)
   useEffect(() => {
     let shouldTriggerConfetti = false;
-    let attemptId = null;
+    
+    if (lockoutConfetti) return; // Don't trigger if locked out
     
     if (restartOnFail && allAttempts.length > 0) {
       // In restart-on-fail mode, check allAttempts for completed attempts
       const latestAttempt = allAttempts[allAttempts.length - 1];
-      attemptId = latestAttempt.timestamp;
-      if (latestAttempt.completed && attemptId !== lastConfettiAttemptId) {
+      if (latestAttempt.completed) {
         shouldTriggerConfetti = true;
       }
     } else if (sequenceAttempts.length > 0) {
       // In normal mode, check sequenceAttempts for perfect scores
       const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
-      // Use a combination of timestamp and accuracy for unique ID
-      attemptId = latestAttempt.sequenceType + latestAttempt.accuracy + Date.now();
-      if (latestAttempt.accuracy === 100 && attemptId !== lastConfettiAttemptId) {
+      if (latestAttempt.accuracy === 100) {
         shouldTriggerConfetti = true;
       }
     }
     
-    if (shouldTriggerConfetti && attemptId) {
+    if (shouldTriggerConfetti) {
       // Trigger confetti after a short delay to let the UI update
       setTimeout(() => {
         triggerConfetti();
-        setLastConfettiAttemptId(attemptId);
+        setLockoutConfetti(true); // Lock out confetti after triggering
       }, 300);
     }
-  }, [sequenceAttempts, allAttempts, restartOnFail, lastConfettiAttemptId]);
+  }, [sequenceAttempts, allAttempts, restartOnFail, lockoutConfetti]);
 
-  // Reset confetti lock only when belt changes or when manually reset
+  // Unlock confetti when starting a new game
   useEffect(() => {
-    setLastConfettiAttemptId(null);
-  }, [beltLevel]);
+    if (!isWaitingToStart) {
+      setLockoutConfetti(false); // Unlock when game starts
+    }
+  }, [isWaitingToStart]);
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
@@ -219,7 +219,6 @@ export default function TypingInterface({
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
     resetCurrentStats(); // Reset stats when starting
-    setLastConfettiAttemptId(null); // Reset confetti lock when manually starting new session
     if (hiddenInputRef.current) {
       hiddenInputRef.current.focus();
       setIsFocused(true);
