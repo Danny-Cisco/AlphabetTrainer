@@ -264,15 +264,9 @@ export default function TypingInterface({
                     const lastAttempt = allAttempts[allAttempts.length - 1];
                     return (
                       <>
-                        {beltAdvanced ? (
-                          <div className="text-4xl font-bold text-green-500 dark:text-green-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-                            Perhaps try the next belt!
-                          </div>
-                        ) : (
-                          <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-                            Press Space to Start
-                          </div>
-                        )}
+                        <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                          Press Space to Start
+                        </div>
                         <div className="text-3xl font-mono font-bold mb-2">
                           <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-amber-100"}>
                             {lastAttempt.progress}/{lastAttempt.sequenceLength}
