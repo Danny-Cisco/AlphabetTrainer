@@ -248,10 +248,6 @@ export default function Home() {
               </div>
             )}
           </main>
-          
-          <footer className="mt-10 text-center text-gray-500 dark:text-gray-400 text-sm">
-            <p>TypeTone - Alphabet Typing Practice with Audio Feedback</p>
-          </footer>
         </div>
       </div>
     </>
