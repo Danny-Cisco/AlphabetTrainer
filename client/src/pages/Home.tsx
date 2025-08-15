@@ -42,6 +42,9 @@ export default function Home() {
   // Force sequence regeneration trigger
   const [sequenceKey, setSequenceKey] = useState(0);
   
+  // BJJ Belt preset system
+  const [beltPreset, setBeltPresetState] = useState<'white' | 'blue' | 'purple' | 'brown' | 'black'>('white');
+  
   // Reactive handlers that trigger sequence regeneration
   const handleIncludeLettersChange = (include: boolean) => {
     setIncludeLetters(include);
@@ -69,6 +72,52 @@ export default function Home() {
     if (sequenceType === 'custom') {
       setSequenceKey(prev => prev + 1);
     }
+  };
+
+  // Belt preset handler
+  const setBeltPreset = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
+    setBeltPresetState(belt);
+    
+    switch (belt) {
+      case 'white': // Beginner a-z mode (alphabetical sequence)
+        setSequenceType('alphabet');
+        setIncludeLetters(true);
+        setIncludeNumbers(false);
+        setIncludeCommonPunctuation(false);
+        setIncludeExtendedPunctuation(false);
+        break;
+      case 'blue': // Random a-z mode
+        setSequenceType('custom');
+        setIncludeLetters(true);
+        setIncludeNumbers(false);
+        setIncludeCommonPunctuation(false);
+        setIncludeExtendedPunctuation(false);
+        break;
+      case 'purple': // Random a-z mode with common punctuation
+        setSequenceType('custom');
+        setIncludeLetters(true);
+        setIncludeNumbers(false);
+        setIncludeCommonPunctuation(true);
+        setIncludeExtendedPunctuation(false);
+        break;
+      case 'brown': // Random a-z mode with numbers and common punctuation
+        setSequenceType('custom');
+        setIncludeLetters(true);
+        setIncludeNumbers(true);
+        setIncludeCommonPunctuation(true);
+        setIncludeExtendedPunctuation(false);
+        break;
+      case 'black': // Random a-z mode with numbers and all punctuation
+        setSequenceType('custom');
+        setIncludeLetters(true);
+        setIncludeNumbers(true);
+        setIncludeCommonPunctuation(true);
+        setIncludeExtendedPunctuation(true);
+        break;
+    }
+    
+    // Force sequence regeneration
+    setSequenceKey(prev => prev + 1);
   };
 
   // Reset function to restore all settings to defaults
@@ -103,12 +152,68 @@ export default function Home() {
       
       <div className="bg-gray-50 dark:bg-gray-900 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors">
         <div className="container max-w-4xl mx-auto px-4 py-8">
-          <header className="mb-8 flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">DigitDojo</h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">Single Character Typing Practice</p>
+          <header className="mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">DigitDojo</h1>
+                <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">Single Character Typing Practice</p>
+              </div>
+              <ThemeToggle />
             </div>
-            <ThemeToggle />
+            
+            {/* BJJ Belt Preset System */}
+            <div className="flex flex-wrap gap-3 justify-center">
+              <button
+                onClick={() => setBeltPreset('white')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  beltPreset === 'white'
+                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-md'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                } border border-gray-200 dark:border-gray-600`}
+              >
+                🥋 White Belt
+              </button>
+              <button
+                onClick={() => setBeltPreset('blue')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  beltPreset === 'blue'
+                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-100 shadow-md'
+                    : 'bg-white dark:bg-gray-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                } border border-blue-200 dark:border-blue-700`}
+              >
+                🥋 Blue Belt
+              </button>
+              <button
+                onClick={() => setBeltPreset('purple')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  beltPreset === 'purple'
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-900 dark:text-purple-100 shadow-md'
+                    : 'bg-white dark:bg-gray-800 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20'
+                } border border-purple-200 dark:border-purple-700`}
+              >
+                🥋 Purple Belt
+              </button>
+              <button
+                onClick={() => setBeltPreset('brown')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  beltPreset === 'brown'
+                    ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 shadow-md'
+                    : 'bg-white dark:bg-gray-800 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20'
+                } border border-amber-200 dark:border-amber-700`}
+              >
+                🥋 Brown Belt
+              </button>
+              <button
+                onClick={() => setBeltPreset('black')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  beltPreset === 'black'
+                    ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 shadow-md'
+                    : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700'
+                } border border-gray-300 dark:border-gray-600`}
+              >
+                🥋 Black Belt
+              </button>
+            </div>
           </header>
 
           <main>
