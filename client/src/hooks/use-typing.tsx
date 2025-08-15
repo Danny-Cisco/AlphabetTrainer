@@ -90,10 +90,14 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
 
   // Reset stats when sequence type, character options, or challenge mode change
   useEffect(() => {
-    resetAllStats();
+    resetCurrentStats();
+    setSequenceAttempts([]);
     if (sequenceType === 'custom') {
       setRandomSequence(generateRandomSequence());
     }
+    // Don't reset allAttempts and bestProgress to preserve history across belt changes
+    setIsWaitingToStart(true);
+    setAttemptStartTime(null);
   }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation, challengeMode]);
   
   // Sequence attempt tracking
