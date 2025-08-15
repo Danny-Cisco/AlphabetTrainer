@@ -339,7 +339,7 @@ export default function TypingInterface({
                     const lastAttempt = allAttempts[allAttempts.length - 1];
                     return (
                       <>
-                        <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+                        <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                           Press Space to Start
                         </div>
                         <div className="text-3xl font-mono font-bold mb-2">
@@ -358,10 +358,10 @@ export default function TypingInterface({
                 </>
               ) : (
                 <>
-                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Press Space to Start
                   </div>
-                  <div className="text-lg text-gray-500 dark:text-gray-500">
+                  <div className="text-lg text-gray-500 dark:text-gray-500" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Get ready to type the sequence
                   </div>
                 </>
@@ -538,7 +538,7 @@ export default function TypingInterface({
                       {attempt.accuracy === 100 && (
                         <div className="flex items-center gap-1">
                           <span className="text-lg">🏆</span>
-                          <span className="text-blue-700 dark:text-blue-300 font-bold text-xs">PERFECT!</span>
+                          <span className="text-blue-700 dark:text-blue-300 font-bold text-xs" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 600 }}>PERFECT!</span>
                         </div>
                       )}
                     </div>
