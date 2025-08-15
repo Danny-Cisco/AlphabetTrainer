@@ -63,7 +63,8 @@ export default function Home() {
     } else {
       newIndex = currentBeltIndex === belts.length - 1 ? 0 : currentBeltIndex + 1;
     }
-    setBeltPreset(belts[newIndex].id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
+    // Don't force sequence regeneration to preserve attempt history during manual navigation
+    setBeltPreset(belts[newIndex].id as 'white' | 'blue' | 'purple' | 'brown' | 'black', false);
   };
   
   // Reactive handlers that trigger sequence regeneration
