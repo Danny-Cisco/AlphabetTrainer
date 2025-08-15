@@ -219,13 +219,13 @@ export default function Home() {
                 <div className="min-w-0 flex-1 max-w-lg">
                   {/* Background container for better readability */}
                   <div className="bg-white/40 dark:bg-black/35 backdrop-blur-sm rounded-lg px-6 py-4 shadow-lg">
-                    <div className="flex items-center justify-center gap-3 mb-2">
-                      <div className={`w-8 h-8 rounded-full ${
-                        belts[currentBeltIndex].id === 'white' ? 'bg-white border-2 border-gray-400' :
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className={`w-8 h-8 rounded-full border-2 border-gray-400 ${
+                        belts[currentBeltIndex].id === 'white' ? 'bg-white' :
                         belts[currentBeltIndex].id === 'blue' ? 'bg-blue-600' :
                         belts[currentBeltIndex].id === 'purple' ? 'bg-purple-600' :
                         belts[currentBeltIndex].id === 'brown' ? 'bg-amber-700' :
-                        'bg-gray-900 border-2 border-gray-400'
+                        'bg-gray-900'
                       }`}></div>
                       <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                         🥋 {belts[currentBeltIndex].name}
