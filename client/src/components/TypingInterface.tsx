@@ -345,7 +345,7 @@ export default function TypingInterface({
       
       <div className="px-6 pt-2 pb-0">
         {/* Current Letter Display or Press Space to Start */}
-        <div className="text-center">
+        <div className="text-center mb-8">
           {isWaitingToStart ? (
             <div className="h-48 flex flex-col items-center justify-center">
               {!isFocused ? (
