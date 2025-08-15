@@ -146,12 +146,12 @@ export default function TypingInterface({
     }
   }, [sequenceAttempts, allAttempts, restartOnFail, lockoutConfetti]);
 
-  // Unlock confetti when starting a new game
+  // Unlock confetti when we actually start typing (currentLetterIndex changes from 0)
   useEffect(() => {
-    if (!isWaitingToStart) {
-      setLockoutConfetti(false); // Unlock when game starts
+    if (currentLetterIndex > 0) {
+      setLockoutConfetti(false); // Unlock when we start typing new sequence
     }
-  }, [isWaitingToStart]);
+  }, [currentLetterIndex]);
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
