@@ -141,6 +141,16 @@ export default function Home() {
     setSequenceKey(prev => prev + 1);
   };
 
+  // Belt advancement handler
+  const handleBeltAdvancement = () => {
+    const currentIndex = belts.findIndex(belt => belt.id === beltPreset);
+    // Don't advance if already at black belt
+    if (currentIndex < belts.length - 1) {
+      const nextBelt = belts[currentIndex + 1];
+      setBeltPreset(nextBelt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
+    }
+  };
+
   // Reset function to restore all settings to defaults
   const handleReset = () => {
     // Reset all settings to their default values
@@ -277,6 +287,7 @@ export default function Home() {
               challengeMode={challengeMode}
               restartOnFail={restartOnFail}
               onReset={handleReset}
+              onBeltAdvancement={handleBeltAdvancement}
             />
             </div>
             

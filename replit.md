@@ -13,6 +13,8 @@ DigitDojo is a web-based typing practice application that focuses on single char
 - **Enhanced Attempt Tracking System**: Complete overhaul with visual progress bars, timing data, and comprehensive history
 - **Space-to-Start Functionality**: Prevents accidental restarts and ensures accurate timing measurements
 - **Characters Per Second (CPS) Display**: Shows typing speed in intuitive CPS format with 2 decimal precision
+- **Automatic Belt Advancement**: Perfect score (100% accuracy) automatically advances to next belt after confetti celebration
+- **Warm Dark Mode Colors**: Updated dark theme with warm brown/amber tones matching dojo interior aesthetic
 
 ## User Preferences
 

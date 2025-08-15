@@ -24,6 +24,7 @@ interface TypingInterfaceProps {
   challengeMode: string;
   restartOnFail: boolean;
   onReset: () => void;
+  onBeltAdvancement?: () => void;
 }
 
 export default function TypingInterface({
@@ -45,7 +46,8 @@ export default function TypingInterface({
   includeExtendedPunctuation,
   challengeMode,
   restartOnFail,
-  onReset
+  onReset,
+  onBeltAdvancement
 }: TypingInterfaceProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -105,20 +107,34 @@ export default function TypingInterface({
       if (latestAttempt.accuracy === 100) {
         // Trigger confetti after a short delay to let the UI update
         setTimeout(triggerConfetti, 300);
+        
+        // Trigger belt advancement after confetti celebration
+        if (onBeltAdvancement) {
+          setTimeout(() => {
+            onBeltAdvancement();
+          }, 1000); // Wait 1 second after confetti to advance belt
+        }
       }
     }
-  }, [sequenceAttempts]);
+  }, [sequenceAttempts, onBeltAdvancement]);
 
-  // Monitor for completed attempts in restart-on-fail mode and trigger confetti
+  // Monitor for completed attempts in restart-on-fail mode and trigger confetti + belt advancement
   useEffect(() => {
     if (restartOnFail && allAttempts.length > 0) {
       const latestAttempt = allAttempts[allAttempts.length - 1];
       if (latestAttempt.completed) {
         // Trigger confetti after a short delay to let the UI update
         setTimeout(triggerConfetti, 300);
+        
+        // Trigger belt advancement after confetti celebration
+        if (onBeltAdvancement) {
+          setTimeout(() => {
+            onBeltAdvancement();
+          }, 1000); // Wait 1 second after confetti to advance belt
+        }
       }
     }
-  }, [allAttempts, restartOnFail]);
+  }, [allAttempts, restartOnFail, onBeltAdvancement]);
 
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
