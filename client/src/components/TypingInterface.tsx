@@ -394,6 +394,11 @@ export default function TypingInterface({
                             {lastAttempt.progress}/{lastAttempt.sequenceLength}
                           </span>
                         </div>
+                        {lastAttempt.completed && (
+                          <div className="text-lg font-medium text-green-600 dark:text-green-400 mb-2">
+                            Perfect! Perhaps move up to the next belt!
+                          </div>
+                        )}
                         {lastAttempt.cps && (
                           <div className="text-2xl font-mono text-gray-600 dark:text-amber-100">
                             {lastAttempt.cps.toFixed(2)} cps
