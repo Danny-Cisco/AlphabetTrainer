@@ -146,12 +146,10 @@ export default function TypingInterface({
     }
   }, [sequenceAttempts, allAttempts, restartOnFail, lockoutConfetti]);
 
-  // Unlock confetti when we actually start typing (currentLetterIndex changes from 0)
+  // Unlock confetti when a new attempt is added to the array
   useEffect(() => {
-    if (currentLetterIndex > 0) {
-      setLockoutConfetti(false); // Unlock when we start typing new sequence
-    }
-  }, [currentLetterIndex]);
+    setLockoutConfetti(false); // Unlock when new attempts are added
+  }, [restartOnFail ? allAttempts.length : sequenceAttempts.length]);
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
