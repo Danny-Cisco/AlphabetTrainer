@@ -248,7 +248,7 @@ export default function TypingInterface({
   const progressPercentage = ((currentLetterIndex) / (getSequenceLength() - 1)) * 100;
 
   return (
-    <div className="typing-interface bg-white dark:bg-stone-950 rounded-xl shadow-md overflow-hidden mb-8 transition-all duration-300">
+    <div className="typing-interface bg-white dark:bg-stone-950 rounded-xl shadow-md overflow-hidden mb-2 transition-all duration-300">
       {/* Start/Randomize Button Section - Moved to top */}
       <div className="bg-gray-100 dark:bg-amber-900 px-6 py-6 border-b border-gray-200 dark:border-amber-800">
         <div className="text-center">
