@@ -368,7 +368,7 @@ export default function TypingInterface({
               )}
             </div>
           ) : (
-            <div className="text-9xl font-mono font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center">
+            <div className="text-9xl font-bold text-blue-500 dark:text-blue-400 mb-4 h-48 flex items-center justify-center" style={{ fontFamily: 'Long Cang, cursive' }}>
               {currentLetter === ' ' ? (
                 <Space size={120} className="text-blue-500 dark:text-blue-400" />
               ) : currentLetter === 'Backspace' ? (
