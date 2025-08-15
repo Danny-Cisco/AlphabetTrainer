@@ -391,13 +391,13 @@ export default function TypingInterface({
               )}
             </div>
           ) : (
-            <div className="text-9xl font-bold text-blue-500 dark:text-white mb-4 h-48 flex items-center justify-center" style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
+            <div className="text-9xl font-bold text-blue-500 dark:text-amber-100 mb-4 h-48 flex items-center justify-center" style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
               {currentLetter === ' ' ? (
-                <Space size={120} className="text-blue-500 dark:text-white" />
+                <Space size={120} className="text-blue-500 dark:text-amber-100" />
               ) : currentLetter === 'Backspace' ? (
-                <Delete size={120} className="text-blue-500 dark:text-white" />
+                <Delete size={120} className="text-blue-500 dark:text-amber-100" />
               ) : currentLetter === 'Enter' ? (
-                <CornerDownLeft size={120} className="text-blue-500 dark:text-white" />
+                <CornerDownLeft size={120} className="text-blue-500 dark:text-amber-100" />
               ) : (
                 currentLetter
               )}
