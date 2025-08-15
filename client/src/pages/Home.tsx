@@ -266,7 +266,7 @@ export default function Home() {
           </header>
 
           <main>
-            <div className={`rounded-lg p-4 transition-colors ${
+            <div className={`rounded-2xl p-4 transition-colors ${
               beltPreset === 'white' ? 'bg-white dark:bg-white text-gray-900 dark:text-gray-900' :
               beltPreset === 'blue' ? 'bg-blue-600 dark:bg-blue-700 text-white' :
               beltPreset === 'purple' ? 'bg-purple-600 dark:bg-purple-700 text-white' :
