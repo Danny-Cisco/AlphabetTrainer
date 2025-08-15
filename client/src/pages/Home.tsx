@@ -172,79 +172,7 @@ export default function Home() {
               </button>
             </div>
             
-            {/* Challenge Mode Buttons */}
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Challenge Modes</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => setChallengeMode('space')}
-                  className={`py-3 px-4 rounded-lg font-medium transition-colors ${
-                    challengeMode === 'space'
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  Space Between
-                </button>
-                
-                <button
-                  onClick={() => setChallengeMode('delete')}
-                  className={`py-3 px-4 rounded-lg font-medium transition-colors ${
-                    challengeMode === 'delete'
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  Delete Between
-                </button>
-                
-                <button
-                  onClick={() => setChallengeMode('return')}
-                  className={`py-3 px-4 rounded-lg font-medium transition-colors ${
-                    challengeMode === 'return'
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  Return Between
-                </button>
-                
-                <button
-                  onClick={() => setChallengeMode('random')}
-                  className={`py-3 px-4 rounded-lg font-medium transition-colors ${
-                    challengeMode === 'random'
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  Random Between
-                </button>
-              </div>
-              
-              {challengeMode !== 'none' && (
-                <button
-                  onClick={() => setChallengeMode('none')}
-                  className="mt-3 w-full py-2 px-4 rounded-lg font-medium bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
-                >
-                  Disable Challenge Mode
-                </button>
-              )}
-            </div>
-            
-            {/* Restart on Fail Setting */}
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Settings</h3>
-              <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                <div>
-                  <label className="font-medium text-gray-700 dark:text-gray-300">Restart on Fail</label>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Automatically restart sequence when you make a mistake</p>
-                </div>
-                <SwitchComponent
-                  checked={restartOnFail}
-                  onCheckedChange={setRestartOnFail}
-                />
-              </div>
-            </div>
+
             
             {/* Collapsible Alphabet Controls */}
             {showAlphabetControls && (
@@ -276,6 +204,10 @@ export default function Home() {
                   setIncludeCommonPunctuation={handleIncludeCommonPunctuationChange}
                   includeExtendedPunctuation={includeExtendedPunctuation}
                   setIncludeExtendedPunctuation={handleIncludeExtendedPunctuationChange}
+                  challengeMode={challengeMode}
+                  setChallengeMode={setChallengeMode}
+                  restartOnFail={restartOnFail}
+                  setRestartOnFail={setRestartOnFail}
                   showOnlyAlphabetControls={true}
                 />
               </div>

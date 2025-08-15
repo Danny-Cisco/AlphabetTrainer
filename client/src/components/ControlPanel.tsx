@@ -31,6 +31,10 @@ interface ControlPanelProps {
   setIncludeCommonPunctuation: (include: boolean) => void;
   includeExtendedPunctuation: boolean;
   setIncludeExtendedPunctuation: (include: boolean) => void;
+  challengeMode?: string;
+  setChallengeMode?: (mode: string) => void;
+  restartOnFail?: boolean;
+  setRestartOnFail?: (restart: boolean) => void;
   showOnlyAlphabetControls?: boolean;
   showOnlyAudioControls?: boolean;
 }
@@ -62,6 +66,10 @@ export default function ControlPanel({
   setIncludeCommonPunctuation,
   includeExtendedPunctuation,
   setIncludeExtendedPunctuation,
+  challengeMode,
+  setChallengeMode,
+  restartOnFail,
+  setRestartOnFail,
   showOnlyAlphabetControls = false,
   showOnlyAudioControls = false
 }: ControlPanelProps) {
@@ -197,6 +205,84 @@ export default function ControlPanel({
                   <Label htmlFor="extended-punctuation" className="text-sm text-gray-700 dark:text-gray-300">Advanced Punctuation</Label>
                 </div>
               </div>
+
+              {/* Challenge Modes - only show in advanced controls */}
+              {showOnlyAlphabetControls && challengeMode !== undefined && setChallengeMode && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Challenge Modes:</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => setChallengeMode('space')}
+                      className={`py-3 px-4 rounded-lg font-medium transition-colors text-sm ${
+                        challengeMode === 'space'
+                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      Space Between
+                    </button>
+                    
+                    <button
+                      onClick={() => setChallengeMode('delete')}
+                      className={`py-3 px-4 rounded-lg font-medium transition-colors text-sm ${
+                        challengeMode === 'delete'
+                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      Delete Between
+                    </button>
+                    
+                    <button
+                      onClick={() => setChallengeMode('return')}
+                      className={`py-3 px-4 rounded-lg font-medium transition-colors text-sm ${
+                        challengeMode === 'return'
+                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      Return Between
+                    </button>
+                    
+                    <button
+                      onClick={() => setChallengeMode('random')}
+                      className={`py-3 px-4 rounded-lg font-medium transition-colors text-sm ${
+                        challengeMode === 'random'
+                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      Random Between
+                    </button>
+                  </div>
+                  
+                  {challengeMode !== 'none' && (
+                    <button
+                      onClick={() => setChallengeMode('none')}
+                      className="mt-3 w-full py-2 px-4 rounded-lg font-medium bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm"
+                    >
+                      Disable Challenge Mode
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Restart on Fail Setting - only show in advanced controls */}
+              {showOnlyAlphabetControls && restartOnFail !== undefined && setRestartOnFail && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Settings:</h3>
+                  <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Restart on Fail</label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Automatically restart sequence when you make a mistake</p>
+                    </div>
+                    <Switch
+                      checked={restartOnFail}
+                      onCheckedChange={setRestartOnFail}
+                    />
+                  </div>
+                </div>
+              )}
 
             </div>
           )}
