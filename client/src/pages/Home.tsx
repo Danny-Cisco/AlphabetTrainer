@@ -218,10 +218,19 @@ export default function Home() {
                 {/* Current Belt Display */}
                 <div className="min-w-0 flex-1 max-w-lg">
                   {/* Background container for better readability */}
-                  <div className="bg-white/80 dark:bg-black/70 backdrop-blur-sm rounded-lg px-6 py-4 shadow-lg">
-                    <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-                      🥋 {belts[currentBeltIndex].name}
-                    </h2>
+                  <div className="bg-white/40 dark:bg-black/35 backdrop-blur-sm rounded-lg px-6 py-4 shadow-lg">
+                    <div className="flex items-center justify-center gap-3 mb-2">
+                      <div className={`w-4 h-4 rounded-full ${
+                        belts[currentBeltIndex].id === 'white' ? 'bg-white border-2 border-gray-400' :
+                        belts[currentBeltIndex].id === 'blue' ? 'bg-blue-600' :
+                        belts[currentBeltIndex].id === 'purple' ? 'bg-purple-600' :
+                        belts[currentBeltIndex].id === 'brown' ? 'bg-amber-700' :
+                        'bg-gray-900'
+                      }`}></div>
+                      <h2 className={`text-5xl md:text-6xl ${belts[currentBeltIndex].color}`} style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                        🥋 {belts[currentBeltIndex].name}
+                      </h2>
+                    </div>
                     <p className="text-lg text-gray-800 dark:text-gray-200 mt-2" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                       {belts[currentBeltIndex].tagline}
                     </p>
