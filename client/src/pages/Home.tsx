@@ -44,6 +44,7 @@ export default function Home() {
   
   // BJJ Belt preset system
   const [beltPreset, setBeltPresetState] = useState<'white' | 'blue' | 'purple' | 'brown' | 'black'>('white');
+  const [showBeltSelector, setShowBeltSelector] = useState(false);
   
   // Reactive handlers that trigger sequence regeneration
   const handleIncludeLettersChange = (include: boolean) => {
@@ -162,57 +163,82 @@ export default function Home() {
             </div>
             
             {/* BJJ Belt Preset System */}
-            <div className="flex flex-wrap gap-3 justify-center">
-              <button
-                onClick={() => setBeltPreset('white')}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  beltPreset === 'white'
-                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-md'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                } border border-gray-200 dark:border-gray-600`}
-              >
-                🥋 White Belt
-              </button>
-              <button
-                onClick={() => setBeltPreset('blue')}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  beltPreset === 'blue'
-                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-100 shadow-md'
-                    : 'bg-white dark:bg-gray-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-                } border border-blue-200 dark:border-blue-700`}
-              >
-                🥋 Blue Belt
-              </button>
-              <button
-                onClick={() => setBeltPreset('purple')}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  beltPreset === 'purple'
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-900 dark:text-purple-100 shadow-md'
-                    : 'bg-white dark:bg-gray-800 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20'
-                } border border-purple-200 dark:border-purple-700`}
-              >
-                🥋 Purple Belt
-              </button>
-              <button
-                onClick={() => setBeltPreset('brown')}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  beltPreset === 'brown'
-                    ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 shadow-md'
-                    : 'bg-white dark:bg-gray-800 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20'
-                } border border-amber-200 dark:border-amber-700`}
-              >
-                🥋 Brown Belt
-              </button>
-              <button
-                onClick={() => setBeltPreset('black')}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  beltPreset === 'black'
-                    ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 shadow-md'
-                    : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700'
-                } border border-gray-300 dark:border-gray-600`}
-              >
-                🥋 Black Belt
-              </button>
+            <div className="text-center">
+              {/* Current Belt Display */}
+              <div className="mb-4">
+                <h2 className={`text-2xl font-bold mb-2 ${
+                  beltPreset === 'white' ? 'text-gray-900 dark:text-gray-100' :
+                  beltPreset === 'blue' ? 'text-blue-700 dark:text-blue-300' :
+                  beltPreset === 'purple' ? 'text-purple-700 dark:text-purple-300' :
+                  beltPreset === 'brown' ? 'text-amber-700 dark:text-amber-300' :
+                  'text-gray-900 dark:text-gray-100'
+                }`}>
+                  🥋 Lv {
+                    beltPreset === 'white' ? '1. White Belt' :
+                    beltPreset === 'blue' ? '2. Blue Belt' :
+                    beltPreset === 'purple' ? '3. Purple Belt' :
+                    beltPreset === 'brown' ? '4. Brown Belt' :
+                    '5. Black Belt'
+                  }
+                </h2>
+                <button
+                  onClick={() => setShowBeltSelector(!showBeltSelector)}
+                  className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                >
+                  {showBeltSelector ? 'Hide Belt Selection' : 'Change Belt'}
+                </button>
+              </div>
+
+              {/* Belt Selector (collapsible) */}
+              {showBeltSelector && (
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <button
+                    onClick={() => {
+                      setBeltPreset('white');
+                      setShowBeltSelector(false);
+                    }}
+                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600"
+                  >
+                    🥋 Lv 1. White Belt
+                  </button>
+                  <button
+                    onClick={() => {
+                      setBeltPreset('blue');
+                      setShowBeltSelector(false);
+                    }}
+                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-blue-200 dark:border-blue-700"
+                  >
+                    🥋 Lv 2. Blue Belt
+                  </button>
+                  <button
+                    onClick={() => {
+                      setBeltPreset('purple');
+                      setShowBeltSelector(false);
+                    }}
+                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 border border-purple-200 dark:border-purple-700"
+                  >
+                    🥋 Lv 3. Purple Belt
+                  </button>
+                  <button
+                    onClick={() => {
+                      setBeltPreset('brown');
+                      setShowBeltSelector(false);
+                    }}
+                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 border border-amber-200 dark:border-amber-700"
+                  >
+                    🥋 Lv 4. Brown Belt
+                  </button>
+                  <button
+                    onClick={() => {
+                      setBeltPreset('black');
+                      setShowBeltSelector(false);
+                    }}
+                    className="px-4 py-2 rounded-lg font-medium transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
+                  >
+                    🥋 Lv 5. Black Belt
+                  </button>
+                </div>
+              )}
             </div>
           </header>
 

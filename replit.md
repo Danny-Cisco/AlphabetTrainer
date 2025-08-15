@@ -6,12 +6,13 @@ DigitDojo is a web-based typing practice application that focuses on single char
 
 ## Recent Changes (August 2025)
 
+- **BJJ Belt-Themed Preset System**: Implemented 5 progressive difficulty levels (White to Black Belt) with numbered levels
+- **Clean Belt Selection Interface**: Large current belt display with collapsible "Change Belt" button for better visibility
+- **Progressive Character Sets**: White Belt (beginner A-Z), Blue Belt (random A-Z), Purple Belt (A-Z + punctuation), Brown Belt (A-Z + numbers + punctuation), Black Belt (full character set)
+- **Rebranding to DigitDojo**: Complete rebrand from DigitGym to DigitDojo across all components and documentation
 - **Enhanced Attempt Tracking System**: Complete overhaul with visual progress bars, timing data, and comprehensive history
 - **Space-to-Start Functionality**: Prevents accidental restarts and ensures accurate timing measurements
 - **Characters Per Second (CPS) Display**: Shows typing speed in intuitive CPS format with 2 decimal precision
-- **Restart-on-Fail Mode Improvements**: Default mode with complete attempt tracking and confetti celebrations
-- **Perfect Alignment System**: All attempt history items display consistently with progress/total format and aligned columns
-- **Dual Confetti Triggers**: Celebrations work in both normal and restart-on-fail modes for completed sequences
 
 ## User Preferences
 
