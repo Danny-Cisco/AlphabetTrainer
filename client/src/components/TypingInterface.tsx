@@ -327,7 +327,7 @@ export default function TypingInterface({
             <div className="h-48 flex flex-col items-center justify-center">
               {!isFocused ? (
                 <>
-                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
+                  <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
                     Press Start to Capture Keyboard
                   </div>
 
@@ -424,7 +424,7 @@ export default function TypingInterface({
           </div>
           
           {/* Instructions - dynamic based on sequence type */}
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 mb-6" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
             {sequenceType === 'alphabet' && "Type the letter shown above. Progress through A-Z."}
             {sequenceType === 'reverse' && "Type the letter shown above. Progress through Z-A."}
             {sequenceType === 'custom' && "Type the character shown above. Progress through your custom character mix."}
