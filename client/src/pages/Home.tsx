@@ -132,13 +132,19 @@ export default function Home() {
     setMiddleRowPitch(500);
     setBottomRowPitch(250);
     setExtremePanning(false);
-    setSequenceType('custom');
+    setShowAudioControls(false);
+    setShowAlphabetControls(false);
+    setSequenceType('alphabet'); // White belt uses alphabetical sequence
     setIncludeLetters(true);
     setIncludeNumbers(false);
     setIncludeCommonPunctuation(false);
     setIncludeExtendedPunctuation(false);
     setChallengeMode('none');
     setRestartOnFail(true);
+    
+    // Reset belt to white belt and hide belt selector
+    setBeltPresetState('white');
+    setShowBeltSelector(false);
     
     // Force sequence regeneration
     setSequenceKey(prev => prev + 1);
