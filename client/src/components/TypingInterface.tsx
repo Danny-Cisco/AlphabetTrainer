@@ -391,12 +391,15 @@ export default function TypingInterface({
           
 
           
-          {/* Instructions - dynamic based on sequence type */}
-          <p className="text-gray-600 dark:text-gray-400 mb-6" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-            {sequenceType === 'alphabet' && "Type the letter shown above. Progress through A-Z."}
-            {sequenceType === 'reverse' && "Type the letter shown above. Progress through Z-A."}
-            {sequenceType === 'custom' && "Type the character shown above. Progress through your custom character mix."}
-          </p>
+          {/* Character Progress Counter */}
+          <div className="text-center mb-6">
+            <p className="text-2xl font-mono text-gray-700 dark:text-gray-300" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 400 }}>
+              {currentLetterIndex}/{getSequenceLength()}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-500 mt-1" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+              characters
+            </p>
+          </div>
           
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-2">
