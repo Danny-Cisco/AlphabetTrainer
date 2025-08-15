@@ -151,8 +151,8 @@ export default function Home() {
       const nextBelt = belts[currentIndex + 1];
       // Delay the belt advancement by 5 seconds to allow user to see stats
       setTimeout(() => {
-        // Don't force sequence regeneration to preserve attempt history
-        setBeltPreset(nextBelt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black', false);
+        // Force sequence regeneration to reset typing state for new belt
+        setBeltPreset(nextBelt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black', true);
       }, 5000);
     }
   };

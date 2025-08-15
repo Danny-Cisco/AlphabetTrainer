@@ -99,6 +99,11 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     setIsWaitingToStart(true);
     setAttemptStartTime(null);
   }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation, challengeMode]);
+
+  // Function to get sequence length for progress calculations
+  const getSequenceLength = () => {
+    return getActiveSequence().length;
+  };
   
   // Sequence attempt tracking
   interface SequenceAttempt {

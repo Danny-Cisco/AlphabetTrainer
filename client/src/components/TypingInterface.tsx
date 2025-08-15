@@ -101,43 +101,37 @@ export default function TypingInterface({
     return () => stopMetronome();
   }, [metronomeActive, bpm, startMetronome, stopMetronome]);
 
-  // Monitor for perfect scores and trigger confetti
+  // Monitor for perfect scores and trigger confetti and belt advancement
   useEffect(() => {
-    if (sequenceAttempts.length > 0) {
-      const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
-      if (latestAttempt.accuracy === 100) {
-        // Trigger confetti after a short delay to let the UI update
-        setTimeout(triggerConfetti, 300);
-        
-        // Trigger belt advancement after confetti celebration
-        if (onBeltAdvancement) {
-          setTimeout(() => {
-            onBeltAdvancement();
-            setBeltAdvanced(true);
-          }, 1000); // Wait 1 second after confetti to advance belt
-        }
-      }
-    }
-  }, [sequenceAttempts, onBeltAdvancement]);
-
-  // Monitor for completed attempts in restart-on-fail mode and trigger confetti + belt advancement
-  useEffect(() => {
+    let shouldTriggerAdvancement = false;
+    
     if (restartOnFail && allAttempts.length > 0) {
+      // In restart-on-fail mode, check allAttempts for completed attempts
       const latestAttempt = allAttempts[allAttempts.length - 1];
       if (latestAttempt.completed) {
-        // Trigger confetti after a short delay to let the UI update
-        setTimeout(triggerConfetti, 300);
-        
-        // Trigger belt advancement after confetti celebration
-        if (onBeltAdvancement) {
-          setTimeout(() => {
-            onBeltAdvancement();
-            setBeltAdvanced(true);
-          }, 1000); // Wait 1 second after confetti to advance belt
-        }
+        shouldTriggerAdvancement = true;
+      }
+    } else if (sequenceAttempts.length > 0) {
+      // In normal mode, check sequenceAttempts for perfect scores
+      const latestAttempt = sequenceAttempts[sequenceAttempts.length - 1];
+      if (latestAttempt.accuracy === 100) {
+        shouldTriggerAdvancement = true;
       }
     }
-  }, [allAttempts, restartOnFail, onBeltAdvancement]);
+    
+    if (shouldTriggerAdvancement && !beltAdvanced) {
+      // Trigger confetti after a short delay to let the UI update
+      setTimeout(triggerConfetti, 300);
+      
+      // Trigger belt advancement after confetti celebration
+      if (onBeltAdvancement) {
+        setTimeout(() => {
+          onBeltAdvancement();
+          setBeltAdvanced(true);
+        }, 1000); // Wait 1 second after confetti to advance belt
+      }
+    }
+  }, [sequenceAttempts, allAttempts, restartOnFail, onBeltAdvancement, beltAdvanced]);
 
   // Reset belt advanced flag when new sequence starts
   useEffect(() => {
