@@ -148,12 +148,10 @@ export default function TypingInterface({
     }
   }, [sequenceAttempts, allAttempts, restartOnFail, lastConfettiAttemptId]);
 
-  // Reset confetti lock when starting a new attempt
+  // Reset confetti lock only when belt changes or when manually reset
   useEffect(() => {
-    if (!isWaitingToStart) {
-      setLastConfettiAttemptId(null);
-    }
-  }, [isWaitingToStart]);
+    setLastConfettiAttemptId(null);
+  }, [beltLevel]);
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
@@ -221,6 +219,7 @@ export default function TypingInterface({
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
     resetCurrentStats(); // Reset stats when starting
+    setLastConfettiAttemptId(null); // Reset confetti lock when manually starting new session
     if (hiddenInputRef.current) {
       hiddenInputRef.current.focus();
       setIsFocused(true);
