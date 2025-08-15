@@ -49,6 +49,7 @@ export default function TypingInterface({
   onReset,
   onBeltAdvancement
 }: TypingInterfaceProps) {
+  const [beltAdvanced, setBeltAdvanced] = useState(false);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -112,6 +113,7 @@ export default function TypingInterface({
         if (onBeltAdvancement) {
           setTimeout(() => {
             onBeltAdvancement();
+            setBeltAdvanced(true);
           }, 1000); // Wait 1 second after confetti to advance belt
         }
       }
@@ -130,15 +132,24 @@ export default function TypingInterface({
         if (onBeltAdvancement) {
           setTimeout(() => {
             onBeltAdvancement();
+            setBeltAdvanced(true);
           }, 1000); // Wait 1 second after confetti to advance belt
         }
       }
     }
   }, [allAttempts, restartOnFail, onBeltAdvancement]);
 
+  // Reset belt advanced flag when new sequence starts
+  useEffect(() => {
+    if (!isWaitingToStart) {
+      setBeltAdvanced(false);
+    }
+  }, [isWaitingToStart]);
+
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
     resetCurrentStats(); // Reset stats when starting
+    setBeltAdvanced(false); // Reset belt advancement flag
     if (hiddenInputRef.current) {
       hiddenInputRef.current.focus();
       setIsFocused(true);
@@ -355,9 +366,15 @@ export default function TypingInterface({
                     const lastAttempt = allAttempts[allAttempts.length - 1];
                     return (
                       <>
-                        <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
-                          Press Space to Start
-                        </div>
+                        {beltAdvanced ? (
+                          <div className="text-4xl font-bold text-green-500 dark:text-green-400 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                            Move to next belt!
+                          </div>
+                        ) : (
+                          <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
+                            Press Space to Start
+                          </div>
+                        )}
                         <div className="text-3xl font-mono font-bold mb-2">
                           <span className={lastAttempt.completed ? "text-green-500 dark:text-green-400" : "text-gray-700 dark:text-amber-100"}>
                             {lastAttempt.progress}/{getSequenceLength()}

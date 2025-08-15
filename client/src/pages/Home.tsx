@@ -148,6 +148,7 @@ export default function Home() {
     if (currentIndex < belts.length - 1) {
       const nextBelt = belts[currentIndex + 1];
       setBeltPreset(nextBelt.id as 'white' | 'blue' | 'purple' | 'brown' | 'black');
+      // Don't change sequenceKey to avoid losing keyboard focus
     }
   };
 
