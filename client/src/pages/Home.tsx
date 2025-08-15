@@ -7,8 +7,8 @@ import { Helmet } from "react-helmet";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function Home() {
-  const [panningActive, setPanningActive] = useState(true);
-  const [keySoundsActive, setKeySoundsActive] = useState(true);
+  const [panningActive, setPanningActive] = useState(false);
+  const [keySoundsActive, setKeySoundsActive] = useState(false);
   const [volume, setVolume] = useState(80);
   
   // Pitch values for each keyboard row
@@ -18,7 +18,7 @@ export default function Home() {
   const [bottomRowPitch, setBottomRowPitch] = useState(250); // Lower pitch for bottom row
   
   // Audio panning options
-  const [extremePanning, setExtremePanning] = useState(true); // Use extreme (100% L/R) panning by default
+  const [extremePanning, setExtremePanning] = useState(false); // Disabled by default
   
   // Sequence options
   const [sequenceType, setSequenceType] = useState('custom'); // 'alphabet' or 'custom'
@@ -74,14 +74,14 @@ export default function Home() {
   // Reset function to restore all settings to defaults
   const handleReset = () => {
     // Reset all settings to their default values
-    setPanningActive(true);
-    setKeySoundsActive(true);
+    setPanningActive(false);
+    setKeySoundsActive(false);
     setVolume(80);
     setNumberRowPitch(1000);
     setTopRowPitch(750);
     setMiddleRowPitch(500);
     setBottomRowPitch(250);
-    setExtremePanning(true);
+    setExtremePanning(false);
     setSequenceType('custom');
     setIncludeLetters(true);
     setIncludeNumbers(false);
@@ -157,12 +157,12 @@ export default function Home() {
                 {showAudioControls ? (
                   <>
                     <ChevronUp className="w-5 h-5 mr-2" />
-                    Hide Audio Controls
+                    Hide Audio Controls (Beta)
                   </>
                 ) : (
                   <>
                     <ChevronDown className="w-5 h-5 mr-2" />
-                    Show Audio Controls
+                    Show Audio Controls (Beta)
                   </>
                 )}
               </button>
