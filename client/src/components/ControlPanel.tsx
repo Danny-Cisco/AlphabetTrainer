@@ -121,11 +121,11 @@ export default function ControlPanel({
               <line x1="16" y1="17" x2="8" y2="17"/>
               <polyline points="10,9 9,9 8,9"/>
             </svg>
-            Alphabet Controls
+            Advanced Controls
           </h2>
         </div>
         <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             {/* Alphabet sequence */}
             <button
               onClick={() => handleSequenceChange('alphabet')}
@@ -136,25 +136,12 @@ export default function ControlPanel({
               }`}
             >
               <div className="text-center">
-                <div className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Alphabet</div>
+                <div className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Beginner</div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">A-Z sequence</div>
               </div>
             </button>
 
-            {/* Reverse sequence */}
-            <button
-              onClick={() => handleSequenceChange('reverse')}
-              className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                sequenceType === 'reverse'
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-400'
-                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-              }`}
-            >
-              <div className="text-center">
-                <div className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Reverse</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Z-A sequence</div>
-              </div>
-            </button>
+
 
             {/* Custom mix */}
             <button
@@ -207,7 +194,7 @@ export default function ControlPanel({
                     checked={includeExtendedPunctuation}
                     onCheckedChange={setIncludeExtendedPunctuation}
                   />
-                  <Label htmlFor="extended-punctuation" className="text-sm text-gray-700 dark:text-gray-300">Extended punctuation</Label>
+                  <Label htmlFor="extended-punctuation" className="text-sm text-gray-700 dark:text-gray-300">Advanced Punctuation</Label>
                 </div>
               </div>
 

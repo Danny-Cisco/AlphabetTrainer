@@ -15,7 +15,7 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   const COMMON_PUNCTUATION = ',.?!-();:\'"';
   const EXTENDED_PUNCTUATION = '@#$%^&*+=[]{}|\\~`_/<>';
   
-  const REVERSE_ALPHABET = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
+
   
   // Generate a custom character set based on user selections
   const generateCustomCharacterSet = () => {
@@ -52,7 +52,6 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
   // Get the active sequence based on selection
   const getActiveSequence = () => {
     switch(sequenceType) {
-      case 'reverse': return REVERSE_ALPHABET;
       case 'custom': return randomSequence;
       default: return ALPHABET;
     }

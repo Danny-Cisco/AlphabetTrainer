@@ -21,7 +21,7 @@ export default function Home() {
   const [extremePanning, setExtremePanning] = useState(true); // Use extreme (100% L/R) panning by default
   
   // Sequence options
-  const [sequenceType, setSequenceType] = useState('custom'); // 'alphabet', 'reverse', or 'custom'
+  const [sequenceType, setSequenceType] = useState('custom'); // 'alphabet' or 'custom'
   
   // Character type options for custom sequences
   const [includeLetters, setIncludeLetters] = useState(true);
@@ -140,12 +140,12 @@ export default function Home() {
                 {showAlphabetControls ? (
                   <>
                     <ChevronUp className="w-5 h-5 mr-2" />
-                    Hide Alphabet Controls
+                    Hide Advanced Controls
                   </>
                 ) : (
                   <>
                     <ChevronDown className="w-5 h-5 mr-2" />
-                    Show Alphabet Controls
+                    Show Advanced Controls
                   </>
                 )}
               </button>
