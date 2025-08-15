@@ -330,9 +330,7 @@ export default function TypingInterface({
                   <div className="text-4xl font-bold text-gray-600 dark:text-gray-400 mb-4">
                     Press Start to Capture Keyboard
                   </div>
-                  <div className="text-lg text-gray-500 dark:text-gray-500">
-                    Click the Start button below to begin typing
-                  </div>
+
                 </>
               ) : allAttempts.length > 0 ? (
                 <>
