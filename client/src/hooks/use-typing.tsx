@@ -97,13 +97,13 @@ export function useTyping(sequenceType = 'alphabet', characterOptions?: Characte
     setRandomSequence(generateRandomSequence());
   };
 
-  // Reset stats when sequence type, character options, or challenge mode change
+  // Reset stats when sequence type, character options, challenge mode, or belt level change
   useEffect(() => {
     resetForBeltAdvancement(); // Use belt advancement reset to preserve history
     if (sequenceType === 'custom') {
       setRandomSequence(generateRandomSequence());
     }
-  }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation, challengeMode]);
+  }, [sequenceType, characterOptions?.includeLetters, characterOptions?.includeNumbers, characterOptions?.includeCommonPunctuation, characterOptions?.includeExtendedPunctuation, challengeMode, beltLevel]);
 
   // Function to get sequence length for progress calculations
   const getSequenceLength = () => {
