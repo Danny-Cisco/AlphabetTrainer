@@ -485,7 +485,7 @@ export default function TypingInterface({
               
               {/* Visual progress bars for each attempt */}
               <div className="space-y-1">
-                {allAttempts.slice(-10).map((attempt, index) => (
+                {allAttempts.map((attempt, index) => (
                   <div key={attempt.timestamp} className="flex items-center gap-2">
                     <div className={`w-3 h-3 rounded-full border-2 ${getBeltColor(attempt.beltLevel)}`}></div>
                     <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2 relative">
@@ -514,11 +514,6 @@ export default function TypingInterface({
                     </div>
                   </div>
                 ))}
-                {allAttempts.length > 10 && (
-                  <p className="text-xs text-slate-500 dark:text-slate-400 text-center pt-1">
-                    Showing last 10 of {allAttempts.length} attempts
-                  </p>
-                )}
               </div>
             </div>
           )}
