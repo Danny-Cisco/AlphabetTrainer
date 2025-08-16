@@ -381,7 +381,7 @@ export default function TypingInterface({
         {/* Current Letter Display or Press Space to Start */}
         <div ref={typingAreaRef} className="text-center mb-8">
           {isWaitingToStart ? (
-            <div className="h-48 flex flex-col items-center justify-center">
+            <div className="min-h-[280px] h-[280px] flex flex-col items-center justify-center">
               {!isFocused ? (
                 <>
                   <div className="text-4xl font-bold text-gray-600 dark:text-amber-100 mb-4" style={{ fontFamily: 'Mozilla Headline, sans-serif', fontWeight: 300 }}>
@@ -430,7 +430,7 @@ export default function TypingInterface({
               )}
             </div>
           ) : (
-            <div className={`text-9xl font-bold ${getBeltTextColor(beltLevel)} mb-4 h-48 flex items-center justify-center`} style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
+            <div className={`text-9xl font-bold ${getBeltTextColor(beltLevel)} mb-4 min-h-[280px] h-[280px] flex items-center justify-center`} style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
               {currentLetter === ' ' ? (
                 <Space size={120} className={getBeltTextColor(beltLevel)} />
               ) : currentLetter === 'Backspace' ? (
