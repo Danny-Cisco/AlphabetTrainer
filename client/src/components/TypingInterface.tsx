@@ -245,6 +245,7 @@ export default function TypingInterface({
   // Focus the hidden input when the focus button is clicked
   const focusKeyboard = () => {
     resetCurrentStats(); // Reset stats when starting
+    setShowAllHistory(false); // Collapse attempt history when starting
     if (hiddenInputRef.current) {
       hiddenInputRef.current.focus();
       setIsFocused(true);
@@ -255,6 +256,11 @@ export default function TypingInterface({
 
   // Handle key press and audio feedback
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // If waiting to start and space is pressed, collapse the history
+    if (isWaitingToStart && e.key === ' ') {
+      setShowAllHistory(false);
+    }
+    
     handleKeyPress(e.key, {
       speechActive,
       panningActive,
