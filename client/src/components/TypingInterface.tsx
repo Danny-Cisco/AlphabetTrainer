@@ -176,17 +176,27 @@ export default function TypingInterface({
     setLockoutConfetti(false); // Unlock when new attempts are added
   }, [restartOnFail ? allAttempts.length : sequenceAttempts.length]);
 
-  // Maintain scroll position when attempts are added to prevent auto-scrolling
+  // Prevent auto-scrolling during gameplay by locking scroll position
   useEffect(() => {
-    if (typingAreaRef.current && !isWaitingToStart) {
-      // Smoothly scroll the typing area into view when it's being used
-      typingAreaRef.current.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center',
-        inline: 'nearest'
-      });
+    if (!isWaitingToStart) {
+      // Get current scroll position when gameplay starts
+      const scrollY = window.scrollY;
+      
+      // Prevent scrolling during gameplay
+      const preventScroll = (e: Event) => {
+        e.preventDefault();
+        window.scrollTo(0, scrollY);
+      };
+      
+      // Add scroll lock
+      window.addEventListener('scroll', preventScroll, { passive: false });
+      
+      // Cleanup function to remove scroll lock
+      return () => {
+        window.removeEventListener('scroll', preventScroll);
+      };
     }
-  }, [allAttempts.length, isWaitingToStart]);
+  }, [isWaitingToStart]);
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
