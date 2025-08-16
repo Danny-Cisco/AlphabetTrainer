@@ -53,6 +53,7 @@ export default function TypingInterface({
 }: TypingInterfaceProps) {
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const typingAreaRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [lockoutConfetti, setLockoutConfetti] = useState(false);
 
@@ -174,6 +175,18 @@ export default function TypingInterface({
   useEffect(() => {
     setLockoutConfetti(false); // Unlock when new attempts are added
   }, [restartOnFail ? allAttempts.length : sequenceAttempts.length]);
+
+  // Maintain scroll position when attempts are added to prevent auto-scrolling
+  useEffect(() => {
+    if (typingAreaRef.current && !isWaitingToStart) {
+      // Smoothly scroll the typing area into view when it's being used
+      typingAreaRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center',
+        inline: 'nearest'
+      });
+    }
+  }, [allAttempts.length, isWaitingToStart]);
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
@@ -369,7 +382,7 @@ export default function TypingInterface({
       
       <div className="px-6 pt-2 pb-0">
         {/* Current Letter Display or Press Space to Start */}
-        <div className="text-center mb-8">
+        <div ref={typingAreaRef} className="text-center mb-8">
           {isWaitingToStart ? (
             <div className="h-48 flex flex-col items-center justify-center">
               {!isFocused ? (
