@@ -56,6 +56,7 @@ export default function TypingInterface({
   const typingAreaRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [lockoutConfetti, setLockoutConfetti] = useState(false);
+  const [showAllHistory, setShowAllHistory] = useState(false);
 
   // Function to get belt color for display
   const getBeltColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
@@ -176,27 +177,25 @@ export default function TypingInterface({
     setLockoutConfetti(false); // Unlock when new attempts are added
   }, [restartOnFail ? allAttempts.length : sequenceAttempts.length]);
 
-  // Prevent auto-scrolling during gameplay by locking scroll position
+  // Permanent scroll lock for the entire app session
   useEffect(() => {
-    if (!isWaitingToStart) {
-      // Get current scroll position when gameplay starts
-      const scrollY = window.scrollY;
-      
-      // Prevent scrolling during gameplay
-      const preventScroll = (e: Event) => {
-        e.preventDefault();
-        window.scrollTo(0, scrollY);
-      };
-      
-      // Add scroll lock
-      window.addEventListener('scroll', preventScroll, { passive: false });
-      
-      // Cleanup function to remove scroll lock
-      return () => {
-        window.removeEventListener('scroll', preventScroll);
-      };
-    }
-  }, [isWaitingToStart]);
+    // Get initial scroll position
+    const scrollY = window.scrollY;
+    
+    // Prevent scrolling throughout the app session
+    const preventScroll = (e: Event) => {
+      e.preventDefault();
+      window.scrollTo(0, scrollY);
+    };
+    
+    // Add permanent scroll lock
+    window.addEventListener('scroll', preventScroll, { passive: false });
+    
+    // Cleanup function to remove scroll lock on unmount
+    return () => {
+      window.removeEventListener('scroll', preventScroll);
+    };
+  }, []); // Empty dependency array for permanent lock
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
@@ -508,7 +507,7 @@ export default function TypingInterface({
               
               {/* Visual progress bars for each attempt */}
               <div className="space-y-1">
-                {allAttempts.map((attempt, index) => (
+                {allAttempts.slice().reverse().slice(0, showAllHistory ? allAttempts.length : 10).map((attempt, index) => (
                   <div key={attempt.timestamp} className="flex items-center gap-2">
                     <div className={`w-3 h-3 rounded-full border-2 ${getBeltColor(attempt.beltLevel)}`}></div>
                     <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2 relative">
@@ -538,6 +537,18 @@ export default function TypingInterface({
                   </div>
                 ))}
               </div>
+              
+              {/* Show More/Less Button */}
+              {allAttempts.length > 10 && (
+                <div className="text-center mt-3">
+                  <button
+                    onClick={() => setShowAllHistory(!showAllHistory)}
+                    className="text-xs px-3 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded transition-colors"
+                  >
+                    {showAllHistory ? 'Show Less' : `Show All ${allAttempts.length} Attempts`}
+                  </button>
+                </div>
+              )}
             </div>
           )}
           
