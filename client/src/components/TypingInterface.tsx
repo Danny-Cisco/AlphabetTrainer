@@ -73,24 +73,24 @@ export default function TypingInterface({
   // Function to get belt text color for typing letters
   const getBeltTextColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
     switch (belt) {
-      case 'white': return 'text-gray-800 dark:text-gray-200';
+      case 'white': return 'text-gray-500 dark:text-gray-400';
       case 'blue': return 'text-blue-600 dark:text-blue-400';
       case 'purple': return 'text-purple-600 dark:text-purple-400';
       case 'brown': return 'text-amber-700 dark:text-amber-500';
       case 'black': return 'text-gray-900 dark:text-gray-100';
-      default: return 'text-gray-800 dark:text-gray-200';
+      default: return 'text-gray-500 dark:text-gray-400';
     }
   };
 
   // Function to get belt progress bar color
   const getBeltProgressColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
     switch (belt) {
-      case 'white': return 'bg-gray-600 dark:bg-gray-500';
+      case 'white': return 'bg-gray-500 dark:bg-gray-400';
       case 'blue': return 'bg-blue-600 dark:bg-blue-500';
       case 'purple': return 'bg-purple-600 dark:bg-purple-500';
       case 'brown': return 'bg-amber-700 dark:bg-amber-600';
       case 'black': return 'bg-gray-900 dark:bg-gray-200';
-      default: return 'bg-gray-600 dark:bg-gray-500';
+      default: return 'bg-gray-500 dark:bg-gray-400';
     }
   };
 
