@@ -430,7 +430,7 @@ export default function TypingInterface({
               )}
             </div>
           ) : (
-            <div className={`text-9xl font-bold ${getBeltTextColor(beltLevel)} mb-4 min-h-[280px] h-[280px] flex items-center justify-center`} style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
+            <div className={`text-9xl font-bold ${getBeltTextColor(beltLevel)} min-h-[280px] h-[280px] flex items-center justify-center`} style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 500 }}>
               {currentLetter === ' ' ? (
                 <Space size={120} className={getBeltTextColor(beltLevel)} />
               ) : currentLetter === 'Backspace' ? (
