@@ -85,12 +85,12 @@ export default function TypingInterface({
   // Function to get belt progress bar color
   const getBeltProgressColor = (belt: 'white' | 'blue' | 'purple' | 'brown' | 'black') => {
     switch (belt) {
-      case 'white': return 'bg-gray-500 dark:bg-gray-200';
-      case 'blue': return 'bg-blue-600 dark:bg-blue-500';
-      case 'purple': return 'bg-purple-600 dark:bg-purple-500';
-      case 'brown': return 'bg-amber-700 dark:bg-amber-600';
-      case 'black': return 'bg-black dark:bg-black';
-      default: return 'bg-white dark:bg-gray-200';
+      case 'white': return 'bg-gray-500 dark:bg-gray-400';
+      case 'blue': return 'bg-blue-600 dark:bg-blue-400';
+      case 'purple': return 'bg-purple-600 dark:bg-purple-400';
+      case 'brown': return 'bg-amber-700 dark:bg-amber-500';
+      case 'black': return 'bg-black dark:bg-white';
+      default: return 'bg-gray-500 dark:bg-gray-400';
     }
   };
 
