@@ -177,25 +177,7 @@ export default function TypingInterface({
     setLockoutConfetti(false); // Unlock when new attempts are added
   }, [restartOnFail ? allAttempts.length : sequenceAttempts.length]);
 
-  // Permanent scroll lock for the entire app session
-  useEffect(() => {
-    // Get initial scroll position
-    const scrollY = window.scrollY;
-    
-    // Prevent scrolling throughout the app session
-    const preventScroll = (e: Event) => {
-      e.preventDefault();
-      window.scrollTo(0, scrollY);
-    };
-    
-    // Add permanent scroll lock
-    window.addEventListener('scroll', preventScroll, { passive: false });
-    
-    // Cleanup function to remove scroll lock on unmount
-    return () => {
-      window.removeEventListener('scroll', preventScroll);
-    };
-  }, []); // Empty dependency array for permanent lock
+
 
   // Function to trigger confetti celebration
   const triggerConfetti = () => {
